@@ -1,6 +1,6 @@
 #!/bin/bash
-# Holt frische Strava-Daten und baut das Dashboard neu.
-# Fuer cron/launchd gedacht - laeuft immer im eigenen Ordner, egal von wo gestartet.
+# Fetches fresh Strava data and rebuilds the dashboard.
+# Designed for cron/launchd; always runs in its own folder.
 
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -14,5 +14,5 @@ LOG="update.log"
   "$PY" render.py
 } >> "$LOG" 2>&1
 
-# Log nicht endlos wachsen lassen: nur die letzten 500 Zeilen behalten
+# Keep the log from growing indefinitely: retain only the last 500 lines.
 tail -n 500 "$LOG" > "$LOG.tmp" && mv "$LOG.tmp" "$LOG"

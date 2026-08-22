@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rendert data.json zu index.html für die veröffentlichte Webseite."""
+"""Render data.json to index.html for the published website."""
 
 import html
 import json
@@ -11,9 +11,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data.json")
 OUT = os.path.join(HERE, "index.html")
 
-MONTHS = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
-          "August", "September", "Oktober", "November", "Dezember"]
-DAYS = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December"]
+DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 
 # ---------- Formatierung ----------
@@ -34,11 +34,11 @@ def hhmmss(sec):
 
 def de(d):
     d = date.fromisoformat(d)
-    return f"{d.day}. {MONTHS[d.month - 1]}"
+    return f"{MONTHS[d.month - 1]} {d.day}"
 
 
 def num(x, dec=1):
-    return f"{x:.{dec}f}".replace(".", ",")
+    return f"{x:.{dec}f}"
 
 
 def esc(s):
@@ -48,16 +48,13 @@ def esc(s):
 # ---------- Bausteine ----------
 
 def delta_chip(now, prev, words, lower_is_better=False, fmt=lambda v: num(v), unit=""):
-    """Veraenderungs-Chip mit Icon + Wort - Farbe traegt die Aussage nie allein.
-
-    `words` ist das Paar (mehr, weniger) in der Sprache der Kennzahl.
-    """
+    """Change chip with icon and wording; colour never carries meaning alone."""
     if now is None or prev is None or prev == 0:
-        return '<span class="chip chip-flat"><span class="chip-ico">–</span>erster Wert</span>'
+        return '<span class="chip chip-flat"><span class="chip-ico">–</span>first value</span>'
     d = now - prev
     better = (d < 0) if lower_is_better else (d > 0)
     if abs(d) < (0.05 if not lower_is_better else 0.5):
-        return '<span class="chip chip-flat"><span class="chip-ico">→</span>unverändert</span>'
+        return '<span class="chip chip-flat"><span class="chip-ico">→</span>unchanged</span>'
     cls = "chip-up" if better else "chip-down"
     ico = "▲" if d > 0 else "▼"
     return (f'<span class="chip {cls}"><span class="chip-ico">{ico}</span>'
@@ -80,7 +77,7 @@ def axis_y(ticks, fmt):
 
 
 def nice_ticks(vmax, count=5):
-    """Ganzzahlige, lesbare Achsenschritte, die knapp ueber vmax enden."""
+    """Readable integer axis steps that end just above the maximum."""
     if vmax <= 0:
         return [0], 1
     best = None
@@ -96,7 +93,7 @@ def nice_ticks(vmax, count=5):
 
 
 def time_ticks(lo, hi, y):
-    """Achsenschritte fuer Zeitwerte (Sekunden) - ca. 4 Linien."""
+    """Axis steps for time values (seconds), with about four grid lines."""
     span = hi - lo
     step = next((s for s in (60, 120, 300, 600, 900, 1800, 3600) if span / s <= 5), 3600)
     out, v = [], int(lo / step + 1) * step
@@ -107,7 +104,7 @@ def time_ticks(lo, hi, y):
 
 
 def tick_every(n, want=5):
-    """Jeden wievielten X-Wert beschriften, damit die Labels nicht kollidieren."""
+    """Choose an x-axis label frequency that prevents collisions."""
     return max(1, -(-n // want))
 
 
@@ -119,7 +116,7 @@ def keep_tick(i, n, want=5):
 # ---------- Charts ----------
 
 def chart_weekly(weeks):
-    """Wochenkilometer: Balken = gelaufen, Linie = Soll."""
+    """Weekly distance: bars = completed, line = target."""
     ws = weeks[-13:]
     vmax = max([w["km"] for w in ws] + [w["plan_km"] or 0 for w in ws] + [1])
     ticks, top = nice_ticks(vmax)
@@ -138,12 +135,12 @@ def chart_weekly(weeks):
             bars.append(f'<div class="{cls}" style="left:{left:.4f}%;height:{h:.4f}%"></div>')
         if w["plan_km"]:
             pts.append((i, w["plan_km"]))
-        # Tooltip-Trefferflaeche ueber die volle Spaltenhoehe
-        soll = f" · Soll {num(w['plan_km'])} km" if w["plan_km"] else ""
-        note = " · läuft noch" if w["current"] else ""
+        # Full-height tooltip target for each column.
+        soll = f" · Target {num(w['plan_km'])} km" if w["plan_km"] else ""
+        note = " · in progress" if w["current"] else ""
         hits.append(
             f'<div class="hit" style="left:{i / n * 100:.4f}%;width:{100 / n:.4f}%" '
-            f'data-tip="Woche ab {esc(w["label"])}&#10;{num(w["km"])} km · {w["runs"]} Läufe{soll}{note}"></div>')
+            f'data-tip="Week of {esc(w["label"])}&#10;{num(w["km"])} km · {w["runs"]} runs{soll}{note}"></div>')
 
     line = ""
     if len(pts) > 1:
@@ -161,19 +158,19 @@ def chart_weekly(weeks):
 
     return f"""    <figure class="card chart">
       <figcaption>
-        <h2>Wochenkilometer</h2>
-        <p>Was sie gelaufen ist, gegen die Sollkurve bis zum Rennen.</p>
+        <h2>Weekly distance</h2>
+        <p>What she ran compared with the target curve through race day.</p>
       </figcaption>
       <div class="legend">
-        <span class="lg"><i class="sw sw-ist"></i>gelaufen</span>
-        <span class="lg"><i class="sw sw-soll"></i>Soll</span>
+        <span class="lg"><i class="sw sw-ist"></i>completed</span>
+        <span class="lg"><i class="sw sw-soll"></i>target</span>
       </div>
       <div class="plot" style="--plot-h:210px">
         <div class="grid">{axis_y(ticks_pct(ticks, top), lambda v: num(v, 0))}</div>
         <div class="marks">{''.join(bars)}{line}{dots}{''.join(hits)}</div>
       </div>
       <div class="xaxis">{xlab}</div>
-      <div class="unit-note">Kilometer pro Woche</div>
+      <div class="unit-note">Kilometres per week</div>
     </figure>"""
 
 
@@ -196,34 +193,34 @@ def chart_longrun(weeks, race_km=21.0975):
             bars.append(f'<div class="bar bar-plan" style="left:{left:.4f}%;'
                         f'height:{w["plan_long"] / top * 100:.4f}%"></div>')
         v = w["long"] if w["long"] > 0 else (w["plan_long"] or 0)
-        kind = "gelaufen" if w["long"] > 0 else "geplant"
+        kind = "completed" if w["long"] > 0 else "planned"
         hits.append(f'<div class="hit" style="left:{i / n * 100:.4f}%;width:{100 / n:.4f}%" '
-                    f'data-tip="Woche ab {esc(w["label"])}&#10;längster Lauf: {num(v)} km ({kind})"></div>')
+                    f'data-tip="Week of {esc(w["label"])}&#10;longest run: {num(v)} km ({kind})"></div>')
     ref = (f'<div class="refline" style="bottom:{race_km / top * 100:.4f}%">'
-           f'<span>Renndistanz 21,1</span></div>')
+           f'<span>Race distance 21.1</span></div>')
     xlab = "".join(
         f'<div class="xtick{" xtick-now" if w["current"] else ""}" style="left:{(i + 0.5) / n * 100:.4f}%">{esc(w["label"])}</div>'
         for i, w in enumerate(ws) if keep_tick(i, n, 4))
     return f"""    <figure class="card chart">
       <figcaption>
-        <h2>Längster Lauf pro Woche</h2>
-        <p>Der wichtigste Indikator vor einem Halbmarathon. Umrandet = noch geplant.</p>
+        <h2>Longest run per week</h2>
+        <p>The key half-marathon indicator. Outlined bars are still planned.</p>
       </figcaption>
       <div class="legend">
-        <span class="lg"><i class="sw sw-ist"></i>gelaufen</span>
-        <span class="lg"><i class="sw sw-plan"></i>geplant</span>
+        <span class="lg"><i class="sw sw-ist"></i>completed</span>
+        <span class="lg"><i class="sw sw-plan"></i>planned</span>
       </div>
       <div class="plot" style="--plot-h:180px">
         <div class="grid">{axis_y(ticks_pct(ticks, top), lambda v: num(v, 0))}</div>
         <div class="marks">{''.join(bars)}{ref}{''.join(hits)}</div>
       </div>
       <div class="xaxis">{xlab}</div>
-      <div class="unit-note">Kilometer</div>
+      <div class="unit-note">Kilometres</div>
     </figure>"""
 
 
 def chart_pace(points):
-    """Tempo pro Lauf + 4-Wochen-Trend. Schnellere Zeiten liegen oben."""
+    """Pace per run plus a four-week trend. Faster times sit higher."""
     pts = [p for p in points]
     if len(pts) < 3:
         return ""
@@ -235,7 +232,7 @@ def chart_pace(points):
     pad = max((hi - lo) * 0.15, 8)
     lo, hi = lo - pad, hi + pad
 
-    def y(pace):                       # invertiert: schneller = weiter oben
+    def y(pace):                       # inverted: faster = higher
         return (hi - pace) / (hi - lo) * 100
 
     def x(ds):
@@ -252,7 +249,7 @@ def chart_pace(points):
                     f'data-tip="{DAYS[dt.weekday()][:2]}, {dt.day}.{dt.month}. · {esc(p["name"])}&#10;'
                     f'{num(p["km"])} km in {hhmmss(p["seconds"])} · {mmss(p["pace"])}/km{hr}"></div>')
 
-    # gleitender 21-Tage-Mittelwert als Trend
+    # Moving 21-day average as the trend line.
     trend = []
     for p in pts:
         c = date.fromisoformat(p["date"])
@@ -268,7 +265,7 @@ def chart_pace(points):
 
     tick_vals = time_ticks(lo, hi, y)
 
-    # Monatsbeschriftung
+    # Month labels.
     xlab, seen = [], set()
     for p in pts:
         dt = date.fromisoformat(p["date"])
@@ -280,15 +277,15 @@ def chart_pace(points):
 
     return f"""    <figure class="card chart">
       <figcaption>
-        <h2>Tempo pro Lauf</h2>
-        <p>Ein Punkt je Lauf, Punktgröße = Distanz. Weiter oben heißt schneller; die Linie ist der 3-Wochen-Schnitt.</p>
+        <h2>Pace per run</h2>
+        <p>One point per run; point size represents distance. Higher is faster; the line is the three-week average.</p>
       </figcaption>
       <div class="plot" style="--plot-h:180px">
         <div class="grid">{axis_y(tick_vals, mmss)}</div>
         <div class="marks">{''.join(dots)}{tl}{''.join(hits)}</div>
       </div>
       <div class="xaxis">{''.join(xlab)}</div>
-      <div class="unit-note">Minuten pro Kilometer</div>
+      <div class="unit-note">Minutes per kilometre</div>
     </figure>"""
 
 
@@ -309,7 +306,7 @@ def chart_forecast(fc):
     pl = " ".join(f"{i / (n - 1) * 100:.4f},{100 - y(f['seconds']):.4f}" for i, f in enumerate(fc))
     hits = "".join(
         f'<div class="hit" style="left:{i / n * 100:.4f}%;width:{100 / n:.4f}%" '
-        f'data-tip="Stand {esc(f["label"])}&#10;Prognose {hhmmss(f["seconds"])}"></div>'
+        f'data-tip="As of {esc(f["label"])}&#10;Prediction {hhmmss(f["seconds"])}"></div>'
         for i, f in enumerate(fc))
     end = (f'<div class="enddot" style="left:100%;bottom:{y(fc[-1]["seconds"]):.4f}%"></div>'
            f'<div class="endlabel" style="bottom:{y(fc[-1]["seconds"]):.4f}%">{hhmmss(fc[-1]["seconds"])}</div>')
@@ -321,8 +318,8 @@ def chart_forecast(fc):
           </svg>{end}{hits}
         </div>
       </div>
-      <div class="xaxis xaxis-spark"><span>{esc(fc[0]["label"])}</span><span>heute</span></div>
-      <div class="unit-note">Hochgerechnete Zielzeit, Stunden:Minuten</div>"""
+      <div class="xaxis xaxis-spark"><span>{esc(fc[0]["label"])}</span><span>today</span></div>
+      <div class="unit-note">Predicted finish time, hours:minutes</div>"""
 
 
 def table_view(weeks):
@@ -330,7 +327,7 @@ def table_view(weeks):
     for w in weeks:
         if w["runs"] == 0 and not w["plan_km"]:
             continue
-        state = "läuft" if w["current"] else ("geplant" if w["future"] else "")
+        state = "in progress" if w["current"] else ("planned" if w["future"] else "")
         rows.append(f"<tr><th scope=\"row\">{esc(w['label'])}</th>"
                     f"<td>{num(w['km']) if w['runs'] else '–'}</td>"
                     f"<td>{num(w['plan_km']) if w['plan_km'] else '–'}</td>"
@@ -338,11 +335,11 @@ def table_view(weeks):
                     f"<td>{w['runs'] or '–'}</td>"
                     f"<td>{mmss(w['avg_pace'])}</td><td>{state}</td></tr>")
     return f"""    <details class="card tablewrap">
-      <summary>Alle Wochen als Tabelle</summary>
+      <summary>All weeks as a table</summary>
       <div class="scroll">
         <table>
-          <thead><tr><th scope="col">Woche ab</th><th scope="col">km</th><th scope="col">Soll km</th>
-          <th scope="col">längster</th><th scope="col">Läufe</th><th scope="col">ø Pace</th><th scope="col"></th></tr></thead>
+          <thead><tr><th scope="col">Week of</th><th scope="col">km</th><th scope="col">Target km</th>
+          <th scope="col">longest</th><th scope="col">runs</th><th scope="col">avg. pace</th><th scope="col"></th></tr></thead>
           <tbody>{''.join(rows)}</tbody>
         </table>
       </div>
@@ -354,12 +351,12 @@ def table_view(weeks):
 def build(d):
     k = d["kpi"]
     name = (d.get("athlete") or {}).get("name") or ""
-    title = f"{name}s Halbmarathon" if name else "Halbmarathon-Countdown"
+    title = f"{name}'s Half Marathon" if name else "Half Marathon Countdown"
     days = d["days_left"]
     race = date.fromisoformat(d["race_date"])
     today = date.fromisoformat(d["today"])
 
-    # Status der laufenden Woche: Ist gegen anteiliges Soll
+    # Current week: actual distance against the pro-rata target.
     cur = next((w for w in d["weeks"] if w["current"]), None)
     pill = ""
     if cur and cur["plan_km"]:
@@ -367,27 +364,27 @@ def build(d):
         due = cur["plan_km"] * frac
         r = cur["km"] / due if due > 0 else 1
         if r >= 0.95:
-            pill = ('<span class="pill pill-good"><span class="pill-ico">●</span>Diese Woche im Plan</span>')
+            pill = ('<span class="pill pill-good"><span class="pill-ico">●</span>On track this week</span>')
         elif r >= 0.75:
-            pill = ('<span class="pill pill-warn"><span class="pill-ico">◐</span>Diese Woche etwas hinten</span>')
+            pill = ('<span class="pill pill-warn"><span class="pill-ico">◐</span>A little behind this week</span>')
         else:
-            pill = ('<span class="pill pill-crit"><span class="pill-ico">○</span>Diese Woche deutlich hinten</span>')
+            pill = ('<span class="pill pill-crit"><span class="pill-ico">○</span>Well behind this week</span>')
 
     to_race = max(21.0975 - (k["longest_recent"] or 0), 0)
-    long_sub = (f"noch {num(to_race)} km bis zur Renndistanz" if to_race > 0.2
-                else "sie hat die Distanz schon in den Beinen")
+    long_sub = (f"{num(to_race)} km left to race distance" if to_race > 0.2
+                else "race distance already in her legs")
 
     tiles = "\n".join([
-        tile("Wochenumfang", num(k["weekly_km"]), " km", "Schnitt der letzten 4 Wochen",
-             delta_chip(k["weekly_km"], k["weekly_km_prev"], ("mehr", "weniger"), unit=" km")),
-        tile("Längster Lauf", num(k["longest_recent"]), " km", long_sub,
+        tile("Weekly distance", num(k["weekly_km"]), " km", "average of the last 4 weeks",
+             delta_chip(k["weekly_km"], k["weekly_km_prev"], ("more", "less"), unit=" km")),
+        tile("Longest run", num(k["longest_recent"]), " km", long_sub,
              delta_chip(k["longest_recent"], k.get("longest_prev") or None,
-                        ("länger", "kürzer"), unit=" km")),
-        tile("Lockeres Tempo", mmss(k["easy_pace"]), " /km", "ruhige Läufe, letzte 4 Wochen",
-             delta_chip(k["easy_pace"], k["easy_pace_prev"], ("langsamer", "schneller"),
+                        ("longer", "shorter"), unit=" km")),
+        tile("Easy pace", mmss(k["easy_pace"]), " /km", "easy runs, last 4 weeks",
+             delta_chip(k["easy_pace"], k["easy_pace_prev"], ("slower", "faster"),
                         lower_is_better=True, fmt=mmss, unit=" min/km")),
-        tile("Zielzeit-Prognose", hhmmss(k["prediction"]), "", "hochgerechnet aus ihren besten Läufen",
-             delta_chip(k["prediction"], k["prediction_prev"], ("langsamer", "schneller"),
+        tile("Finish-time prediction", hhmmss(k["prediction"]), "", "estimated from her best runs",
+             delta_chip(k["prediction"], k["prediction_prev"], ("slower", "faster"),
                         lower_is_better=True, fmt=mmss, unit=" min")),
     ])
 
@@ -399,24 +396,24 @@ def build(d):
         for r in d["recent_runs"])
 
     gen = datetime.fromisoformat(d["generated"]).strftime("%d.%m.%Y, %H:%M UTC")
-    mock_banner = ('<div class="card banner">Beispieldaten – noch nicht mit Strava verbunden.</div>'
+    mock_banner = ('<div class="card banner">Example data — not connected to Strava yet.</div>'
                    if d.get("mock") else "")
 
     fc = chart_forecast(d["forecast"])
     fc_block = f"""    <figure class="card chart">
       <figcaption>
-        <h2>Wie sich die Prognose entwickelt</h2>
-        <p>Woche für Woche neu aus den jeweils letzten sechs Wochen hochgerechnet (Riegel-Formel). Weiter oben heißt schneller.</p>
+        <h2>How the prediction is progressing</h2>
+        <p>Recalculated each week from the preceding six weeks (Riegel formula). Higher is faster.</p>
       </figcaption>
 {fc}
     </figure>""" if fc else ""
 
     return f"""<!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="{esc(title)} – Trainingsfortschritt.">
+<meta name="description" content="{esc(title)} — training progress.">
 <title>{esc(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -589,12 +586,12 @@ footer b {{ color:var(--ink2); font-weight:600; }}
 
 <div class="wrap">
   <header class="hero">
-    <p class="eyebrow">Halbmarathon · {DAYS[race.weekday()]}, {de(d["race_date"])} {race.year}</p>
+    <p class="eyebrow">Half marathon · {DAYS[race.weekday()]}, {de(d["race_date"])} {race.year}</p>
     <h1>{esc(title)}</h1>
-    <p class="when">21,1 Kilometer. Hier steht, wie das Training läuft.</p>
-    <div class="count"><b>{days}</b><span>Tage bis zum Start<br>({num(d["weeks_left"])} Wochen)</span></div>
+    <p class="when">21.1 kilometres. This is how training is progressing.</p>
+    <div class="count"><b>{days}</b><span>days to race day<br>({num(d["weeks_left"])} weeks)</span></div>
     <div class="rail"><i style="width:{d['block_progress'] * 100:.1f}%"></i></div>
-    <div class="railcap"><span>Trainingsblock</span><span>{d['block_progress'] * 100:.0f} % geschafft</span></div>
+    <div class="railcap"><span>Training block</span><span>{d['block_progress'] * 100:.0f} % complete</span></div>
     {pill}
   </header>
 
@@ -614,18 +611,18 @@ footer b {{ color:var(--ink2); font-weight:600; }}
 {fc_block}
 
   <section class="card">
-    <h2>Letzte Läufe</h2>
+    <h2>Recent runs</h2>
     <ul class="runs">{runs}</ul>
   </section>
 
 {table_view(d["weeks"])}
 
   <footer>
-    <p>Daten aus Strava, zuletzt aktualisiert am <b>{gen}</b>. Im Trainingsblock bisher
-    <b>{num(d['totals']['km'])} km</b> in <b>{d['totals']['runs']} Läufen</b>.</p>
-    <p>Die Sollkurve ist kein Plan von der Stange: Sie geht von ihrem tatsächlichen Umfang der letzten vier Wochen
-    aus ({num(d['plan_basis']['baseline_km'])} km/Woche), steigert um 6 % pro Woche bis zwei Wochen vor dem Rennen
-    und tapert dann. Die Zielzeit ist eine Hochrechnung nach Riegel und keine Garantie.</p>
+    <p>Data from Strava, last updated <b>{gen}</b>. So far in this training block:
+    <b>{num(d['totals']['km'])} km</b> in <b>{d['totals']['runs']} runs</b>.</p>
+    <p>The target curve is not a generic plan: it starts from the actual volume of the last four weeks
+    ({num(d['plan_basis']['baseline_km'])} km/week), increases by 6% per week until two weeks before race day,
+    then tapers. The finish-time prediction is based on Riegel and is not a guarantee.</p>
   </footer>
 </div>
 
@@ -654,7 +651,7 @@ footer b {{ color:var(--ink2); font-weight:600; }}
     if (el) show(el, e.clientX, e.clientY); else hide();
   }});
   document.addEventListener('scroll', hide, true);
-  // Tastatur: Trefferflaechen fokussierbar machen
+  // Keyboard: make tooltip targets focusable.
   document.querySelectorAll('[data-tip]').forEach(function (el) {{
     el.tabIndex = 0;
     el.addEventListener('focus', function () {{

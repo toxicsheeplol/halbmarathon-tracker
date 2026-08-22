@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Holt Strava-Laufdaten und berechnet alle Kennzahlen fuer das Halbmarathon-Dashboard.
+"""Fetch Strava running data and calculate metrics for the half-marathon dashboard.
 
 Ausgabe: data.json
 
 Aufruf:
-    python3 tracker.py            # echte Strava-Daten (creds.json noetig)
-    python3 tracker.py --mock     # Beispieldaten zum Designen
+    python3 tracker.py            # real Strava data (requires creds.json)
+    python3 tracker.py --mock     # example data for design/testing
 """
 
 import json
@@ -19,15 +19,15 @@ from datetime import date, datetime, timedelta, timezone
 import strava_creds
 
 RACE_DATE = date(2026, 10, 4)
-# Fest gesetzt, damit der Artifact-Titel stabil bleibt - unabhaengig davon,
-# wie ihr Vorname bei Strava geschrieben ist.
+# Kept fixed so the dashboard title remains stable regardless of the name
+# spelling in Strava.
 ATHLETE_NAME = "Réka"
 RACE_KM = 21.0975
 HERE = os.path.dirname(os.path.abspath(__file__))
 CREDS = os.path.join(HERE, "creds.json")
 OUT = os.path.join(HERE, "data.json")
 
-# Wie weit zurueck wir Aktivitaeten holen (Trainingsblock)
+# How far back to fetch activities (training block)
 LOOKBACK_WEEKS = 16
 
 
@@ -51,15 +51,11 @@ def _get(url, token, params=None):
 
 
 def access_token():
-    """Frischen Access-Token holen; rotierten Refresh-Token zurueckschreiben.
-
-    Strava entwertet den alten Refresh-Token bei jedem Refresh. Geht das
-    Speichern schief, ist der Zugang weg. Deshalb atomar + Backup.
-    """
+    """Get a fresh access token and persist Strava's rotated refresh token."""
     if not os.path.exists(CREDS):
-        sys.exit(f"Keine {CREDS} gefunden. Zuerst einrichten:\n"
+        sys.exit(f"No {CREDS} found. Set it up first:\n"
                  f"  python3 auth.py url <client_id>\n"
-                 f"Oder zum Ausprobieren ohne Strava:  python3 tracker.py --mock")
+                 f"Or try it without Strava first:  python3 tracker.py --mock")
     c = strava_creds.load(CREDS)
     tok = _post("https://www.strava.com/api/v3/oauth/token", {
         "client_id": c["client_id"],
@@ -74,7 +70,7 @@ def access_token():
 
 
 def fetch_runs(token, after_dt):
-    """Alle Laeufe seit after_dt, paginiert."""
+    """Fetch every run after ``after_dt``, with pagination."""
     runs, page = [], 1
     after = int(after_dt.replace(tzinfo=timezone.utc).timestamp())
     while True:
@@ -98,7 +94,7 @@ def fetch_runs(token, after_dt):
             continue
         out.append({
             "id": a.get("id"),
-            "name": a.get("name") or "Lauf",
+            "name": a.get("name") or "Run",
             "date": a["start_date_local"][:10],
             "km": round(dist, 2),
             "seconds": mt,
@@ -110,7 +106,7 @@ def fetch_runs(token, after_dt):
 
 
 # --------------------------------------------------------------------------
-# Beispieldaten
+# Example data
 # --------------------------------------------------------------------------
 
 def mock_runs(today):
@@ -118,12 +114,12 @@ def mock_runs(today):
     random.seed(7)
     runs = []
     start = today - timedelta(weeks=LOOKBACK_WEEKS)
-    # langsam wachsendes Volumen, langsam besser werdendes Tempo
+    # Gradually rising volume and a gradually improving pace.
     for w in range(LOOKBACK_WEEKS + 1):
         wk_start = start + timedelta(weeks=w)
         if wk_start > today:
             break
-        base_pace = 372 - w * 3.1          # s/km, von 6:12 auf ~5:22
+        base_pace = 372 - w * 3.1          # sec/km, from 6:12 to ~5:22
         n = 3 if w < 4 else (4 if w < 11 else 4)
         longrun = min(6 + w * 0.95, 19.5)
         dists = [longrun] + [random.uniform(5.5, 8.5) for _ in range(n - 1)]
@@ -138,7 +134,7 @@ def mock_runs(today):
             d = round(d * random.uniform(0.94, 1.06), 2)
             runs.append({
                 "id": 1000 + w * 10 + i,
-                "name": "Longrun" if is_long else ("Tempolauf" if is_tempo else "Lockerer Lauf"),
+                "name": "Long run" if is_long else ("Tempo run" if is_tempo else "Easy run"),
                 "date": day.isoformat(),
                 "km": d,
                 "seconds": int(d * pace),
@@ -150,7 +146,7 @@ def mock_runs(today):
 
 
 # --------------------------------------------------------------------------
-# Auswertung
+# Analysis
 # --------------------------------------------------------------------------
 
 def monday(d):
@@ -158,15 +154,15 @@ def monday(d):
 
 
 def riegel(dist_km, seconds, target_km=RACE_KM):
-    """Riegel-Formel: T2 = T1 * (D2/D1)^1.06"""
+    """Riegel formula: T2 = T1 * (D2/D1)^1.06."""
     return seconds * (target_km / dist_km) ** 1.06
 
 
 def predict(runs, upto, window_weeks=6):
-    """Beste Halbmarathon-Prognose aus den Laeufen der letzten `window_weeks`."""
+    """Best half-marathon prediction from runs in the last ``window_weeks``."""
     lo = upto - timedelta(weeks=window_weeks)
     pool = [r for r in runs if lo <= date.fromisoformat(r["date"]) <= upto]
-    # Laeufe ab 8 km sind aussagekraeftig; sonst ab 5 km
+    # Runs of at least 8 km are more meaningful; otherwise use 5 km.
     cands = [r for r in pool if r["km"] >= 8] or [r for r in pool if r["km"] >= 5]
     if not cands:
         return None
@@ -175,14 +171,13 @@ def predict(runs, upto, window_weeks=6):
 
 
 def build_plan(weeks_done, race_week_start, baseline_km, baseline_long):
-    """Sollkurve fuer die verbleibenden Wochen.
+    """Target curve for the remaining weeks.
 
-    Aufbau bis 2 Wochen vor dem Rennen (+6 %/Woche), dann Taper.
-    Abgeleitet aus dem tatsaechlichen aktuellen Umfang - kein Plan von der Stange,
-    der zu ihrem Training nicht passt.
+    Build up until two weeks before race day (+6% per week), then taper.
+    It is derived from the actual current volume rather than a generic plan.
     """
     plan = {}
-    # Wochen vom aktuellen Montag bis zur Rennwoche
+    # Weeks from the current Monday through race week.
     weeks = []
     w = weeks_done
     while w <= race_week_start:
@@ -191,10 +186,10 @@ def build_plan(weeks_done, race_week_start, baseline_km, baseline_long):
     n = len(weeks)
     if n == 0:
         return plan
-    # letzte 3 Bloecke: Peak, Taper 1, Rennwoche
+    # Final blocks: peak, first taper week, race week.
     build_n = max(n - 2, 0)
     peak_km = baseline_km * (1.06 ** max(build_n - 1, 0))
-    peak_km = min(peak_km, baseline_km * 1.30)     # nicht ueberziehen
+    peak_km = min(peak_km, baseline_km * 1.30)     # avoid overreaching
     peak_long = min(baseline_long + 1.2 * max(build_n - 1, 0), 20.0)
 
     for i, wk in enumerate(weeks):
@@ -202,9 +197,9 @@ def build_plan(weeks_done, race_week_start, baseline_km, baseline_long):
             f = 1.06 ** i
             km = min(baseline_km * f, peak_km)
             lng = min(baseline_long + 1.2 * i, peak_long)
-        elif i == n - 2:                            # Taperwoche
+        elif i == n - 2:                            # taper week
             km, lng = peak_km * 0.78, min(peak_long * 0.65, 13.0)
-        else:                                       # Rennwoche inkl. Wettkampf
+        else:                                       # race week including race day
             km, lng = peak_km * 0.55, RACE_KM
         plan[wk.isoformat()] = {"km": round(km, 1), "long": round(lng, 1)}
     return plan
@@ -215,7 +210,7 @@ def analyse(runs, today):
     this_week = monday(today)
     first_week = monday(today - timedelta(weeks=LOOKBACK_WEEKS))
 
-    # --- Wochenaggregation (Ist) ---
+    # --- Weekly aggregation (actual) ---
     by_week = {}
     w = first_week
     while w <= race_week:
@@ -231,7 +226,7 @@ def analyse(runs, today):
         b["runs"] += 1
         b["long"] = max(b["long"], r["km"])
 
-    # --- Basiswerte aus den letzten 4 abgeschlossenen Wochen ---
+    # --- Baseline from the last four completed weeks ---
     done = [k for k in sorted(by_week) if date.fromisoformat(k) < this_week and by_week[k]["runs"] > 0]
     recent = done[-4:]
     base_km = sum(by_week[k]["km"] for k in recent) / len(recent) if recent else 25.0
@@ -257,7 +252,7 @@ def analyse(runs, today):
             "current": d == this_week,
         })
 
-    # --- Prognoseverlauf (zeigt die Verbesserung) ---
+    # --- Prediction trend (shows improvement) ---
     forecast = []
     k = first_week + timedelta(weeks=3)
     while k <= this_week:
@@ -269,7 +264,7 @@ def analyse(runs, today):
     now_pred = predict(runs, today)
     then_pred = predict(runs, today - timedelta(weeks=4))
 
-    # --- Pace pro Lauf, kategorisiert ---
+    # --- Categorised pace per run ---
     pace_points = []
     for r in runs:
         d = date.fromisoformat(r["date"])
@@ -281,7 +276,7 @@ def analyse(runs, today):
             "cat": cat, "name": r["name"], "seconds": r["seconds"], "hr": r["hr"],
         })
 
-    # --- Kennzahlen ---
+    # --- Metrics ---
     last4 = [w for w in weeks if not w["future"] and not w["current"]][-4:]
     prev4 = [w for w in weeks if not w["future"] and not w["current"]][-8:-4]
     km4 = sum(w["km"] for w in last4) / max(len(last4), 1)
@@ -345,9 +340,9 @@ def main():
         runs = fetch_runs(tok, datetime.combine(today - timedelta(weeks=LOOKBACK_WEEKS + 1), datetime.min.time()))
 
     if not runs:
-        print("WARNUNG: keine Laeufe gefunden.")
-        print("  Haeufigste Ursache: beim Autorisieren fehlte activity:read_all,")
-        print("  dann bleiben private Aktivitaeten unsichtbar. Pruefen mit:")
+        print("WARNING: no runs found.")
+        print("  The most common cause is missing activity:read_all permission,")
+        print("  which leaves private activities unavailable. Check with:")
         print("    python3 auth.py check")
 
     data = analyse(runs, today)
@@ -355,12 +350,12 @@ def main():
     data["mock"] = "--mock" in sys.argv
     with open(OUT, "w") as f:
         json.dump(data, f, indent=1)
-    print(f"{len(runs)} Laeufe -> {OUT}")
+    print(f"{len(runs)} runs -> {OUT}")
     k = data["kpi"]
-    print(f"  Wochen-km (4W-Schnitt): {k['weekly_km']}  laengster Lauf: {k['longest']}")
+    print(f"  Weekly km (4-week average): {k['weekly_km']}  longest run: {k['longest']}")
     if k["prediction"]:
         p = k["prediction"]
-        print(f"  Prognose: {p//3600}:{p%3600//60:02d}:{p%60:02d}")
+        print(f"  Prediction: {p//3600}:{p%3600//60:02d}:{p%60:02d}")
 
 
 if __name__ == "__main__":

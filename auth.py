@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Einmalige Strava-Autorisierung fuer das Halbmarathon-Dashboard.
+"""One-time Strava authorisation for the half-marathon dashboard.
 
     python3 auth.py url    <client_id>
-        -> Autorisierungs-Links zum Weiterschicken (Web / Android / iPhone)
+        -> print authorisation links (web / Android / iPhone)
 
     python3 auth.py token  <client_id> <client_secret> <code>
-        -> tauscht den Code gegen einen Refresh-Token und schreibt creds.json
+        -> exchange the code for a refresh token and write creds.json
 
     python3 auth.py check
-        -> prueft, ob der gespeicherte Zugang funktioniert und Laeufe liefert
+        -> check the saved connection and list sample activities
 """
 
 import json
@@ -23,8 +23,8 @@ import strava_creds
 HERE = os.path.dirname(os.path.abspath(__file__))
 CREDS = os.path.join(HERE, "creds.json")
 
-# activity:read_all ist noetig, sonst liefert die API fuer alle nicht-oeffentlichen
-# Laeufe stillschweigend eine leere Liste - der klassische "geht nicht"-Fehler.
+# activity:read_all is required; otherwise the API silently omits non-public
+# runs and returns an empty list.
 SCOPE = "activity:read_all"
 REDIRECT = "http://localhost"
 
@@ -52,19 +52,19 @@ def cmd_url(client_id):
         "approval_prompt": "force",
         "scope": SCOPE,
     })
-    print("\nBrowser (normal eingeloggt):")
+    print("\nBrowser (signed in normally):")
     print(f"  https://www.strava.com/oauth/authorize?{q}")
-    print("\nAndroid (oeffnet die Strava-App):")
+    print("\nAndroid (opens the Strava app):")
     print(f"  https://www.strava.com/oauth/mobile/authorize?{q}")
-    print("\niPhone (nur in Safari oeffnen, nicht aus WhatsApp o.ae.):")
+    print("\niPhone (open in Safari only, not from WhatsApp or a similar app):")
     print(f"  strava://oauth/mobile/authorize?{q}")
-    print("\nNach 'Autorisieren' schlaegt die Weiterleitung auf localhost fehl.")
-    print("Das ist richtig so - die komplette URL aus der Adressleiste kopieren,")
-    print("darin steht code=... . Der Code verfaellt schnell, also zuegig eintauschen.\n")
+    print("\nAfter authorising, the redirect to localhost will fail.")
+    print("That is expected — copy the complete URL from the address bar;")
+    print("it contains code=... . The code expires quickly, so exchange it promptly.\n")
 
 
 def cmd_token(client_id, client_secret, code):
-    # Falls jemand die ganze URL statt nur des Codes einwirft: Code herausziehen.
+    # Extract the code if a complete redirect URL was supplied.
     if "code=" in code:
         parsed = urllib.parse.urlparse(code)
         code = urllib.parse.parse_qs(parsed.query).get("code", [code])[0]
@@ -78,8 +78,8 @@ def cmd_token(client_id, client_secret, code):
         })
     except urllib.error.HTTPError as e:
         body = e.read().decode(errors="replace")
-        sys.exit(f"Fehlgeschlagen ({e.code}): {body}\n"
-                 f"Meist ist der Code abgelaufen oder schon benutzt - neuen Link oeffnen.")
+        sys.exit(f"Failed ({e.code}): {body}\n"
+                 f"The code is usually expired or already used — open a new link.")
 
     granted = tok.get("scope") or ""
     strava_creds.save(CREDS, {
@@ -87,22 +87,22 @@ def cmd_token(client_id, client_secret, code):
         "client_secret": client_secret,
         "refresh_token": tok["refresh_token"],
     })
-    print(f"creds.json geschrieben -> {CREDS}")
+    print(f"Wrote creds.json -> {CREDS}")
     athlete = tok.get("athlete") or {}
     if athlete:
-        print(f"Konto: {athlete.get('firstname', '')} {athlete.get('lastname', '')}".strip())
+        print(f"Account: {athlete.get('firstname', '')} {athlete.get('lastname', '')}".strip())
     if "activity:read_all" not in granted:
-        print(f"\nACHTUNG: erteilte Rechte = '{granted}'.")
-        print("Ohne activity:read_all bleiben private Laeufe unsichtbar.")
-        print("Beim Autorisieren muss das Haekchen fuer alle Aktivitaeten gesetzt sein.")
+        print(f"\nWARNING: granted permissions = '{granted}'.")
+        print("Private runs remain unavailable without activity:read_all.")
+        print("Select access to all activities while authorising.")
     else:
-        print("Rechte in Ordnung (activity:read_all).")
-    print("\nJetzt pruefen mit:  python3 auth.py check")
+        print("Permissions look good (activity:read_all).")
+    print("\nNow check with:  python3 auth.py check")
 
 
 def cmd_check():
     if not os.path.exists(CREDS):
-        sys.exit("Keine creds.json - zuerst 'auth.py url' und 'auth.py token' ausfuehren.")
+        sys.exit("No creds.json — run 'auth.py url' and 'auth.py token' first.")
     c = strava_creds.load(CREDS)
     try:
         tok = _post("https://www.strava.com/api/v3/oauth/token", {
@@ -112,22 +112,22 @@ def cmd_check():
             "refresh_token": c["refresh_token"],
         })
     except urllib.error.HTTPError as e:
-        sys.exit(f"Token-Refresh fehlgeschlagen ({e.code}): {e.read().decode(errors='replace')}\n"
-                 f"Refresh-Token vermutlich ungueltig - neu autorisieren.")
+        sys.exit(f"Token refresh failed ({e.code}): {e.read().decode(errors='replace')}\n"
+                 f"The refresh token is likely invalid — authorise again.")
 
     if tok.get("refresh_token") and tok["refresh_token"] != c["refresh_token"]:
         c["refresh_token"] = tok["refresh_token"]
         strava_creds.save(CREDS, c)
-        print("Refresh-Token wurde rotiert und gespeichert.")
+        print("Refresh token rotated and saved.")
 
     acts = _get("https://www.strava.com/api/v3/athlete/activities",
                 tok["access_token"], {"per_page": 5})
-    print(f"Zugang funktioniert. {len(acts)} Aktivitaeten in der Stichprobe.")
+    print(f"Connection works. {len(acts)} sample activities returned.")
     for a in acts[:5]:
         print(f"  {a['start_date_local'][:10]}  {a.get('distance', 0) / 1000:5.1f} km  "
               f"{a.get('sport_type') or a.get('type')}  {a.get('name', '')[:40]}")
     if not acts:
-        print("Leere Liste. Entweder gibt es keine Aktivitaeten, oder activity:read_all fehlt.")
+        print("Empty list. There are no activities, or activity:read_all is missing.")
 
 
 if __name__ == "__main__":

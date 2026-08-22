@@ -1,4 +1,4 @@
-# Strava-Zugang und lokale Laufzeitdateien gehören nie auf GitHub.
+# Strava credentials and local runtime files never belong on GitHub.
 creds.json
 creds.json.bak
 update.log
