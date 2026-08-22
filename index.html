@@ -95,6 +95,63 @@ figcaption p { margin:5px 0 0; font-size:13px; color:var(--ink2); max-width:62ch
 .two { display:grid; grid-template-columns:1fr; gap:clamp(14px,2.4vw,20px); }
 @media (min-width:760px) { .two { grid-template-columns:1fr 1fr; } }
 
+/* ---------- Weekly plan & manual entries ---------- */
+.section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px; }
+.section-kicker { margin:0 0 4px; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--soll); }
+.section-copy { margin:5px 0 0; max-width:58ch; color:var(--ink2); font-size:13px; line-height:1.45; }
+.plan-total { flex:0 0 auto; padding:5px 9px; border:1px solid var(--ring); border-radius:999px;
+  color:var(--ink2); font-family:var(--mono); font-size:11px; text-align:right; white-space:nowrap; }
+.plan-grid { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:8px; }
+.plan-day { min-height:126px; padding:10px; border:1px solid var(--hair); border-radius:9px; background:var(--plane);
+  display:flex; flex-direction:column; gap:6px; }
+.plan-day-name { font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.plan-type { font-weight:700; font-size:13px; line-height:1.15; }
+.plan-km { margin-top:auto; font-variant-numeric:tabular-nums; font-size:13px; font-weight:600; color:var(--ist); }
+.plan-note { font-size:11px; color:var(--ink2); line-height:1.25; }
+.plan-editor { margin-top:14px; padding-top:14px; border-top:1px solid var(--hair); }
+.plan-editor > p { margin:8px 0 14px; color:var(--ink2); font-size:13px; }
+.plan-row { display:grid; grid-template-columns:90px minmax(120px, 1fr) 100px minmax(150px, 1.4fr); gap:10px;
+  align-items:end; margin:0 0 10px; padding:0; border:0; }
+.plan-row legend { padding:0; font-family:var(--mono); font-size:11px; color:var(--muted); }
+.plan-row label, .manual-form label { display:flex; flex-direction:column; gap:5px; font-size:11px; font-weight:600; color:var(--ink2); }
+input { width:100%; min-width:0; padding:8px 9px; border:1px solid var(--hair); border-radius:7px; background:var(--surface);
+  color:var(--ink); font:inherit; font-size:13px; }
+input:focus { outline:2px solid color-mix(in srgb, var(--ist) 40%, transparent); outline-offset:1px; border-color:var(--ist); }
+.form-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; }
+.button { appearance:none; border:1px solid var(--hair); border-radius:8px; padding:9px 12px; cursor:pointer;
+  font:inherit; font-size:13px; font-weight:650; line-height:1.2; }
+.button-primary { background:var(--ist); border-color:var(--ist); color:white; }
+.button-primary:hover { filter:brightness(.94); }
+.button-quiet { background:transparent; color:var(--ink2); }
+.button-quiet:hover { background:var(--plane); }
+.local-note, .form-help, .manual-summary { margin:11px 0 0; color:var(--muted); font-size:12px; line-height:1.45; }
+.manual-form { display:grid; grid-template-columns:130px minmax(150px, 1.5fr) minmax(110px, .75fr) minmax(110px, .75fr) auto;
+  align-items:end; gap:10px; }
+.manual-form .button { min-height:35px; }
+.manual-summary { color:var(--ink2); }
+.manual-runs { margin-top:8px; }
+.manual-runs li { grid-template-columns:52px 1fr auto auto auto; }
+.manual-delete { justify-self:end; padding:2px 0; border:0; background:transparent; color:var(--crit); cursor:pointer; font:inherit; font-size:12px; }
+.manual-delete:hover { text-decoration:underline; }
+@media (max-width:760px) {
+  .plan-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .plan-day { min-height:108px; }
+  .plan-row { grid-template-columns:76px 1fr 84px; }
+  .plan-row label:last-child { grid-column:2 / -1; }
+  .manual-form { grid-template-columns:1fr 1fr; }
+  .manual-form label:nth-child(2) { grid-column:1 / -1; }
+  .manual-form .button { grid-column:1 / -1; justify-self:start; }
+}
+@media (max-width:440px) {
+  .section-head { flex-direction:column; }
+  .plan-row { grid-template-columns:1fr 1fr; }
+  .plan-row legend { grid-column:1 / -1; }
+  .plan-row label:last-child { grid-column:1 / -1; }
+  .manual-runs li { grid-template-columns:44px 1fr auto; gap:8px; }
+  .manual-runs .r-pace { display:none; }
+}
+
 /* ---------- Plot ---------- */
 .legend { display:flex; gap:16px; margin:-6px 0 14px; }
 .lg { display:inline-flex; align-items:center; gap:7px; font-size:12px; color:var(--ink2); }
@@ -186,6 +243,53 @@ footer b { color:var(--ink2); font-weight:600; }
   </header>
 
 
+
+  <section class="card planner" aria-labelledby="weekly-plan-title">
+    <div class="section-head">
+      <div>
+        <p class="section-kicker">This week</p>
+        <h2 id="weekly-plan-title">Your weekly plan</h2>
+        <p class="section-copy">A suggested schedule based on this week's target. Change it to fit real life.</p>
+      </div>
+      <div class="plan-total" id="plan-total"></div>
+    </div>
+    <div class="plan-grid" id="plan-cards" aria-live="polite"></div>
+    <details class="plan-editor">
+      <summary>Edit this week's plan</summary>
+      <p>Adjust the session, distance or note for any day. Your changes are saved on this device.</p>
+      <form id="plan-form">
+        <div id="plan-editor-fields"></div>
+        <div class="form-actions">
+          <button class="button button-primary" type="submit">Save plan on this device</button>
+          <button class="button button-quiet" id="reset-plan" type="button">Restore suggested plan</button>
+        </div>
+      </form>
+    </details>
+    <p class="local-note" id="plan-status">This plan is private to this browser. It does not change Strava.</p>
+  </section>
+
+  <section class="card manual-panel" aria-labelledby="manual-run-title">
+    <div class="section-head">
+      <div>
+        <p class="section-kicker">Not on Strava?</p>
+        <h2 id="manual-run-title">Add a manual run</h2>
+        <p class="section-copy">Log a treadmill run, watch-free run or any activity that was not tracked in Strava.</p>
+      </div>
+    </div>
+    <form class="manual-form" id="manual-run-form">
+      <label>Date<input id="manual-date" name="date" type="date" value="2026-08-22" required></label>
+      <label>Run name<input id="manual-name" name="name" type="text" maxlength="60" placeholder="e.g. Treadmill easy run"></label>
+      <label>Distance (km)<input id="manual-distance" name="distance" type="number" min="0.1" max="200" step="0.1" inputmode="decimal" required></label>
+      <label>Duration<input id="manual-duration" name="duration" type="text" inputmode="numeric" placeholder="00:45:00" required></label>
+      <button class="button button-primary" type="submit">Add manual run</button>
+    </form>
+    <p class="form-help">Use <b>hh:mm:ss</b> (or <b>mm:ss</b>) for duration. Manual runs are kept on this device and are shown below; they are not sent to Strava.</p>
+    <p class="manual-summary" id="manual-summary" aria-live="polite"></p>
+    <ul class="runs manual-runs" id="manual-runs"></ul>
+    <p class="local-note" id="manual-status"></p>
+  </section>
+
+  <script id="planner-defaults" type="application/json">{"weekStart": "2026-08-17", "weekEnd": "2026-08-23", "targetKm": 26.4, "targetLong": 16.0, "days": [{"date": "2026-08-17", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-18", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 3.6, "notes": "Comfortable, conversational effort."}, {"date": "2026-08-19", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-20", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 3.6, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-08-21", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-22", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 3.2, "notes": "Keep the pace comfortable."}, {"date": "2026-08-23", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 16.0, "notes": "Easy effort; focus on time on feet."}]}</script>
 
   <section class="tiles">
       <div class="tile">
@@ -338,6 +442,207 @@ footer b { color:var(--ink2); font-weight:600; }
     });
     el.addEventListener('blur', hide);
   });
+})();
+
+// The dashboard is static, so personal plan edits and manual entries are kept
+// in this browser only. They never leave the device or modify Strava data.
+(function () {
+  var source = document.getElementById('planner-defaults');
+  if (!source) return;
+
+  var defaults;
+  try { defaults = JSON.parse(source.textContent); } catch (err) { return; }
+
+  var planCards = document.getElementById('plan-cards');
+  var planFields = document.getElementById('plan-editor-fields');
+  var planForm = document.getElementById('plan-form');
+  var planTotal = document.getElementById('plan-total');
+  var planStatus = document.getElementById('plan-status');
+  var resetPlan = document.getElementById('reset-plan');
+  var manualForm = document.getElementById('manual-run-form');
+  var manualDate = document.getElementById('manual-date');
+  var manualName = document.getElementById('manual-name');
+  var manualDistance = document.getElementById('manual-distance');
+  var manualDuration = document.getElementById('manual-duration');
+  var manualRuns = document.getElementById('manual-runs');
+  var manualSummary = document.getElementById('manual-summary');
+  var manualStatus = document.getElementById('manual-status');
+  var planKey = 'half-marathon-tracker:plan:' + defaults.weekStart;
+  var runsKey = 'half-marathon-tracker:manual-runs';
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (char) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char];
+    });
+  }
+  function load(key, fallback) {
+    try {
+      var saved = localStorage.getItem(key);
+      return saved ? JSON.parse(saved) : fallback;
+    } catch (err) { return fallback; }
+  }
+  function save(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch (err) { return false; }
+  }
+  function number(value, fallback) {
+    var parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+  function km(value) {
+    var parsed = Math.max(0, number(value, 0));
+    return Math.round(parsed * 10) / 10;
+  }
+  function formatKm(value) {
+    return km(value).toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 1 });
+  }
+  function formatDate(value) {
+    var parts = value.split('-');
+    if (parts.length !== 3) return value;
+    return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2])).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+  }
+  function normalisePlan(value) {
+    var savedDays = value && Array.isArray(value.days) ? value.days : [];
+    return {
+      days: defaults.days.map(function (day, index) {
+        var saved = savedDays[index] || {};
+        return {
+          date: day.date,
+          day: day.day,
+          short: day.short,
+          type: String(saved.type || day.type).slice(0, 60),
+          km: km(saved.km === undefined ? day.km : saved.km),
+          notes: String(saved.notes === undefined ? day.notes : saved.notes).slice(0, 160)
+        };
+      })
+    };
+  }
+  var plan = normalisePlan(load(planKey, null));
+  var entries = load(runsKey, []);
+  if (!Array.isArray(entries)) entries = [];
+  entries = entries.filter(function (entry) {
+    return entry && /^\d{4}-\d{2}-\d{2}$/.test(String(entry.date || '')) && number(entry.km, 0) > 0 && number(entry.seconds, 0) > 0;
+  });
+
+  function renderPlan() {
+    var total = plan.days.reduce(function (sum, day) { return sum + km(day.km); }, 0);
+    planTotal.textContent = formatKm(total) + ' km planned';
+    planCards.innerHTML = plan.days.map(function (day) {
+      var rest = km(day.km) === 0;
+      return '<article class="plan-day">' +
+        '<span class="plan-day-name">' + escapeHtml(day.short) + ' · ' + escapeHtml(formatDate(day.date)) + '</span>' +
+        '<span class="plan-type">' + escapeHtml(day.type) + '</span>' +
+        '<span class="plan-note">' + escapeHtml(day.notes) + '</span>' +
+        '<span class="plan-km">' + (rest ? 'Rest day' : formatKm(day.km) + ' km') + '</span>' +
+      '</article>';
+    }).join('');
+    planFields.innerHTML = plan.days.map(function (day, index) {
+      return '<fieldset class="plan-row">' +
+        '<legend>' + escapeHtml(day.day) + '</legend>' +
+        '<label>Session<input name="type-' + index + '" maxlength="60" value="' + escapeHtml(day.type) + '"></label>' +
+        '<label>km<input name="km-' + index + '" type="number" min="0" max="200" step="0.1" inputmode="decimal" value="' + km(day.km) + '"></label>' +
+        '<label>Note<input name="note-' + index + '" maxlength="160" value="' + escapeHtml(day.notes) + '"></label>' +
+      '</fieldset>';
+    }).join('');
+  }
+
+  function parseDuration(value) {
+    var pieces = String(value || '').trim().split(':');
+    if (pieces.length !== 2 && pieces.length !== 3) return null;
+    if (pieces.some(function (part) { return !/^\d{1,2}$/.test(part); })) return null;
+    var values = pieces.map(Number);
+    var hours = pieces.length === 3 ? values[0] : 0;
+    var minutes = pieces.length === 3 ? values[1] : values[0];
+    var seconds = pieces.length === 3 ? values[2] : values[1];
+    if (minutes > 59 || seconds > 59) return null;
+    var result = hours * 3600 + minutes * 60 + seconds;
+    return result > 0 ? result : null;
+  }
+  function formatDuration(seconds) {
+    seconds = Math.round(seconds);
+    var hours = Math.floor(seconds / 3600);
+    var minutes = Math.floor((seconds % 3600) / 60);
+    var secs = seconds % 60;
+    return (hours ? hours + ':' : '') + String(minutes).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+  }
+  function renderManualRuns() {
+    entries.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    var inThisWeek = entries.filter(function (entry) { return entry.date >= defaults.weekStart && entry.date <= defaults.weekEnd; });
+    var weeklyKm = inThisWeek.reduce(function (sum, entry) { return sum + km(entry.km); }, 0);
+    manualSummary.textContent = inThisWeek.length
+      ? 'Manual additions this week: ' + inThisWeek.length + (inThisWeek.length === 1 ? ' run · ' : ' runs · ') + formatKm(weeklyKm) + ' km.'
+      : 'No manual additions in this plan week yet.';
+    manualRuns.innerHTML = entries.map(function (entry) {
+      var pace = number(entry.seconds, 0) / km(entry.km);
+      return '<li>' +
+        '<span class="r-date">' + escapeHtml(formatDate(entry.date)) + '</span>' +
+        '<span class="r-name">' + escapeHtml(entry.name || 'Manual run') + '</span>' +
+        '<span class="r-km">' + formatKm(entry.km) + ' km</span>' +
+        '<span class="r-pace">' + formatDuration(pace) + '/km</span>' +
+        '<button class="manual-delete" type="button" data-id="' + escapeHtml(entry.id) + '">Remove</button>' +
+      '</li>';
+    }).join('');
+  }
+
+  planForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    plan.days = plan.days.map(function (day, index) {
+      var type = planForm.elements['type-' + index].value.trim() || 'Rest';
+      var note = planForm.elements['note-' + index].value.trim();
+      return { date:day.date, day:day.day, short:day.short, type:type.slice(0, 60), km:km(planForm.elements['km-' + index].value), notes:note.slice(0, 160) };
+    });
+    if (save(planKey, plan)) {
+      planStatus.textContent = 'Plan saved on this device.';
+    } else {
+      planStatus.textContent = 'Your browser could not save the plan. It will remain visible until this page is closed.';
+    }
+    renderPlan();
+  });
+  resetPlan.addEventListener('click', function () {
+    if (!window.confirm('Restore the suggested plan for this week? Your current plan changes will be replaced.')) return;
+    plan = normalisePlan(null);
+    save(planKey, plan);
+    planStatus.textContent = 'Suggested plan restored.';
+    renderPlan();
+  });
+  manualForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var distance = km(manualDistance.value);
+    var seconds = parseDuration(manualDuration.value);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(manualDate.value) || distance <= 0 || !seconds) {
+      manualStatus.textContent = 'Please enter a date, a distance and a valid duration (hh:mm:ss or mm:ss).';
+      return;
+    }
+    var id = window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : String(Date.now()) + '-' + Math.random().toString(16).slice(2);
+    entries.unshift({
+      id: id,
+      date: manualDate.value,
+      name: manualName.value.trim().slice(0, 60) || 'Manual run',
+      km: distance,
+      seconds: seconds
+    });
+    if (save(runsKey, entries)) {
+      manualStatus.textContent = 'Manual run saved on this device.';
+    } else {
+      manualStatus.textContent = 'Your browser could not save the run. It will remain visible until this page is closed.';
+    }
+    manualName.value = '';
+    manualDistance.value = '';
+    manualDuration.value = '';
+    renderManualRuns();
+  });
+  manualRuns.addEventListener('click', function (event) {
+    var button = event.target.closest ? event.target.closest('.manual-delete') : null;
+    if (!button) return;
+    if (!window.confirm('Remove this manual run from this browser?')) return;
+    entries = entries.filter(function (entry) { return entry.id !== button.getAttribute('data-id'); });
+    save(runsKey, entries);
+    manualStatus.textContent = 'Manual run removed from this device.';
+    renderManualRuns();
+  });
+
+  renderPlan();
+  renderManualRuns();
 })();
 </script>
 </body>
