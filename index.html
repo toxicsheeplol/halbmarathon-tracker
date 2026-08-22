@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Rékas Halbmarathon – Trainingsfortschritt.">
+<title>Rékas Halbmarathon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --plane:#F1F3F5; --surface:#FBFCFD; --ink:#0F1418; --ink2:#4A5157; --muted:#7C858C;
+  --hair:#E0E4E8; --axis:#CBD2D8;
+  --ist:#2a78d6; --soll:#eb6834;
+  --good:#0ca30c; --warn:#B4780A; --crit:#d03b3b;
+  --ring:rgba(15,20,24,.09); --wash:rgba(42,120,214,.08); --wash-soll:rgba(235,104,52,.07);
+  --sans:'Archivo','Archivo Fallback',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --plane:#0A0C0E; --surface:#14181B; --ink:#F4F7F9; --ink2:#AFB8BE; --muted:#79828A;
+    --hair:#242A2E; --axis:#333B41;
+    --ist:#3987e5; --soll:#d95926;
+    --good:#0ca30c; --warn:#fab219; --crit:#e66767;
+    --ring:rgba(255,255,255,.10); --wash:rgba(57,135,229,.13); --wash-soll:rgba(217,89,38,.12);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --plane:#0A0C0E; --surface:#14181B; --ink:#F4F7F9; --ink2:#AFB8BE; --muted:#79828A;
+  --hair:#242A2E; --axis:#333B41;
+  --ist:#3987e5; --soll:#d95926;
+  --good:#0ca30c; --warn:#fab219; --crit:#e66767;
+  --ring:rgba(255,255,255,.10); --wash:rgba(57,135,229,.13); --wash-soll:rgba(217,89,38,.12);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin:0; background:var(--plane); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:920px; margin:0 auto; padding:clamp(16px,4vw,40px) clamp(14px,4vw,28px) 64px;
+  display:flex; flex-direction:column; gap:clamp(14px,2.4vw,20px); }
+
+/* ---------- Kopf ---------- */
+.hero { background:var(--surface); border:1px solid var(--hair); border-radius:14px;
+  padding:clamp(20px,4vw,32px); }
+.eyebrow { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 14px; }
+.hero h1 { margin:0; font-size:clamp(24px,5vw,34px); font-weight:700; font-stretch:112%;
+  letter-spacing:-.018em; line-height:1.1; text-wrap:balance; }
+.hero .when { margin:6px 0 0; color:var(--ink2); font-size:15px; }
+.count { display:flex; align-items:baseline; gap:12px; margin:22px 0 0; }
+.count b { font-size:clamp(58px,15vw,92px); font-weight:800; font-stretch:118%;
+  letter-spacing:-.035em; line-height:.86; }
+.count span { font-size:15px; color:var(--ink2); }
+.rail { margin-top:20px; height:5px; border-radius:3px; background:var(--hair); overflow:hidden; }
+.rail i { display:block; height:100%; background:var(--ist); border-radius:3px; }
+.railcap { display:flex; justify-content:space-between; font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-top:7px; }
+.pill { display:inline-flex; align-items:center; gap:7px; margin-top:18px; padding:5px 12px 5px 10px;
+  border-radius:999px; font-size:13px; font-weight:600; border:1px solid var(--ring); }
+.pill-ico { font-size:10px; line-height:1; }
+.pill-good { color:var(--good); } .pill-warn { color:var(--warn); } .pill-crit { color:var(--crit); }
+
+/* ---------- Kacheln ---------- */
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:clamp(10px,1.6vw,14px); }
+.tile { background:var(--surface); border:1px solid var(--hair); border-radius:12px; padding:16px 16px 14px;
+  display:flex; flex-direction:column; gap:2px; }
+.tile-label { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); }
+.tile-value { font-size:clamp(27px,4.4vw,33px); font-weight:700; font-stretch:106%; letter-spacing:-.024em;
+  line-height:1.15; margin-top:5px; }
+.tile-unit { font-size:.46em; font-weight:600; color:var(--ink2); margin-left:2px; letter-spacing:0; }
+.tile-sub { font-size:12.5px; color:var(--ink2); line-height:1.35; margin-top:1px; }
+.chip { display:inline-flex; align-items:center; gap:5px; align-self:flex-start; margin-top:10px;
+  white-space:nowrap;
+  font-size:11.5px; font-weight:600; padding:3px 9px 3px 7px; border-radius:999px;
+  border:1px solid var(--ring); color:var(--ink2); }
+.chip-ico { font-size:8.5px; line-height:1; }
+.chip-up { color:var(--good); } .chip-down { color:var(--crit); } .chip-flat { color:var(--muted); }
+
+/* ---------- Karten ---------- */
+.card { background:var(--surface); border:1px solid var(--hair); border-radius:12px;
+  padding:clamp(16px,2.6vw,22px); }
+.banner { font-size:13.5px; color:var(--ink2); border-style:dashed; }
+figcaption { margin:0 0 16px; }
+h2 { margin:0; font-size:16.5px; font-weight:700; font-stretch:104%; letter-spacing:-.008em; }
+figcaption p { margin:5px 0 0; font-size:13px; color:var(--ink2); max-width:62ch; line-height:1.45; }
+.two { display:grid; grid-template-columns:1fr; gap:clamp(14px,2.4vw,20px); }
+@media (min-width:760px) { .two { grid-template-columns:1fr 1fr; } }
+
+/* ---------- Plot ---------- */
+.legend { display:flex; gap:16px; margin:-6px 0 14px; }
+.lg { display:inline-flex; align-items:center; gap:7px; font-size:12px; color:var(--ink2); }
+.sw { width:14px; height:12px; border-radius:3px; display:inline-block; }
+.sw-ist { background:var(--ist); }
+.sw-soll { background:transparent; border-top:2px dashed var(--soll); height:0; width:18px; border-radius:0; }
+.sw-plan { background:var(--wash-soll); border:1.5px dashed var(--soll); }
+.plot { position:relative; height:var(--plot-h); padding-left:38px; }
+.grid { position:absolute; inset:0 0 0 0; }
+.ygrid { position:absolute; left:38px; right:0; height:1px; background:var(--hair); }
+.ygrid:first-child { background:var(--axis); }
+.ytick { position:absolute; right:calc(100% + 8px); top:-.62em; font-family:var(--sans);
+  font-variant-numeric:tabular-nums; font-size:10.5px; color:var(--muted); white-space:nowrap; }
+.marks { position:absolute; inset:0 0 0 38px; }
+.bar { position:absolute; bottom:0; width:min(52%,26px); transform:translateX(-50%);
+  background:var(--ist); border-radius:4px 4px 0 0; }
+.bar-now { background:linear-gradient(var(--ist),var(--ist)) padding-box; opacity:.55; }
+.bar-plan { background:var(--wash-soll); border:1.5px dashed var(--soll); border-bottom:0;
+  border-radius:5px 5px 0 0; }
+.bar-future { display:none; }
+.overlay { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.planline { fill:none; stroke:var(--soll); stroke-width:2; stroke-dasharray:5 4; stroke-linecap:round; }
+.trendline, .fcline { fill:none; stroke:var(--ist); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+.pdot { position:absolute; width:7px; height:7px; border-radius:50%; background:var(--soll);
+  transform:translate(-50%,50%); box-shadow:0 0 0 2px var(--surface); }
+.rdot { position:absolute; width:var(--d); height:var(--d); border-radius:50%; background:var(--ist);
+  opacity:.62; transform:translate(-50%,50%); box-shadow:0 0 0 2px var(--surface); }
+.enddot { position:absolute; width:9px; height:9px; border-radius:50%; background:var(--ist);
+  transform:translate(-50%,50%); box-shadow:0 0 0 2px var(--surface); }
+.endlabel { position:absolute; right:0; transform:translateY(50%) translateY(-18px);
+  font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; color:var(--ist); }
+.refline { position:absolute; left:0; right:0; height:0; border-top:1.5px solid var(--soll); opacity:.85; }
+.refline span { position:absolute; left:0; bottom:4px; font-family:var(--mono); font-size:9.5px;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--soll); background:var(--surface); padding:0 3px; }
+.hit { position:absolute; top:0; bottom:0; cursor:default; }
+.hit-dot { top:auto; width:26px; height:26px; transform:translate(-50%,50%); border-radius:50%; }
+.hit:hover, .hit:focus-visible { background:var(--wash); border-radius:4px; outline:none; }
+.hit-dot:hover, .hit-dot:focus-visible { background:var(--wash); }
+.xaxis { position:relative; height:16px; margin-left:38px; margin-top:7px; }
+.xtick { position:absolute; transform:translateX(-50%); font-family:var(--mono); font-size:10px;
+  letter-spacing:.04em; color:var(--muted); white-space:nowrap; }
+.xtick-now { color:var(--ink2); font-weight:600; }
+.xaxis-spark { display:flex; justify-content:space-between; margin-left:0; }
+.xaxis-spark span { font-family:var(--mono); font-size:10px; letter-spacing:.04em; color:var(--muted); }
+.plot-spark { padding-left:0; }
+.plot-spark .marks { inset:0; }
+.unit-note { font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--muted); margin-top:10px; margin-left:38px; }
+.plot-spark ~ .unit-note { margin-left:0; }
+
+/* ---------- Liste & Tabelle ---------- */
+.runs { list-style:none; margin:0; padding:0; }
+.runs li { display:grid; grid-template-columns:52px 1fr auto auto; gap:12px; align-items:baseline;
+  padding:9px 0; border-top:1px solid var(--hair); font-size:14px; }
+.runs li:first-child { border-top:0; }
+.r-date { font-family:var(--mono); font-size:11.5px; color:var(--muted); }
+.r-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.r-km, .r-pace { font-variant-numeric:tabular-nums; font-weight:600; }
+.r-pace { color:var(--ink2); font-weight:500; min-width:64px; text-align:right; }
+summary { cursor:pointer; font-size:14px; font-weight:600; }
+summary::marker { color:var(--muted); }
+.scroll { overflow-x:auto; margin-top:14px; }
+table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
+th, td { text-align:right; padding:7px 10px; border-bottom:1px solid var(--hair); white-space:nowrap; }
+thead th { font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--muted); font-weight:500; }
+tbody th { text-align:left; font-weight:600; }
+td:last-child { color:var(--muted); }
+
+/* ---------- Tooltip & Footer ---------- */
+#tip { position:fixed; z-index:50; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--ink); color:var(--surface); font-size:12px; line-height:1.4; padding:7px 10px;
+  border-radius:7px; white-space:pre-line; max-width:250px; box-shadow:0 6px 20px rgba(0,0,0,.22); }
+#tip.on { opacity:1; }
+footer { font-size:12px; color:var(--muted); line-height:1.6; }
+footer b { color:var(--ink2); font-weight:600; }
+@media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Halbmarathon · Sonntag, 4. Oktober 2026</p>
+    <h1>Rékas Halbmarathon</h1>
+    <p class="when">21,1 Kilometer. Hier steht, wie das Training läuft.</p>
+    <div class="count"><b>43</b><span>Tage bis zum Start<br>(6,1 Wochen)</span></div>
+    <div class="rail"><i style="width:73.1%"></i></div>
+    <div class="railcap"><span>Trainingsblock</span><span>73 % geschafft</span></div>
+    <span class="pill pill-warn"><span class="pill-ico">◐</span>Diese Woche etwas hinten</span>
+  </header>
+
+<div class="card banner">Beispieldaten – noch nicht mit Strava verbunden.</div>
+
+  <section class="tiles">
+      <div class="tile">
+        <div class="tile-label">Wochenumfang</div>
+        <div class="tile-value">39,4<span class="tile-unit"> km</span></div>
+        <div class="tile-sub">Schnitt der letzten 4 Wochen</div>
+        <span class="chip chip-up"><span class="chip-ico">▲</span>4,8 km mehr</span>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Längster Lauf</div>
+        <div class="tile-value">19,3<span class="tile-unit"> km</span></div>
+        <div class="tile-sub">noch 1,8 km bis zur Renndistanz</div>
+        <span class="chip chip-up"><span class="chip-ico">▲</span>3,2 km länger</span>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Lockeres Tempo</div>
+        <div class="tile-value">5:30<span class="tile-unit"> /km</span></div>
+        <div class="tile-sub">ruhige Läufe, letzte 4 Wochen</div>
+        <span class="chip chip-up"><span class="chip-ico">▼</span>0:16 min/km schneller</span>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Zielzeit-Prognose</div>
+        <div class="tile-value">1:48:47<span class="tile-unit"></span></div>
+        <div class="tile-sub">hochgerechnet aus ihren besten Läufen</div>
+        <span class="chip chip-up"><span class="chip-ico">▼</span>3:56 min schneller</span>
+      </div>
+  </section>
+
+    <figure class="card chart">
+      <figcaption>
+        <h2>Wochenkilometer</h2>
+        <p>Was sie gelaufen ist, gegen die Sollkurve bis zum Rennen.</p>
+      </figcaption>
+      <div class="legend">
+        <span class="lg"><i class="sw sw-ist"></i>gelaufen</span>
+        <span class="lg"><i class="sw sw-soll"></i>Soll</span>
+      </div>
+      <div class="plot" style="--plot-h:210px">
+        <div class="grid"><div class="ygrid" style="bottom:0.0000%"><span class="ytick">0</span></div><div class="ygrid" style="bottom:20.0000%"><span class="ytick">10</span></div><div class="ygrid" style="bottom:40.0000%"><span class="ytick">20</span></div><div class="ygrid" style="bottom:60.0000%"><span class="ytick">30</span></div><div class="ygrid" style="bottom:80.0000%"><span class="ytick">40</span></div><div class="ygrid" style="bottom:100.0000%"><span class="ytick">50</span></div></div>
+        <div class="marks"><div class="bar" style="left:3.8462%;height:71.6000%"></div><div class="bar" style="left:11.5385%;height:78.8000%"></div><div class="bar" style="left:19.2308%;height:69.0000%"></div><div class="bar" style="left:26.9231%;height:76.8000%"></div><div class="bar" style="left:34.6154%;height:85.6000%"></div><div class="bar" style="left:42.3077%;height:83.8000%"></div><div class="bar bar-now" style="left:50.0000%;height:64.0000%"></div><svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline class="planline" points="50.0000,21.2000 57.6923,16.4000 65.3846,11.4000 73.0769,6.2000 80.7692,0.6000 88.4615,22.4000 96.1538,45.2000" vector-effect="non-scaling-stroke"/></svg><div class="pdot" style="left:50.0000%;bottom:78.8000%"></div><div class="pdot" style="left:57.6923%;bottom:83.6000%"></div><div class="pdot" style="left:65.3846%;bottom:88.6000%"></div><div class="pdot" style="left:73.0769%;bottom:93.8000%"></div><div class="pdot" style="left:80.7692%;bottom:99.4000%"></div><div class="pdot" style="left:88.4615%;bottom:77.6000%"></div><div class="pdot" style="left:96.1538%;bottom:54.8000%"></div><div class="hit" style="left:0.0000%;width:7.6923%" data-tip="Woche ab 06.07.&#10;35,8 km · 4 Läufe"></div><div class="hit" style="left:7.6923%;width:7.6923%" data-tip="Woche ab 13.07.&#10;39,4 km · 4 Läufe"></div><div class="hit" style="left:15.3846%;width:7.6923%" data-tip="Woche ab 20.07.&#10;34,5 km · 4 Läufe"></div><div class="hit" style="left:23.0769%;width:7.6923%" data-tip="Woche ab 27.07.&#10;38,4 km · 4 Läufe"></div><div class="hit" style="left:30.7692%;width:7.6923%" data-tip="Woche ab 03.08.&#10;42,8 km · 4 Läufe"></div><div class="hit" style="left:38.4615%;width:7.6923%" data-tip="Woche ab 10.08.&#10;41,9 km · 4 Läufe"></div><div class="hit" style="left:46.1538%;width:7.6923%" data-tip="Woche ab 17.08.&#10;32,0 km · 3 Läufe · Soll 39,4 km · läuft noch"></div><div class="hit" style="left:53.8462%;width:7.6923%" data-tip="Woche ab 24.08.&#10;0,0 km · 0 Läufe · Soll 41,8 km"></div><div class="hit" style="left:61.5385%;width:7.6923%" data-tip="Woche ab 31.08.&#10;0,0 km · 0 Läufe · Soll 44,3 km"></div><div class="hit" style="left:69.2308%;width:7.6923%" data-tip="Woche ab 07.09.&#10;0,0 km · 0 Läufe · Soll 46,9 km"></div><div class="hit" style="left:76.9231%;width:7.6923%" data-tip="Woche ab 14.09.&#10;0,0 km · 0 Läufe · Soll 49,7 km"></div><div class="hit" style="left:84.6154%;width:7.6923%" data-tip="Woche ab 21.09.&#10;0,0 km · 0 Läufe · Soll 38,8 km"></div><div class="hit" style="left:92.3077%;width:7.6923%" data-tip="Woche ab 28.09.&#10;0,0 km · 0 Läufe · Soll 27,4 km"></div></div>
+      </div>
+      <div class="xaxis"><div class="xtick" style="left:3.8462%">06.07.</div><div class="xtick" style="left:26.9231%">27.07.</div><div class="xtick xtick-now" style="left:50.0000%">17.08.</div><div class="xtick" style="left:73.0769%">07.09.</div><div class="xtick" style="left:96.1538%">28.09.</div></div>
+      <div class="unit-note">Kilometer pro Woche</div>
+    </figure>
+
+  <div class="two">
+    <figure class="card chart">
+      <figcaption>
+        <h2>Längster Lauf pro Woche</h2>
+        <p>Der wichtigste Indikator vor einem Halbmarathon. Umrandet = noch geplant.</p>
+      </figcaption>
+      <div class="legend">
+        <span class="lg"><i class="sw sw-ist"></i>gelaufen</span>
+        <span class="lg"><i class="sw sw-plan"></i>geplant</span>
+      </div>
+      <div class="plot" style="--plot-h:180px">
+        <div class="grid"><div class="ygrid" style="bottom:0.0000%"><span class="ytick">0</span></div><div class="ygrid" style="bottom:20.0000%"><span class="ytick">5</span></div><div class="ygrid" style="bottom:40.0000%"><span class="ytick">10</span></div><div class="ygrid" style="bottom:60.0000%"><span class="ytick">15</span></div><div class="ygrid" style="bottom:80.0000%"><span class="ytick">20</span></div><div class="ygrid" style="bottom:100.0000%"><span class="ytick">25</span></div></div>
+        <div class="marks"><div class="bar" style="left:3.8462%;height:55.6000%"></div><div class="bar" style="left:11.5385%;height:64.4000%"></div><div class="bar" style="left:19.2308%;height:63.6000%"></div><div class="bar" style="left:26.9231%;height:68.8000%"></div><div class="bar" style="left:34.6154%;height:77.2000%"></div><div class="bar" style="left:42.3077%;height:77.2000%"></div><div class="bar bar-now" style="left:50.0000%;height:76.0000%"></div><div class="bar bar-plan" style="left:57.6923%;height:80.0000%"></div><div class="bar bar-plan" style="left:65.3846%;height:80.0000%"></div><div class="bar bar-plan" style="left:73.0769%;height:80.0000%"></div><div class="bar bar-plan" style="left:80.7692%;height:80.0000%"></div><div class="bar bar-plan" style="left:88.4615%;height:52.0000%"></div><div class="bar bar-plan" style="left:96.1538%;height:84.4000%"></div><div class="refline" style="bottom:84.3900%"><span>Renndistanz 21,1</span></div><div class="hit" style="left:0.0000%;width:7.6923%" data-tip="Woche ab 06.07.&#10;längster Lauf: 13,9 km (gelaufen)"></div><div class="hit" style="left:7.6923%;width:7.6923%" data-tip="Woche ab 13.07.&#10;längster Lauf: 16,1 km (gelaufen)"></div><div class="hit" style="left:15.3846%;width:7.6923%" data-tip="Woche ab 20.07.&#10;längster Lauf: 15,9 km (gelaufen)"></div><div class="hit" style="left:23.0769%;width:7.6923%" data-tip="Woche ab 27.07.&#10;längster Lauf: 17,2 km (gelaufen)"></div><div class="hit" style="left:30.7692%;width:7.6923%" data-tip="Woche ab 03.08.&#10;längster Lauf: 19,3 km (gelaufen)"></div><div class="hit" style="left:38.4615%;width:7.6923%" data-tip="Woche ab 10.08.&#10;längster Lauf: 19,3 km (gelaufen)"></div><div class="hit" style="left:46.1538%;width:7.6923%" data-tip="Woche ab 17.08.&#10;längster Lauf: 19,0 km (gelaufen)"></div><div class="hit" style="left:53.8462%;width:7.6923%" data-tip="Woche ab 24.08.&#10;längster Lauf: 20,0 km (geplant)"></div><div class="hit" style="left:61.5385%;width:7.6923%" data-tip="Woche ab 31.08.&#10;längster Lauf: 20,0 km (geplant)"></div><div class="hit" style="left:69.2308%;width:7.6923%" data-tip="Woche ab 07.09.&#10;längster Lauf: 20,0 km (geplant)"></div><div class="hit" style="left:76.9231%;width:7.6923%" data-tip="Woche ab 14.09.&#10;längster Lauf: 20,0 km (geplant)"></div><div class="hit" style="left:84.6154%;width:7.6923%" data-tip="Woche ab 21.09.&#10;längster Lauf: 13,0 km (geplant)"></div><div class="hit" style="left:92.3077%;width:7.6923%" data-tip="Woche ab 28.09.&#10;längster Lauf: 21,1 km (geplant)"></div></div>
+      </div>
+      <div class="xaxis"><div class="xtick" style="left:3.8462%">06.07.</div><div class="xtick" style="left:34.6154%">03.08.</div><div class="xtick" style="left:65.3846%">31.08.</div><div class="xtick" style="left:96.1538%">28.09.</div></div>
+      <div class="unit-note">Kilometer</div>
+    </figure>
+    <figure class="card chart">
+      <figcaption>
+        <h2>Tempo pro Lauf</h2>
+        <p>Ein Punkt je Lauf, Punktgröße = Distanz. Weiter oben heißt schneller; die Linie ist der 3-Wochen-Schnitt.</p>
+      </figcaption>
+      <div class="plot" style="--plot-h:180px">
+        <div class="grid"><div class="ygrid" style="bottom:83.4758%"><span class="ytick">5:00</span></div><div class="ygrid" style="bottom:40.7407%"><span class="ytick">6:00</span></div></div>
+        <div class="marks"><div class="rdot" style="left:0.0000%;bottom:37.8917%;--d:9.7px"></div><div class="rdot" style="left:1.8182%;bottom:37.8917%;--d:9.4px"></div><div class="rdot" style="left:4.5455%;bottom:11.5385%;--d:9.4px"></div><div class="rdot" style="left:6.3636%;bottom:28.6325%;--d:9.3px"></div><div class="rdot" style="left:8.1818%;bottom:39.3162%;--d:9.5px"></div><div class="rdot" style="left:10.9091%;bottom:14.3875%;--d:10.1px"></div><div class="rdot" style="left:12.7273%;bottom:42.1652%;--d:9.4px"></div><div class="rdot" style="left:14.5455%;bottom:39.3162%;--d:10.1px"></div><div class="rdot" style="left:17.2727%;bottom:16.5242%;--d:10.3px"></div><div class="rdot" style="left:19.0909%;bottom:35.7550%;--d:10.2px"></div><div class="rdot" style="left:20.9091%;bottom:40.0285%;--d:10.3px"></div><div class="rdot" style="left:23.6364%;bottom:23.6467%;--d:10.8px"></div><div class="rdot" style="left:25.4545%;bottom:40.0285%;--d:9.4px"></div><div class="rdot" style="left:27.2727%;bottom:35.0427%;--d:10.1px"></div><div class="rdot" style="left:28.1818%;bottom:38.6040%;--d:10.3px"></div><div class="rdot" style="left:30.0000%;bottom:21.5100%;--d:11.3px"></div><div class="rdot" style="left:31.8182%;bottom:49.2877%;--d:9.8px"></div><div class="rdot" style="left:33.6364%;bottom:69.2308%;--d:9.9px"></div><div class="rdot" style="left:34.5455%;bottom:42.8775%;--d:10.3px"></div><div class="rdot" style="left:36.3636%;bottom:30.7692%;--d:11.5px"></div><div class="rdot" style="left:38.1818%;bottom:49.2877%;--d:9.6px"></div><div class="rdot" style="left:40.0000%;bottom:72.7920%;--d:9.7px"></div><div class="rdot" style="left:40.9091%;bottom:44.3020%;--d:9.9px"></div><div class="rdot" style="left:42.7273%;bottom:22.2222%;--d:12.2px"></div><div class="rdot" style="left:44.5455%;bottom:49.2877%;--d:10.0px"></div><div class="rdot" style="left:46.3636%;bottom:77.7778%;--d:10.0px"></div><div class="rdot" style="left:47.2727%;bottom:50.0000%;--d:9.3px"></div><div class="rdot" style="left:49.0909%;bottom:24.3590%;--d:12.5px"></div><div class="rdot" style="left:50.9091%;bottom:52.1368%;--d:9.4px"></div><div class="rdot" style="left:52.7273%;bottom:67.8063%;--d:9.8px"></div><div class="rdot" style="left:53.6364%;bottom:54.9858%;--d:9.3px"></div><div class="rdot" style="left:55.4545%;bottom:26.4957%;--d:12.8px"></div><div class="rdot" style="left:57.2727%;bottom:51.4245%;--d:9.7px"></div><div class="rdot" style="left:59.0909%;bottom:79.2023%;--d:9.3px"></div><div class="rdot" style="left:60.0000%;bottom:51.4245%;--d:10.6px"></div><div class="rdot" style="left:61.8182%;bottom:32.9060%;--d:12.9px"></div><div class="rdot" style="left:63.6364%;bottom:54.2735%;--d:10.3px"></div><div class="rdot" style="left:65.4545%;bottom:81.3390%;--d:10.4px"></div><div class="rdot" style="left:66.3636%;bottom:54.9858%;--d:10.6px"></div><div class="rdot" style="left:68.1818%;bottom:32.1937%;--d:13.8px"></div><div class="rdot" style="left:70.0000%;bottom:52.1368%;--d:9.8px"></div><div class="rdot" style="left:71.8182%;bottom:86.3248%;--d:9.6px"></div><div class="rdot" style="left:72.7273%;bottom:53.5613%;--d:9.6px"></div><div class="rdot" style="left:74.5455%;bottom:42.1652%;--d:13.7px"></div><div class="rdot" style="left:76.3636%;bottom:62.8205%;--d:9.6px"></div><div class="rdot" style="left:78.1818%;bottom:79.2023%;--d:10.2px"></div><div class="rdot" style="left:79.0909%;bottom:56.4103%;--d:10.5px"></div><div class="rdot" style="left:80.9091%;bottom:41.4530%;--d:14.2px"></div><div class="rdot" style="left:82.7273%;bottom:56.4103%;--d:9.2px"></div><div class="rdot" style="left:84.5455%;bottom:88.4615%;--d:10.6px"></div><div class="rdot" style="left:85.4545%;bottom:65.6695%;--d:10.3px"></div><div class="rdot" style="left:87.2727%;bottom:42.1652%;--d:15.1px"></div><div class="rdot" style="left:89.0909%;bottom:69.2308%;--d:10.0px"></div><div class="rdot" style="left:90.9091%;bottom:83.4758%;--d:10.3px"></div><div class="rdot" style="left:91.8182%;bottom:62.1083%;--d:9.8px"></div><div class="rdot" style="left:93.6364%;bottom:39.3162%;--d:15.1px"></div><div class="rdot" style="left:95.4545%;bottom:64.2450%;--d:10.4px"></div><div class="rdot" style="left:97.2727%;bottom:88.4615%;--d:9.4px"></div><div class="rdot" style="left:98.1818%;bottom:65.6695%;--d:10.0px"></div><div class="rdot" style="left:100.0000%;bottom:50.0000%;--d:15.0px"></div><svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline class="trendline" points="1.8182,62.1083 4.5455,70.8927 6.3636,71.0114 8.1818,68.9459 10.9091,71.7236 12.7273,69.7395 14.5455,68.6075 17.2727,70.2596 19.0909,69.6581 20.9091,69.4444 23.6364,70.8689 25.4545,68.0199 27.2727,67.3789 28.1818,67.4501 30.0000,68.4538 31.8182,65.2810 33.6364,62.8205 34.5455,62.4968 36.3636,63.0579 38.1818,60.3276 40.0000,57.2412 40.9091,56.8851 42.7273,58.4922 44.5455,56.5198 46.3636,53.6160 47.2727,52.4655 49.0909,53.5613 50.9091,51.2053 52.7273,49.7808 53.6364,50.8766 55.4545,52.1368 57.2727,50.5479 59.0909,48.2468 60.0000,49.8904 61.8182,50.7670 63.6364,48.3016 65.4545,45.8361 66.3636,47.5893 68.1818,48.9590 70.0000,46.8223 71.8182,44.1924 72.7273,45.2882 74.5455,46.2744 76.3636,43.4802 78.1818,41.3434 79.0909,43.0966 80.9091,43.8637 82.7273,42.0557 84.5455,39.4258 85.4545,40.6312 87.2727,41.6174 89.0909,38.7684 90.9091,36.3577 91.8182,38.2205 93.6364,39.3162 95.4545,37.6178 97.2727,35.6454 98.1818,36.6864 100.0000,37.1795" vector-effect="non-scaling-stroke"/></svg><div class="hit hit-dot" style="left:0.0000%;bottom:37.8917%" data-tip="So, 3.5. · Lockerer Lauf&#10;6,5 km in 0:39:19 · 6:04/km · 147 bpm"></div><div class="hit hit-dot" style="left:1.8182%;bottom:37.8917%" data-tip="Di, 5.5. · Lockerer Lauf&#10;5,7 km in 0:34:21 · 6:04/km · 151 bpm"></div><div class="hit hit-dot" style="left:4.5455%;bottom:11.5385%" data-tip="Fr, 8.5. · Longrun&#10;5,7 km in 0:38:00 · 6:41/km · 142 bpm"></div><div class="hit hit-dot" style="left:6.3636%;bottom:28.6325%" data-tip="So, 10.5. · Lockerer Lauf&#10;5,5 km in 0:34:54 · 6:17/km · 145 bpm"></div><div class="hit hit-dot" style="left:8.1818%;bottom:39.3162%" data-tip="Di, 12.5. · Lockerer Lauf&#10;5,9 km in 0:35:35 · 6:02/km · 151 bpm"></div><div class="hit hit-dot" style="left:10.9091%;bottom:14.3875%" data-tip="Fr, 15.5. · Longrun&#10;7,3 km in 0:48:27 · 6:37/km · 142 bpm"></div><div class="hit hit-dot" style="left:12.7273%;bottom:42.1652%" data-tip="So, 17.5. · Lockerer Lauf&#10;5,8 km in 0:34:46 · 5:58/km · 147 bpm"></div><div class="hit hit-dot" style="left:14.5455%;bottom:39.3162%" data-tip="Di, 19.5. · Lockerer Lauf&#10;7,3 km in 0:44:13 · 6:02/km · 145 bpm"></div><div class="hit hit-dot" style="left:17.2727%;bottom:16.5242%" data-tip="Fr, 22.5. · Longrun&#10;7,8 km in 0:51:07 · 6:34/km · 139 bpm"></div><div class="hit hit-dot" style="left:19.0909%;bottom:35.7550%" data-tip="So, 24.5. · Lockerer Lauf&#10;7,7 km in 0:46:57 · 6:07/km · 144 bpm"></div><div class="hit hit-dot" style="left:20.9091%;bottom:40.0285%" data-tip="Di, 26.5. · Lockerer Lauf&#10;7,8 km in 0:47:08 · 6:01/km · 147 bpm"></div><div class="hit hit-dot" style="left:23.6364%;bottom:23.6467%" data-tip="Fr, 29.5. · Longrun&#10;8,9 km in 0:57:09 · 6:24/km · 147 bpm"></div><div class="hit hit-dot" style="left:25.4545%;bottom:40.0285%" data-tip="So, 31.5. · Lockerer Lauf&#10;5,7 km in 0:34:08 · 6:01/km · 151 bpm"></div><div class="hit hit-dot" style="left:27.2727%;bottom:35.0427%" data-tip="Di, 2.6. · Lockerer Lauf&#10;7,5 km in 0:45:49 · 6:08/km · 143 bpm"></div><div class="hit hit-dot" style="left:28.1818%;bottom:38.6040%" data-tip="Mi, 3.6. · Lockerer Lauf&#10;7,9 km in 0:48:00 · 6:03/km · 151 bpm"></div><div class="hit hit-dot" style="left:30.0000%;bottom:21.5100%" data-tip="Fr, 5.6. · Longrun&#10;10,2 km in 1:06:02 · 6:27/km · 145 bpm"></div><div class="hit hit-dot" style="left:31.8182%;bottom:49.2877%" data-tip="So, 7.6. · Lockerer Lauf&#10;6,6 km in 0:38:06 · 5:48/km · 145 bpm"></div><div class="hit hit-dot" style="left:33.6364%;bottom:69.2308%" data-tip="Di, 9.6. · Tempolauf&#10;7,0 km in 0:37:07 · 5:20/km · 155 bpm"></div><div class="hit hit-dot" style="left:34.5455%;bottom:42.8775%" data-tip="Mi, 10.6. · Lockerer Lauf&#10;7,8 km in 0:46:45 · 5:57/km · 151 bpm"></div><div class="hit hit-dot" style="left:36.3636%;bottom:30.7692%" data-tip="Fr, 12.6. · Longrun&#10;10,7 km in 1:06:40 · 6:14/km · 140 bpm"></div><div class="hit hit-dot" style="left:38.1818%;bottom:49.2877%" data-tip="So, 14.6. · Lockerer Lauf&#10;6,1 km in 0:35:36 · 5:48/km · 148 bpm"></div><div class="hit hit-dot" style="left:40.0000%;bottom:72.7920%" data-tip="Di, 16.6. · Tempolauf&#10;6,3 km in 0:33:17 · 5:15/km · 154 bpm"></div><div class="hit hit-dot" style="left:40.9091%;bottom:44.3020%" data-tip="Mi, 17.6. · Lockerer Lauf&#10;6,9 km in 0:40:57 · 5:55/km · 148 bpm"></div><div class="hit hit-dot" style="left:42.7273%;bottom:22.2222%" data-tip="Fr, 19.6. · Longrun&#10;12,3 km in 1:19:27 · 6:26/km · 140 bpm"></div><div class="hit hit-dot" style="left:44.5455%;bottom:49.2877%" data-tip="So, 21.6. · Lockerer Lauf&#10;7,3 km in 0:42:09 · 5:48/km · 149 bpm"></div><div class="hit hit-dot" style="left:46.3636%;bottom:77.7778%" data-tip="Di, 23.6. · Tempolauf&#10;7,1 km in 0:36:42 · 5:08/km · 152 bpm"></div><div class="hit hit-dot" style="left:47.2727%;bottom:50.0000%" data-tip="Mi, 24.6. · Lockerer Lauf&#10;5,4 km in 0:31:02 · 5:47/km · 144 bpm"></div><div class="hit hit-dot" style="left:49.0909%;bottom:24.3590%" data-tip="Fr, 26.6. · Longrun&#10;13,1 km in 1:23:32 · 6:23/km · 146 bpm"></div><div class="hit hit-dot" style="left:50.9091%;bottom:52.1368%" data-tip="So, 28.6. · Lockerer Lauf&#10;5,7 km in 0:32:46 · 5:44/km · 151 bpm"></div><div class="hit hit-dot" style="left:52.7273%;bottom:67.8063%" data-tip="Di, 30.6. · Tempolauf&#10;6,6 km in 0:35:12 · 5:22/km · 151 bpm"></div><div class="hit hit-dot" style="left:53.6364%;bottom:54.9858%" data-tip="Mi, 1.7. · Lockerer Lauf&#10;5,5 km in 0:31:00 · 5:40/km · 151 bpm"></div><div class="hit hit-dot" style="left:55.4545%;bottom:26.4957%" data-tip="Fr, 3.7. · Longrun&#10;13,8 km in 1:27:19 · 6:20/km · 141 bpm"></div><div class="hit hit-dot" style="left:57.2727%;bottom:51.4245%" data-tip="So, 5.7. · Lockerer Lauf&#10;6,3 km in 0:36:21 · 5:45/km · 149 bpm"></div><div class="hit hit-dot" style="left:59.0909%;bottom:79.2023%" data-tip="Di, 7.7. · Tempolauf&#10;5,5 km in 0:27:55 · 5:06/km · 158 bpm"></div><div class="hit hit-dot" style="left:60.0000%;bottom:51.4245%" data-tip="Mi, 8.7. · Lockerer Lauf&#10;8,6 km in 0:49:34 · 5:45/km · 145 bpm"></div><div class="hit hit-dot" style="left:61.8182%;bottom:32.9060%" data-tip="Fr, 10.7. · Longrun&#10;13,9 km in 1:26:02 · 6:11/km · 139 bpm"></div><div class="hit hit-dot" style="left:63.6364%;bottom:54.2735%" data-tip="So, 12.7. · Lockerer Lauf&#10;7,8 km in 0:44:22 · 5:41/km · 143 bpm"></div><div class="hit hit-dot" style="left:65.4545%;bottom:81.3390%" data-tip="Di, 14.7. · Tempolauf&#10;8,2 km in 0:41:27 · 5:03/km · 160 bpm"></div><div class="hit hit-dot" style="left:66.3636%;bottom:54.9858%" data-tip="Mi, 15.7. · Lockerer Lauf&#10;8,5 km in 0:48:03 · 5:40/km · 152 bpm"></div><div class="hit hit-dot" style="left:68.1818%;bottom:32.1937%" data-tip="Fr, 17.7. · Longrun&#10;16,1 km in 1:39:53 · 6:12/km · 141 bpm"></div><div class="hit hit-dot" style="left:70.0000%;bottom:52.1368%" data-tip="So, 19.7. · Lockerer Lauf&#10;6,6 km in 0:37:43 · 5:44/km · 150 bpm"></div><div class="hit hit-dot" style="left:71.8182%;bottom:86.3248%" data-tip="Di, 21.7. · Tempolauf&#10;6,3 km in 0:31:01 · 4:56/km · 158 bpm"></div><div class="hit hit-dot" style="left:72.7273%;bottom:53.5613%" data-tip="Mi, 22.7. · Lockerer Lauf&#10;6,2 km in 0:35:09 · 5:42/km · 150 bpm"></div><div class="hit hit-dot" style="left:74.5455%;bottom:42.1652%" data-tip="Fr, 24.7. · Longrun&#10;15,9 km in 1:34:48 · 5:58/km · 148 bpm"></div><div class="hit hit-dot" style="left:76.3636%;bottom:62.8205%" data-tip="So, 26.7. · Lockerer Lauf&#10;6,2 km in 0:34:02 · 5:29/km · 152 bpm"></div><div class="hit hit-dot" style="left:78.1818%;bottom:79.2023%" data-tip="Di, 28.7. · Tempolauf&#10;7,6 km in 0:38:38 · 5:06/km · 160 bpm"></div><div class="hit hit-dot" style="left:79.0909%;bottom:56.4103%" data-tip="Mi, 29.7. · Lockerer Lauf&#10;8,3 km in 0:46:28 · 5:38/km · 144 bpm"></div><div class="hit hit-dot" style="left:80.9091%;bottom:41.4530%" data-tip="Fr, 31.7. · Longrun&#10;17,2 km in 1:42:49 · 5:59/km · 146 bpm"></div><div class="hit hit-dot" style="left:82.7273%;bottom:56.4103%" data-tip="So, 2.8. · Lockerer Lauf&#10;5,3 km in 0:30:06 · 5:38/km · 145 bpm"></div><div class="hit hit-dot" style="left:84.5455%;bottom:88.4615%" data-tip="Di, 4.8. · Tempolauf&#10;8,5 km in 0:41:30 · 4:53/km · 155 bpm"></div><div class="hit hit-dot" style="left:85.4545%;bottom:65.6695%" data-tip="Mi, 5.8. · Lockerer Lauf&#10;7,8 km in 0:42:21 · 5:25/km · 147 bpm"></div><div class="hit hit-dot" style="left:87.2727%;bottom:42.1652%" data-tip="Fr, 7.8. · Longrun&#10;19,3 km in 1:55:12 · 5:58/km · 147 bpm"></div><div class="hit hit-dot" style="left:89.0909%;bottom:69.2308%" data-tip="So, 9.8. · Lockerer Lauf&#10;7,2 km in 0:38:23 · 5:20/km · 143 bpm"></div><div class="hit hit-dot" style="left:90.9091%;bottom:83.4758%" data-tip="Di, 11.8. · Tempolauf&#10;7,9 km in 0:39:26 · 5:00/km · 158 bpm"></div><div class="hit hit-dot" style="left:91.8182%;bottom:62.1083%" data-tip="Mi, 12.8. · Lockerer Lauf&#10;6,6 km in 0:36:22 · 5:30/km · 148 bpm"></div><div class="hit hit-dot" style="left:93.6364%;bottom:39.3162%" data-tip="Fr, 14.8. · Longrun&#10;19,3 km in 1:56:28 · 6:02/km · 144 bpm"></div><div class="hit hit-dot" style="left:95.4545%;bottom:64.2450%" data-tip="So, 16.8. · Lockerer Lauf&#10;8,1 km in 0:44:05 · 5:27/km · 147 bpm"></div><div class="hit hit-dot" style="left:97.2727%;bottom:88.4615%" data-tip="Di, 18.8. · Tempolauf&#10;5,8 km in 0:28:28 · 4:53/km · 157 bpm"></div><div class="hit hit-dot" style="left:98.1818%;bottom:65.6695%" data-tip="Mi, 19.8. · Lockerer Lauf&#10;7,2 km in 0:39:00 · 5:25/km · 152 bpm"></div><div class="hit hit-dot" style="left:100.0000%;bottom:50.0000%" data-tip="Fr, 21.8. · Longrun&#10;19,0 km in 1:49:45 · 5:47/km · 144 bpm"></div></div>
+      </div>
+      <div class="xaxis"><div class="xtick" style="left:0.0000%">Mai</div><div class="xtick" style="left:27.2727%">Jun</div><div class="xtick" style="left:53.6364%">Jul</div><div class="xtick" style="left:82.7273%">Aug</div></div>
+      <div class="unit-note">Minuten pro Kilometer</div>
+    </figure>
+  </div>
+
+    <figure class="card chart">
+      <figcaption>
+        <h2>Wie sich die Prognose entwickelt</h2>
+        <p>Woche für Woche neu aus den jeweils letzten sechs Wochen hochgerechnet (Riegel-Formel). Weiter oben heißt schneller.</p>
+      </figcaption>
+      <div class="plot" style="--plot-h:130px">
+        <div class="grid"><div class="ygrid" style="bottom:83.1110%"><span class="ytick">1:50</span></div><div class="ygrid" style="bottom:61.7146%"><span class="ytick">2:00</span></div><div class="ygrid" style="bottom:40.3181%"><span class="ytick">2:10</span></div><div class="ygrid" style="bottom:18.9216%"><span class="ytick">2:20</span></div></div>
+        <div class="marks">
+          <svg class="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <polyline class="fcline" points="0.0000,72.0919 7.6923,85.7143 15.3846,85.5360 23.0769,74.4811 30.7692,74.4811 38.4615,74.4811 46.1538,74.4811 53.8462,55.0817 61.5385,22.7017 69.2308,22.7017 76.9231,22.7017 84.6154,14.2857 92.3077,14.2857 100.0000,14.2857" vector-effect="non-scaling-stroke"/>
+          </svg><div class="enddot" style="left:100%;bottom:85.7143%"></div><div class="endlabel" style="bottom:85.7143%">1:48:47</div><div class="hit" style="left:0.0000%;width:7.1429%" data-tip="Stand 18.05.&#10;Prognose 2:15:48"></div><div class="hit" style="left:7.1429%;width:7.1429%" data-tip="Stand 25.05.&#10;Prognose 2:22:10"></div><div class="hit" style="left:14.2857%;width:7.1429%" data-tip="Stand 01.06.&#10;Prognose 2:22:05"></div><div class="hit" style="left:21.4286%;width:7.1429%" data-tip="Stand 08.06.&#10;Prognose 2:16:55"></div><div class="hit" style="left:28.5714%;width:7.1429%" data-tip="Stand 15.06.&#10;Prognose 2:16:55"></div><div class="hit" style="left:35.7143%;width:7.1429%" data-tip="Stand 22.06.&#10;Prognose 2:16:55"></div><div class="hit" style="left:42.8571%;width:7.1429%" data-tip="Stand 29.06.&#10;Prognose 2:16:55"></div><div class="hit" style="left:50.0000%;width:7.1429%" data-tip="Stand 06.07.&#10;Prognose 2:07:51"></div><div class="hit" style="left:57.1429%;width:7.1429%" data-tip="Stand 13.07.&#10;Prognose 1:52:43"></div><div class="hit" style="left:64.2857%;width:7.1429%" data-tip="Stand 20.07.&#10;Prognose 1:52:43"></div><div class="hit" style="left:71.4286%;width:7.1429%" data-tip="Stand 27.07.&#10;Prognose 1:52:43"></div><div class="hit" style="left:78.5714%;width:7.1429%" data-tip="Stand 03.08.&#10;Prognose 1:48:47"></div><div class="hit" style="left:85.7143%;width:7.1429%" data-tip="Stand 10.08.&#10;Prognose 1:48:47"></div><div class="hit" style="left:92.8571%;width:7.1429%" data-tip="Stand 17.08.&#10;Prognose 1:48:47"></div>
+        </div>
+      </div>
+      <div class="xaxis xaxis-spark"><span>18.05.</span><span>heute</span></div>
+      <div class="unit-note">Hochgerechnete Zielzeit, Stunden:Minuten</div>
+    </figure>
+
+  <section class="card">
+    <h2>Letzte Läufe</h2>
+    <ul class="runs"><li><span class="r-date">21.08.</span><span class="r-name">Longrun</span><span class="r-km">19,0 km</span><span class="r-pace">5:47/km</span></li><li><span class="r-date">19.08.</span><span class="r-name">Lockerer Lauf</span><span class="r-km">7,2 km</span><span class="r-pace">5:25/km</span></li><li><span class="r-date">18.08.</span><span class="r-name">Tempolauf</span><span class="r-km">5,8 km</span><span class="r-pace">4:53/km</span></li><li><span class="r-date">16.08.</span><span class="r-name">Lockerer Lauf</span><span class="r-km">8,1 km</span><span class="r-pace">5:27/km</span></li><li><span class="r-date">14.08.</span><span class="r-name">Longrun</span><span class="r-km">19,3 km</span><span class="r-pace">6:02/km</span></li><li><span class="r-date">12.08.</span><span class="r-name">Lockerer Lauf</span><span class="r-km">6,6 km</span><span class="r-pace">5:30/km</span></li><li><span class="r-date">11.08.</span><span class="r-name">Tempolauf</span><span class="r-km">7,9 km</span><span class="r-pace">5:00/km</span></li><li><span class="r-date">09.08.</span><span class="r-name">Lockerer Lauf</span><span class="r-km">7,2 km</span><span class="r-pace">5:20/km</span></li></ul>
+  </section>
+
+    <details class="card tablewrap">
+      <summary>Alle Wochen als Tabelle</summary>
+      <div class="scroll">
+        <table>
+          <thead><tr><th scope="col">Woche ab</th><th scope="col">km</th><th scope="col">Soll km</th>
+          <th scope="col">längster</th><th scope="col">Läufe</th><th scope="col">ø Pace</th><th scope="col"></th></tr></thead>
+          <tbody><tr><th scope="row">27.04.</th><td>6,5</td><td>–</td><td>6,5</td><td>1</td><td>6:04</td><td></td></tr><tr><th scope="row">04.05.</th><td>16,9</td><td>–</td><td>5,7</td><td>3</td><td>6:20</td><td></td></tr><tr><th scope="row">11.05.</th><td>19,0</td><td>–</td><td>7,3</td><td>3</td><td>6:14</td><td></td></tr><tr><th scope="row">18.05.</th><td>22,8</td><td>–</td><td>7,8</td><td>3</td><td>6:14</td><td></td></tr><tr><th scope="row">25.05.</th><td>22,4</td><td>–</td><td>8,9</td><td>3</td><td>6:10</td><td></td></tr><tr><th scope="row">01.06.</th><td>32,2</td><td>–</td><td>10,2</td><td>4</td><td>6:08</td><td></td></tr><tr><th scope="row">08.06.</th><td>31,6</td><td>–</td><td>10,7</td><td>4</td><td>5:53</td><td></td></tr><tr><th scope="row">15.06.</th><td>32,9</td><td>–</td><td>12,3</td><td>4</td><td>5:57</td><td></td></tr><tr><th scope="row">22.06.</th><td>31,3</td><td>–</td><td>13,1</td><td>4</td><td>5:53</td><td></td></tr><tr><th scope="row">29.06.</th><td>32,1</td><td>–</td><td>13,8</td><td>4</td><td>5:54</td><td></td></tr><tr><th scope="row">06.07.</th><td>35,8</td><td>–</td><td>13,9</td><td>4</td><td>5:48</td><td></td></tr><tr><th scope="row">13.07.</th><td>39,4</td><td>–</td><td>16,1</td><td>4</td><td>5:46</td><td></td></tr><tr><th scope="row">20.07.</th><td>34,5</td><td>–</td><td>15,9</td><td>4</td><td>5:38</td><td></td></tr><tr><th scope="row">27.07.</th><td>38,4</td><td>–</td><td>17,2</td><td>4</td><td>5:40</td><td></td></tr><tr><th scope="row">03.08.</th><td>42,8</td><td>–</td><td>19,3</td><td>4</td><td>5:32</td><td></td></tr><tr><th scope="row">10.08.</th><td>41,9</td><td>–</td><td>19,3</td><td>4</td><td>5:38</td><td></td></tr><tr><th scope="row">17.08.</th><td>32,0</td><td>39,4</td><td>19,0</td><td>3</td><td>5:32</td><td>läuft</td></tr><tr><th scope="row">24.08.</th><td>–</td><td>41,8</td><td>–</td><td>–</td><td>–</td><td>geplant</td></tr><tr><th scope="row">31.08.</th><td>–</td><td>44,3</td><td>–</td><td>–</td><td>–</td><td>geplant</td></tr><tr><th scope="row">07.09.</th><td>–</td><td>46,9</td><td>–</td><td>–</td><td>–</td><td>geplant</td></tr><tr><th scope="row">14.09.</th><td>–</td><td>49,7</td><td>–</td><td>–</td><td>–</td><td>geplant</td></tr><tr><th scope="row">21.09.</th><td>–</td><td>38,8</td><td>–</td><td>–</td><td>–</td><td>geplant</td></tr><tr><th scope="row">28.09.</th><td>–</td><td>27,4</td><td>–</td><td>–</td><td>–</td><td>geplant</td></tr></tbody>
+        </table>
+      </div>
+    </details>
+
+  <footer>
+    <p>Daten aus Strava, zuletzt aktualisiert am <b>22.08.2026, 16:15 UTC</b>. Im Trainingsblock bisher
+    <b>512,6 km</b> in <b>60 Läufen</b>.</p>
+    <p>Die Sollkurve ist kein Plan von der Stange: Sie geht von ihrem tatsächlichen Umfang der letzten vier Wochen
+    aus (39,4 km/Woche), steigert um 6 % pro Woche bis zwei Wochen vor dem Rennen
+    und tapert dann. Die Zielzeit ist eine Hochrechnung nach Riegel und keine Garantie.</p>
+  </footer>
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+<script>
+(function () {
+  var tip = document.getElementById('tip'), cur = null;
+  function show(el, x, y) {
+    tip.textContent = el.getAttribute('data-tip');
+    tip.classList.add('on');
+    var r = tip.getBoundingClientRect();
+    var left = Math.min(Math.max(x - r.width / 2, 8), innerWidth - r.width - 8);
+    var top = y - r.height - 14;
+    if (top < 8) top = y + 20;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+  function hide() { tip.classList.remove('on'); cur = null; }
+  document.addEventListener('pointermove', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-tip]') : null;
+    if (el) { cur = el; show(el, e.clientX, e.clientY); }
+    else if (cur) hide();
+  });
+  document.addEventListener('pointerdown', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-tip]') : null;
+    if (el) show(el, e.clientX, e.clientY); else hide();
+  });
+  document.addEventListener('scroll', hide, true);
+  // Tastatur: Trefferflaechen fokussierbar machen
+  document.querySelectorAll('[data-tip]').forEach(function (el) {
+    el.tabIndex = 0;
+    el.addEventListener('focus', function () {
+      var r = el.getBoundingClientRect();
+      show(el, r.left + r.width / 2, r.top + r.height / 2);
+    });
+    el.addEventListener('blur', hide);
+  });
+})();
+</script>
+</body>
+</html>

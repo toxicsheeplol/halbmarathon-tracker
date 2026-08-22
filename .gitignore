@@ -1,0 +1,5 @@
+# Strava-Zugang und lokale Laufzeitdateien gehören nie auf GitHub.
+creds.json
+creds.json.bak
+update.log
+.DS_Store

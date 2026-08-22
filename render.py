@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rendert data.json zu dashboard.html (Inhalt fuer das Artifact, ohne <html>/<head>/<body>)."""
+"""Rendert data.json zu index.html für die veröffentlichte Webseite."""
 
 import html
 import json
@@ -9,7 +9,7 @@ from datetime import date, datetime, timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data.json")
-OUT = os.path.join(HERE, "dashboard.html")
+OUT = os.path.join(HERE, "index.html")
 
 MONTHS = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
           "August", "September", "Oktober", "November", "Dezember"]
@@ -411,7 +411,13 @@ def build(d):
 {fc}
     </figure>""" if fc else ""
 
-    return f"""<title>{esc(title)}</title>
+    return f"""<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{esc(title)} – Trainingsfortschritt.">
+<title>{esc(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@500&display=swap">
@@ -659,12 +665,14 @@ footer b {{ color:var(--ink2); font-weight:600; }}
   }});
 }})();
 </script>
+</body>
+</html>
 """
 
 
 if __name__ == "__main__":
     with open(DATA) as f:
         data = json.load(f)
-    with open(OUT, "w") as f:
+    with open(OUT, "w", encoding="utf-8") as f:
         f.write(build(data))
     print("->", OUT)
