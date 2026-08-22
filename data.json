@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-22T16:15:30+00:00",
+ "generated": "2026-08-22T21:54:55+00:00",
  "today": "2026-08-22",
  "race_date": "2026-10-04",
  "days_left": 43,
@@ -9,10 +9,10 @@
   {
    "week": "2026-04-27",
    "label": "27.04.",
-   "km": 6.5,
-   "long": 6.5,
-   "runs": 1,
-   "avg_pace": 364,
+   "km": 8.1,
+   "long": 6.9,
+   "runs": 2,
+   "avg_pace": 344,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -21,10 +21,10 @@
   {
    "week": "2026-05-04",
    "label": "04.05.",
-   "km": 16.9,
-   "long": 5.7,
-   "runs": 3,
-   "avg_pace": 380,
+   "km": 8.2,
+   "long": 6.0,
+   "runs": 2,
+   "avg_pace": 371,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -33,10 +33,10 @@
   {
    "week": "2026-05-11",
    "label": "11.05.",
-   "km": 19.0,
-   "long": 7.3,
+   "km": 13.0,
+   "long": 5.0,
    "runs": 3,
-   "avg_pace": 374,
+   "avg_pace": 313,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -45,10 +45,10 @@
   {
    "week": "2026-05-18",
    "label": "18.05.",
-   "km": 22.8,
-   "long": 7.8,
-   "runs": 3,
-   "avg_pace": 374,
+   "km": 12.0,
+   "long": 6.7,
+   "runs": 2,
+   "avg_pace": 375,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -57,10 +57,10 @@
   {
    "week": "2026-05-25",
    "label": "25.05.",
-   "km": 22.4,
-   "long": 8.9,
-   "runs": 3,
-   "avg_pace": 370,
+   "km": 18.5,
+   "long": 10.0,
+   "runs": 2,
+   "avg_pace": 326,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -69,10 +69,10 @@
   {
    "week": "2026-06-01",
    "label": "01.06.",
-   "km": 32.2,
-   "long": 10.2,
-   "runs": 4,
-   "avg_pace": 368,
+   "km": 0.0,
+   "long": 0.0,
+   "runs": 0,
+   "avg_pace": null,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -81,10 +81,10 @@
   {
    "week": "2026-06-08",
    "label": "08.06.",
-   "km": 31.6,
-   "long": 10.7,
+   "km": 18.7,
+   "long": 5.2,
    "runs": 4,
-   "avg_pace": 353,
+   "avg_pace": 454,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -93,10 +93,10 @@
   {
    "week": "2026-06-15",
    "label": "15.06.",
-   "km": 32.9,
-   "long": 12.3,
-   "runs": 4,
-   "avg_pace": 357,
+   "km": 0.0,
+   "long": 0.0,
+   "runs": 0,
+   "avg_pace": null,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -105,10 +105,10 @@
   {
    "week": "2026-06-22",
    "label": "22.06.",
-   "km": 31.3,
-   "long": 13.1,
-   "runs": 4,
-   "avg_pace": 353,
+   "km": 2.5,
+   "long": 2.5,
+   "runs": 1,
+   "avg_pace": 725,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -117,10 +117,10 @@
   {
    "week": "2026-06-29",
    "label": "29.06.",
-   "km": 32.1,
-   "long": 13.8,
-   "runs": 4,
-   "avg_pace": 354,
+   "km": 8.5,
+   "long": 8.5,
+   "runs": 1,
+   "avg_pace": 353,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -129,10 +129,10 @@
   {
    "week": "2026-07-06",
    "label": "06.07.",
-   "km": 35.8,
-   "long": 13.9,
-   "runs": 4,
-   "avg_pace": 348,
+   "km": 3.6,
+   "long": 3.6,
+   "runs": 1,
+   "avg_pace": 299,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -141,10 +141,10 @@
   {
    "week": "2026-07-13",
    "label": "13.07.",
-   "km": 39.4,
-   "long": 16.1,
-   "runs": 4,
-   "avg_pace": 346,
+   "km": 7.4,
+   "long": 7.4,
+   "runs": 1,
+   "avg_pace": 332,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -153,10 +153,10 @@
   {
    "week": "2026-07-20",
    "label": "20.07.",
-   "km": 34.5,
-   "long": 15.9,
-   "runs": 4,
-   "avg_pace": 338,
+   "km": 27.4,
+   "long": 11.2,
+   "runs": 3,
+   "avg_pace": 352,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -165,10 +165,10 @@
   {
    "week": "2026-07-27",
    "label": "27.07.",
-   "km": 38.4,
-   "long": 17.2,
-   "runs": 4,
-   "avg_pace": 340,
+   "km": 27.4,
+   "long": 14.2,
+   "runs": 3,
+   "avg_pace": 333,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -177,10 +177,10 @@
   {
    "week": "2026-08-03",
    "label": "03.08.",
-   "km": 42.8,
-   "long": 19.3,
-   "runs": 4,
-   "avg_pace": 332,
+   "km": 13.8,
+   "long": 6.6,
+   "runs": 3,
+   "avg_pace": 415,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -189,10 +189,10 @@
   {
    "week": "2026-08-10",
    "label": "10.08.",
-   "km": 41.9,
-   "long": 19.3,
-   "runs": 4,
-   "avg_pace": 338,
+   "km": 36.8,
+   "long": 16.0,
+   "runs": 5,
+   "avg_pace": 378,
    "plan_km": null,
    "plan_long": null,
    "future": false,
@@ -201,12 +201,12 @@
   {
    "week": "2026-08-17",
    "label": "17.08.",
-   "km": 32.0,
-   "long": 19.0,
+   "km": 16.2,
+   "long": 7.5,
    "runs": 3,
-   "avg_pace": 332,
-   "plan_km": 39.4,
-   "plan_long": 19.3,
+   "avg_pace": 380,
+   "plan_km": 26.4,
+   "plan_long": 16.0,
    "future": false,
    "current": true
   },
@@ -217,8 +217,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 41.8,
-   "plan_long": 20.0,
+   "plan_km": 27.9,
+   "plan_long": 17.2,
    "future": true,
    "current": false
   },
@@ -229,8 +229,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 44.3,
-   "plan_long": 20.0,
+   "plan_km": 29.6,
+   "plan_long": 18.4,
    "future": true,
    "current": false
   },
@@ -241,8 +241,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 46.9,
-   "plan_long": 20.0,
+   "plan_km": 31.4,
+   "plan_long": 19.6,
    "future": true,
    "current": false
   },
@@ -253,7 +253,7 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 49.7,
+   "plan_km": 33.3,
    "plan_long": 20.0,
    "future": true,
    "current": false
@@ -265,7 +265,7 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 38.8,
+   "plan_km": 26.0,
    "plan_long": 13.0,
    "future": true,
    "current": false
@@ -277,7 +277,7 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 27.4,
+   "plan_km": 18.3,
    "plan_long": 21.1,
    "future": true,
    "current": false
@@ -287,712 +287,496 @@
   {
    "week": "2026-05-18",
    "label": "18.05.",
-   "seconds": 8148
+   "seconds": 7033
   },
   {
    "week": "2026-05-25",
    "label": "25.05.",
-   "seconds": 8530
+   "seconds": 7169
   },
   {
    "week": "2026-06-01",
    "label": "01.06.",
-   "seconds": 8525
+   "seconds": 7169
   },
   {
    "week": "2026-06-08",
    "label": "08.06.",
-   "seconds": 8215
+   "seconds": 7169
   },
   {
    "week": "2026-06-15",
    "label": "15.06.",
-   "seconds": 8215
+   "seconds": 7169
   },
   {
    "week": "2026-06-22",
    "label": "22.06.",
-   "seconds": 8215
+   "seconds": 7169
   },
   {
    "week": "2026-06-29",
    "label": "29.06.",
-   "seconds": 8215
+   "seconds": 7169
   },
   {
    "week": "2026-07-06",
    "label": "06.07.",
-   "seconds": 7671
+   "seconds": 7867
   },
   {
    "week": "2026-07-13",
    "label": "13.07.",
-   "seconds": 6763
+   "seconds": 7867
   },
   {
    "week": "2026-07-20",
    "label": "20.07.",
-   "seconds": 6763
+   "seconds": 7637
   },
   {
    "week": "2026-07-27",
    "label": "27.07.",
-   "seconds": 6763
+   "seconds": 7307
   },
   {
    "week": "2026-08-03",
    "label": "03.08.",
-   "seconds": 6527
+   "seconds": 7307
   },
   {
    "week": "2026-08-10",
    "label": "10.08.",
-   "seconds": 6527
+   "seconds": 7307
   },
   {
    "week": "2026-08-17",
    "label": "17.08.",
-   "seconds": 6527
+   "seconds": 7307
   }
  ],
  "pace_points": [
   {
+   "date": "2026-04-29",
+   "km": 1.25,
+   "pace": 252,
+   "cat": "tempo",
+   "name": "Pyramid run",
+   "seconds": 315,
+   "hr": 181
+  },
+  {
    "date": "2026-05-03",
-   "km": 6.48,
-   "pace": 364,
+   "km": 6.87,
+   "pace": 361,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2359,
-   "hr": 147
+   "name": "Easy Run",
+   "seconds": 2479,
+   "hr": 177
   },
   {
    "date": "2026-05-05",
-   "km": 5.66,
-   "pace": 364,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2061,
-   "hr": 151
-  },
-  {
-   "date": "2026-05-08",
-   "km": 5.69,
-   "pace": 401,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 2280,
-   "hr": 142
-  },
-  {
-   "date": "2026-05-10",
-   "km": 5.55,
-   "pace": 377,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2094,
-   "hr": 145
-  },
-  {
-   "date": "2026-05-12",
-   "km": 5.89,
-   "pace": 362,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2135,
-   "hr": 151
-  },
-  {
-   "date": "2026-05-15",
-   "km": 7.32,
-   "pace": 397,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 2907,
-   "hr": 142
-  },
-  {
-   "date": "2026-05-17",
-   "km": 5.83,
-   "pace": 358,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2086,
-   "hr": 147
-  },
-  {
-   "date": "2026-05-19",
-   "km": 7.32,
-   "pace": 362,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2653,
-   "hr": 145
-  },
-  {
-   "date": "2026-05-22",
-   "km": 7.78,
-   "pace": 394,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 3067,
-   "hr": 139
-  },
-  {
-   "date": "2026-05-24",
-   "km": 7.68,
-   "pace": 367,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2817,
-   "hr": 144
-  },
-  {
-   "date": "2026-05-26",
-   "km": 7.83,
-   "pace": 361,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2828,
-   "hr": 147
-  },
-  {
-   "date": "2026-05-29",
-   "km": 8.93,
-   "pace": 384,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 3429,
-   "hr": 147
-  },
-  {
-   "date": "2026-05-31",
-   "km": 5.67,
-   "pace": 361,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2048,
-   "hr": 151
-  },
-  {
-   "date": "2026-06-02",
-   "km": 7.48,
-   "pace": 368,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2749,
-   "hr": 143
-  },
-  {
-   "date": "2026-06-03",
-   "km": 7.93,
-   "pace": 363,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2880,
-   "hr": 151
-  },
-  {
-   "date": "2026-06-05",
-   "km": 10.24,
-   "pace": 387,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 3962,
-   "hr": 145
-  },
-  {
-   "date": "2026-06-07",
-   "km": 6.56,
-   "pace": 348,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2286,
-   "hr": 145
-  },
-  {
-   "date": "2026-06-09",
-   "km": 6.95,
-   "pace": 320,
-   "cat": "easy",
-   "name": "Tempolauf",
-   "seconds": 2227,
-   "hr": 155
-  },
-  {
-   "date": "2026-06-10",
-   "km": 7.85,
-   "pace": 357,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2805,
-   "hr": 151
-  },
-  {
-   "date": "2026-06-12",
-   "km": 10.7,
-   "pace": 374,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 4000,
-   "hr": 140
-  },
-  {
-   "date": "2026-06-14",
-   "km": 6.13,
-   "pace": 348,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2136,
-   "hr": 148
-  },
-  {
-   "date": "2026-06-16",
-   "km": 6.34,
-   "pace": 315,
+   "km": 2.19,
+   "pace": 277,
    "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 1997,
+   "name": "Pyramid",
+   "seconds": 607,
    "hr": 154
   },
   {
-   "date": "2026-06-17",
-   "km": 6.93,
-   "pace": 355,
+   "date": "2026-05-07",
+   "km": 6.03,
+   "pace": 406,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2457,
-   "hr": 148
+   "name": "Easy run",
+   "seconds": 2448,
+   "hr": 154
   },
   {
-   "date": "2026-06-19",
-   "km": 12.34,
-   "pace": 386,
+   "date": "2026-05-11",
+   "km": 3.63,
+   "pace": 321,
    "cat": "easy",
-   "name": "Longrun",
-   "seconds": 4767,
-   "hr": 140
+   "name": "400 m intervals",
+   "seconds": 1167,
+   "hr": 164
   },
   {
-   "date": "2026-06-21",
-   "km": 7.26,
-   "pace": 348,
+   "date": "2026-05-14",
+   "km": 5.05,
+   "pace": 306,
+   "cat": "tempo",
+   "name": "Test run",
+   "seconds": 1545,
+   "hr": 179
+  },
+  {
+   "date": "2026-05-17",
+   "km": 4.29,
+   "pace": 314,
+   "cat": "tempo",
+   "name": "Evening Run",
+   "seconds": 1348,
+   "hr": 173
+  },
+  {
+   "date": "2026-05-19",
+   "km": 6.74,
+   "pace": 397,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2529,
-   "hr": 149
+   "name": "Night Run in Barcelona",
+   "seconds": 2677,
+   "hr": 150
+  },
+  {
+   "date": "2026-05-23",
+   "km": 5.24,
+   "pace": 347,
+   "cat": "easy",
+   "name": "1 min on and off intervals",
+   "seconds": 1818,
+   "hr": 176
+  },
+  {
+   "date": "2026-05-25",
+   "km": 10.04,
+   "pace": 325,
+   "cat": "easy",
+   "name": "It was fun until it wasn\u2019t",
+   "seconds": 3263,
+   "hr": 169
+  },
+  {
+   "date": "2026-05-28",
+   "km": 8.44,
+   "pace": 329,
+   "cat": "easy",
+   "name": "Oysho run",
+   "seconds": 2778,
+   "hr": null
+  },
+  {
+   "date": "2026-06-10",
+   "km": 5.15,
+   "pace": 435,
+   "cat": "easy",
+   "name": "Adventure",
+   "seconds": 2239,
+   "hr": 160
+  },
+  {
+   "date": "2026-06-10",
+   "km": 4.99,
+   "pace": 493,
+   "cat": "easy",
+   "name": "Evening Trail Run",
+   "seconds": 2461,
+   "hr": 162
+  },
+  {
+   "date": "2026-06-12",
+   "km": 4.43,
+   "pace": 424,
+   "cat": "easy",
+   "name": "Afternoon Run",
+   "seconds": 1880,
+   "hr": 163
+  },
+  {
+   "date": "2026-06-12",
+   "km": 4.12,
+   "pace": 464,
+   "cat": "easy",
+   "name": "Afternoon Run",
+   "seconds": 1912,
+   "hr": 163
   },
   {
    "date": "2026-06-23",
-   "km": 7.14,
-   "pace": 308,
-   "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 2202,
-   "hr": 152
-  },
-  {
-   "date": "2026-06-24",
-   "km": 5.36,
-   "pace": 347,
+   "km": 2.54,
+   "pace": 725,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 1862,
-   "hr": 144
-  },
-  {
-   "date": "2026-06-26",
-   "km": 13.07,
-   "pace": 383,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 5012,
-   "hr": 146
-  },
-  {
-   "date": "2026-06-28",
-   "km": 5.71,
-   "pace": 344,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 1966,
-   "hr": 151
+   "name": "Evening Run",
+   "seconds": 1842,
+   "hr": 147
   },
   {
    "date": "2026-06-30",
-   "km": 6.56,
-   "pace": 322,
+   "km": 8.51,
+   "pace": 353,
    "cat": "easy",
-   "name": "Tempolauf",
-   "seconds": 2112,
-   "hr": 151
-  },
-  {
-   "date": "2026-07-01",
-   "km": 5.47,
-   "pace": 340,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 1860,
-   "hr": 151
-  },
-  {
-   "date": "2026-07-03",
-   "km": 13.79,
-   "pace": 380,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 5239,
-   "hr": 141
-  },
-  {
-   "date": "2026-07-05",
-   "km": 6.33,
-   "pace": 345,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2181,
-   "hr": 149
-  },
-  {
-   "date": "2026-07-07",
-   "km": 5.48,
-   "pace": 306,
-   "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 1675,
-   "hr": 158
-  },
-  {
-   "date": "2026-07-08",
-   "km": 8.63,
-   "pace": 345,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2974,
-   "hr": 145
+   "name": "Evening Run",
+   "seconds": 3005,
+   "hr": 175
   },
   {
    "date": "2026-07-10",
-   "km": 13.93,
-   "pace": 371,
-   "cat": "easy",
-   "name": "Longrun",
-   "seconds": 5162,
-   "hr": 139
-  },
-  {
-   "date": "2026-07-12",
-   "km": 7.8,
-   "pace": 341,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2662,
-   "hr": 143
-  },
-  {
-   "date": "2026-07-14",
-   "km": 8.21,
-   "pace": 303,
+   "km": 3.58,
+   "pace": 299,
    "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 2487,
-   "hr": 160
+   "name": "6x400m",
+   "seconds": 1072,
+   "hr": 163
   },
   {
-   "date": "2026-07-15",
-   "km": 8.48,
-   "pace": 340,
+   "date": "2026-07-13",
+   "km": 7.42,
+   "pace": 332,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2883,
-   "hr": 152
-  },
-  {
-   "date": "2026-07-17",
-   "km": 16.09,
-   "pace": 372,
-   "cat": "long",
-   "name": "Longrun",
-   "seconds": 5993,
-   "hr": 141
-  },
-  {
-   "date": "2026-07-19",
-   "km": 6.58,
-   "pace": 344,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2263,
-   "hr": 150
-  },
-  {
-   "date": "2026-07-21",
-   "km": 6.28,
-   "pace": 296,
-   "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 1861,
-   "hr": 158
+   "name": "4km easy, rest push",
+   "seconds": 2464,
+   "hr": null
   },
   {
    "date": "2026-07-22",
-   "km": 6.16,
-   "pace": 342,
+   "km": 8.57,
+   "pace": 343,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2109,
-   "hr": 150
+   "name": "1k target 1k jog",
+   "seconds": 2939,
+   "hr": 174
   },
   {
-   "date": "2026-07-24",
-   "km": 15.87,
-   "pace": 358,
-   "cat": "long",
-   "name": "Longrun",
-   "seconds": 5688,
-   "hr": 148
+   "date": "2026-07-23",
+   "km": 7.6,
+   "pace": 340,
+   "cat": "easy",
+   "name": "Afternoon Run",
+   "seconds": 2583,
+   "hr": 183
   },
   {
    "date": "2026-07-26",
-   "km": 6.21,
-   "pace": 329,
+   "km": 11.2,
+   "pace": 369,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2042,
-   "hr": 152
-  },
-  {
-   "date": "2026-07-28",
-   "km": 7.57,
-   "pace": 306,
-   "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 2318,
-   "hr": 160
-  },
-  {
-   "date": "2026-07-29",
-   "km": 8.26,
-   "pace": 338,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2788,
-   "hr": 144
-  },
-  {
-   "date": "2026-07-31",
-   "km": 17.19,
-   "pace": 359,
-   "cat": "long",
-   "name": "Longrun",
-   "seconds": 6169,
-   "hr": 146
-  },
-  {
-   "date": "2026-08-02",
-   "km": 5.35,
-   "pace": 338,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 1806,
-   "hr": 145
-  },
-  {
-   "date": "2026-08-04",
-   "km": 8.5,
-   "pace": 293,
-   "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 2490,
-   "hr": 155
-  },
-  {
-   "date": "2026-08-05",
-   "km": 7.82,
-   "pace": 325,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2541,
-   "hr": 147
-  },
-  {
-   "date": "2026-08-07",
-   "km": 19.3,
-   "pace": 358,
-   "cat": "long",
-   "name": "Longrun",
-   "seconds": 6912,
-   "hr": 147
-  },
-  {
-   "date": "2026-08-09",
-   "km": 7.2,
-   "pace": 320,
-   "cat": "tempo",
-   "name": "Lockerer Lauf",
-   "seconds": 2303,
-   "hr": 143
-  },
-  {
-   "date": "2026-08-11",
-   "km": 7.89,
-   "pace": 300,
-   "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 2366,
+   "name": "Morning Run",
+   "seconds": 4133,
    "hr": 158
   },
   {
-   "date": "2026-08-12",
-   "km": 6.62,
-   "pace": 330,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2182,
-   "hr": 148
-  },
-  {
-   "date": "2026-08-14",
-   "km": 19.3,
-   "pace": 362,
-   "cat": "long",
-   "name": "Longrun",
-   "seconds": 6988,
-   "hr": 144
-  },
-  {
-   "date": "2026-08-16",
-   "km": 8.1,
-   "pace": 327,
-   "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2645,
-   "hr": 147
-  },
-  {
-   "date": "2026-08-18",
-   "km": 5.82,
-   "pace": 293,
+   "date": "2026-07-28",
+   "km": 5.14,
+   "pace": 283,
    "cat": "tempo",
-   "name": "Tempolauf",
-   "seconds": 1708,
+   "name": "4x 4 min tempo 3 min rest",
+   "seconds": 1457,
+   "hr": 180
+  },
+  {
+   "date": "2026-07-29",
+   "km": 8.06,
+   "pace": 356,
+   "cat": "easy",
+   "name": "Easy shake out run",
+   "seconds": 2868,
+   "hr": 160
+  },
+  {
+   "date": "2026-07-30",
+   "km": 14.19,
+   "pace": 338,
+   "cat": "long",
+   "name": "Noch 66 Tage bis zum Halbmarathon",
+   "seconds": 4799,
+   "hr": 161
+  },
+  {
+   "date": "2026-08-08",
+   "km": 6.57,
+   "pace": 336,
+   "cat": "easy",
+   "name": "4 mins on 3 mins off",
+   "seconds": 2209,
+   "hr": 173
+  },
+  {
+   "date": "2026-08-09",
+   "km": 4.8,
+   "pace": 396,
+   "cat": "easy",
+   "name": "Morning Run",
+   "seconds": 1901,
    "hr": 157
   },
   {
-   "date": "2026-08-19",
-   "km": 7.21,
-   "pace": 325,
+   "date": "2026-08-09",
+   "km": 2.45,
+   "pace": 667,
    "cat": "easy",
-   "name": "Lockerer Lauf",
-   "seconds": 2340,
-   "hr": 152
+   "name": "Lunch Run",
+   "seconds": 1633,
+   "hr": 144
+  },
+  {
+   "date": "2026-08-11",
+   "km": 6.05,
+   "pace": 488,
+   "cat": "easy",
+   "name": "Evening Run",
+   "seconds": 2955,
+   "hr": 164
+  },
+  {
+   "date": "2026-08-13",
+   "km": 5.23,
+   "pace": 354,
+   "cat": "easy",
+   "name": "Evening Run",
+   "seconds": 1852,
+   "hr": 159
+  },
+  {
+   "date": "2026-08-15",
+   "km": 4.56,
+   "pace": 439,
+   "cat": "easy",
+   "name": "Afternoon Run",
+   "seconds": 2002,
+   "hr": 177
+  },
+  {
+   "date": "2026-08-15",
+   "km": 4.98,
+   "pace": 270,
+   "cat": "tempo",
+   "name": "New 5k PB",
+   "seconds": 1347,
+   "hr": 188
+  },
+  {
+   "date": "2026-08-16",
+   "km": 16.02,
+   "pace": 362,
+   "cat": "long",
+   "name": "I was suffering",
+   "seconds": 5793,
+   "hr": 161
+  },
+  {
+   "date": "2026-08-18",
+   "km": 5.96,
+   "pace": 486,
+   "cat": "easy",
+   "name": "Evening Run",
+   "seconds": 2894,
+   "hr": 161
+  },
+  {
+   "date": "2026-08-20",
+   "km": 7.5,
+   "pace": 316,
+   "cat": "tempo",
+   "name": "Easy run",
+   "seconds": 2368,
+   "hr": null
   },
   {
    "date": "2026-08-21",
-   "km": 18.98,
-   "pace": 347,
-   "cat": "long",
-   "name": "Longrun",
-   "seconds": 6585,
-   "hr": 144
+   "km": 2.74,
+   "pace": 330,
+   "cat": "easy",
+   "name": "Warm up",
+   "seconds": 905,
+   "hr": null
   }
  ],
  "recent_runs": [
   {
-   "id": 1150,
-   "name": "Longrun",
+   "id": 19838079708,
+   "name": "Warm up",
    "date": "2026-08-21",
-   "km": 18.98,
-   "seconds": 6585,
-   "elev": 222,
-   "hr": 144
+   "km": 2.74,
+   "seconds": 905,
+   "elev": 9,
+   "hr": null
   },
   {
-   "id": 1153,
-   "name": "Lockerer Lauf",
-   "date": "2026-08-19",
-   "km": 7.21,
-   "seconds": 2340,
-   "elev": 63,
-   "hr": 152
+   "id": 19821465625,
+   "name": "Easy run",
+   "date": "2026-08-20",
+   "km": 7.5,
+   "seconds": 2368,
+   "elev": 30,
+   "hr": null
   },
   {
-   "id": 1152,
-   "name": "Tempolauf",
+   "id": 19799240838,
+   "name": "Evening Run",
    "date": "2026-08-18",
-   "km": 5.82,
-   "seconds": 1708,
-   "elev": 53,
-   "hr": 157
+   "km": 5.96,
+   "seconds": 2894,
+   "elev": 0,
+   "hr": 161
   },
   {
-   "id": 1151,
-   "name": "Lockerer Lauf",
+   "id": 19764018676,
+   "name": "I was suffering",
    "date": "2026-08-16",
-   "km": 8.1,
-   "seconds": 2645,
-   "elev": 106,
-   "hr": 147
+   "km": 16.02,
+   "seconds": 5793,
+   "elev": 91,
+   "hr": 161
   },
   {
-   "id": 1140,
-   "name": "Longrun",
-   "date": "2026-08-14",
-   "km": 19.3,
-   "seconds": 6988,
-   "elev": 179,
-   "hr": 144
+   "id": 19751195037,
+   "name": "New 5k PB",
+   "date": "2026-08-15",
+   "km": 4.98,
+   "seconds": 1347,
+   "elev": 0,
+   "hr": 188
   },
   {
-   "id": 1143,
-   "name": "Lockerer Lauf",
-   "date": "2026-08-12",
-   "km": 6.62,
-   "seconds": 2182,
-   "elev": 60,
-   "hr": 148
+   "id": 19754553772,
+   "name": "Afternoon Run",
+   "date": "2026-08-15",
+   "km": 4.56,
+   "seconds": 2002,
+   "elev": 0,
+   "hr": 177
   },
   {
-   "id": 1142,
-   "name": "Tempolauf",
+   "id": 19728674702,
+   "name": "Evening Run",
+   "date": "2026-08-13",
+   "km": 5.23,
+   "seconds": 1852,
+   "elev": 17,
+   "hr": 159
+  },
+  {
+   "id": 19701062713,
+   "name": "Evening Run",
    "date": "2026-08-11",
-   "km": 7.89,
-   "seconds": 2366,
-   "elev": 68,
-   "hr": 158
-  },
-  {
-   "id": 1141,
-   "name": "Lockerer Lauf",
-   "date": "2026-08-09",
-   "km": 7.2,
-   "seconds": 2303,
-   "elev": 41,
-   "hr": 143
+   "km": 6.05,
+   "seconds": 2955,
+   "elev": 0,
+   "hr": 164
   }
  ],
  "totals": {
-  "runs": 60,
-  "km": 512.6
+  "runs": 36,
+  "km": 222.1
  },
  "kpi": {
-  "weekly_km": 39.4,
-  "weekly_km_prev": 34.6,
-  "longest": 19.3,
-  "longest_recent": 19.3,
-  "longest_prev": 16.1,
-  "easy_pace": 330,
-  "easy_pace_prev": 346,
-  "prediction": 6527,
-  "prediction_prev": 6763
+  "weekly_km": 26.3,
+  "weekly_km_prev": 5.5,
+  "longest": 16.0,
+  "longest_recent": 16.0,
+  "longest_prev": 8.6,
+  "easy_pace": 422,
+  "easy_pace_prev": 342,
+  "prediction": 7307,
+  "prediction_prev": 7637
  },
  "plan_basis": {
-  "baseline_km": 39.4,
-  "baseline_long": 19.3
+  "baseline_km": 26.4,
+  "baseline_long": 16.0
  },
  "athlete": {
   "name": "R\u00e9ka",
-  "photo": null
+  "photo": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/181689353/39643143/1/medium.jpg"
  },
- "mock": true
+ "mock": false
 }
