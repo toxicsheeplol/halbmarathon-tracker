@@ -200,7 +200,8 @@ def build_plan(weeks_done, race_week_start, baseline_km, baseline_long):
         elif i == n - 2:                            # taper week
             km, lng = peak_km * 0.78, min(peak_long * 0.65, 13.0)
         else:                                       # race week including race day
-            km, lng = peak_km * 0.55, RACE_KM
+            # The weekly total can never be shorter than its longest run.
+            km, lng = max(peak_km * 0.55, RACE_KM), RACE_KM
         plan[wk.isoformat()] = {"km": round(km, 1), "long": round(lng, 1)}
     return plan
 

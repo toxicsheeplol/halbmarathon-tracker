@@ -471,9 +471,18 @@ def build(d):
     long_sub = (f"{num(to_race)} km left to race distance" if to_race > 0.2
                 else "race distance already in her legs")
 
+    completed_weeks = [w for w in d["weeks"] if not w["future"] and not w["current"]]
+    previous_week = completed_weeks[-1] if completed_weeks else None
+    current_week_km = cur["km"] if cur else 0
+    current_week_runs = cur["runs"] if cur else 0
+    previous_week_km = previous_week["km"] if previous_week else None
+    run_word = "run" if current_week_runs == 1 else "runs"
+
     tiles = "\n".join([
-        tile("Weekly distance", num(k["weekly_km"]), " km", "average of the last 4 weeks",
-             delta_chip(k["weekly_km"], k["weekly_km_prev"], ("more", "less"), unit=" km")),
+        tile("This week's distance", num(current_week_km), " km",
+             f"{current_week_runs} {run_word} since Monday",
+             delta_chip(current_week_km, previous_week_km,
+                        ("more than last week", "less than last week"), unit=" km")),
         tile("Longest run", num(k["longest_recent"]), " km", long_sub,
              delta_chip(k["longest_recent"], k.get("longest_prev") or None,
                         ("longer", "shorter"), unit=" km")),
