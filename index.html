@@ -102,6 +102,17 @@ figcaption p { margin:5px 0 0; font-size:13px; color:var(--ink2); max-width:62ch
 .section-copy { margin:5px 0 0; max-width:58ch; color:var(--ink2); font-size:13px; line-height:1.45; }
 .plan-total { flex:0 0 auto; padding:5px 9px; border:1px solid var(--ring); border-radius:999px;
   color:var(--ink2); font-family:var(--mono); font-size:11px; text-align:right; white-space:nowrap; }
+.week-picker { display:flex; align-items:end; gap:8px; margin:0 0 14px; }
+.week-select-label { display:flex; flex-direction:column; gap:5px; min-width:min(330px, 100%);
+  font-size:11px; font-weight:600; color:var(--ink2); }
+.week-select-label select { width:100%; min-height:37px; padding:7px 34px 7px 10px; border:1px solid var(--hair);
+  border-radius:8px; background:var(--surface); color:var(--ink); font:inherit; font-size:13px; cursor:pointer; }
+.week-select-label select:focus { outline:2px solid color-mix(in srgb, var(--ist) 40%, transparent);
+  outline-offset:1px; border-color:var(--ist); }
+.week-nav-button { width:37px; height:37px; flex:0 0 37px; border:1px solid var(--hair); border-radius:8px;
+  background:var(--surface); color:var(--ink2); font:inherit; font-size:18px; cursor:pointer; }
+.week-nav-button:hover:not(:disabled) { background:var(--plane); color:var(--ink); }
+.week-nav-button:disabled { opacity:.35; cursor:not-allowed; }
 .plan-grid { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:8px; }
 .plan-day { min-height:126px; padding:10px; border:1px solid var(--hair); border-radius:9px; background:var(--plane);
   display:flex; flex-direction:column; gap:6px; }
@@ -145,6 +156,8 @@ input:focus { outline:2px solid color-mix(in srgb, var(--ist) 40%, transparent);
 }
 @media (max-width:440px) {
   .section-head { flex-direction:column; }
+  .week-picker { align-items:end; }
+  .week-select-label { min-width:0; flex:1 1 auto; }
   .plan-row { grid-template-columns:1fr 1fr; }
   .plan-row legend { grid-column:1 / -1; }
   .plan-row label:last-child { grid-column:1 / -1; }
@@ -247,15 +260,20 @@ footer b { color:var(--ink2); font-weight:600; }
   <section class="card planner" aria-labelledby="weekly-plan-title">
     <div class="section-head">
       <div>
-        <p class="section-kicker">This week</p>
+        <p class="section-kicker" id="plan-week-kicker">This week</p>
         <h2 id="weekly-plan-title">Your weekly plan</h2>
-        <p class="section-copy">A suggested schedule based on this week's target. Change it to fit real life.</p>
+        <p class="section-copy">Choose any training week, then adapt its suggested schedule to fit real life.</p>
       </div>
       <div class="plan-total" id="plan-total"></div>
     </div>
+    <div class="week-picker" aria-label="Choose a training week">
+      <button class="week-nav-button" id="plan-prev-week" type="button" aria-label="Previous training week">←</button>
+      <label class="week-select-label"><span>Training week</span><select id="plan-week-select"></select></label>
+      <button class="week-nav-button" id="plan-next-week" type="button" aria-label="Next training week">→</button>
+    </div>
     <div class="plan-grid" id="plan-cards" aria-live="polite"></div>
     <details class="plan-editor">
-      <summary>Edit this week's plan</summary>
+      <summary id="plan-edit-summary">Edit selected week's plan</summary>
       <p>Adjust the session, distance or note for any day. Your changes are saved on this device.</p>
       <form id="plan-form">
         <div id="plan-editor-fields"></div>
@@ -289,7 +307,7 @@ footer b { color:var(--ink2); font-weight:600; }
     <p class="local-note" id="manual-status"></p>
   </section>
 
-  <script id="planner-defaults" type="application/json">{"weekStart": "2026-08-17", "weekEnd": "2026-08-23", "targetKm": 26.4, "targetLong": 16.0, "days": [{"date": "2026-08-17", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-18", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 3.6, "notes": "Comfortable, conversational effort."}, {"date": "2026-08-19", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-20", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 3.6, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-08-21", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-22", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 3.2, "notes": "Keep the pace comfortable."}, {"date": "2026-08-23", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 16.0, "notes": "Easy effort; focus on time on feet."}]}</script>
+  <script id="planner-defaults" type="application/json">{"selectedWeek": "2026-08-17", "currentWeekStart": "2026-08-17", "currentWeekEnd": "2026-08-23", "weeks": [{"weekStart": "2026-08-17", "weekEnd": "2026-08-23", "label": "August 17–23", "isCurrent": true, "isRaceWeek": false, "targetKm": 26.4, "targetLong": 16.0, "days": [{"date": "2026-08-17", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-18", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 3.6, "notes": "Comfortable, conversational effort."}, {"date": "2026-08-19", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-20", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 3.6, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-08-21", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-22", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 3.2, "notes": "Keep the pace comfortable."}, {"date": "2026-08-23", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 16.0, "notes": "Easy effort; focus on time on feet."}]}, {"weekStart": "2026-08-24", "weekEnd": "2026-08-30", "label": "August 24–30", "isCurrent": false, "isRaceWeek": false, "targetKm": 27.9, "targetLong": 17.2, "days": [{"date": "2026-08-24", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-25", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 3.7, "notes": "Comfortable, conversational effort."}, {"date": "2026-08-26", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-27", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 3.7, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-08-28", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-08-29", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 3.3, "notes": "Keep the pace comfortable."}, {"date": "2026-08-30", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 17.2, "notes": "Easy effort; focus on time on feet."}]}, {"weekStart": "2026-08-31", "weekEnd": "2026-09-06", "label": "August 31 – September 6", "isCurrent": false, "isRaceWeek": false, "targetKm": 29.6, "targetLong": 18.4, "days": [{"date": "2026-08-31", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-01", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 3.9, "notes": "Comfortable, conversational effort."}, {"date": "2026-09-02", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-03", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 3.9, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-09-04", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-05", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 3.4, "notes": "Keep the pace comfortable."}, {"date": "2026-09-06", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 18.4, "notes": "Easy effort; focus on time on feet."}]}, {"weekStart": "2026-09-07", "weekEnd": "2026-09-13", "label": "September 7–13", "isCurrent": false, "isRaceWeek": false, "targetKm": 31.4, "targetLong": 19.6, "days": [{"date": "2026-09-07", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-08", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 4.1, "notes": "Comfortable, conversational effort."}, {"date": "2026-09-09", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-10", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 4.1, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-09-11", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-12", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 3.6, "notes": "Keep the pace comfortable."}, {"date": "2026-09-13", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 19.6, "notes": "Easy effort; focus on time on feet."}]}, {"weekStart": "2026-09-14", "weekEnd": "2026-09-20", "label": "September 14–20", "isCurrent": false, "isRaceWeek": false, "targetKm": 33.3, "targetLong": 20.0, "days": [{"date": "2026-09-14", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-15", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 4.7, "notes": "Comfortable, conversational effort."}, {"date": "2026-09-16", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-17", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 4.7, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-09-18", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-19", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 3.9, "notes": "Keep the pace comfortable."}, {"date": "2026-09-20", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 20.0, "notes": "Easy effort; focus on time on feet."}]}, {"weekStart": "2026-09-21", "weekEnd": "2026-09-27", "label": "September 21–27", "isCurrent": false, "isRaceWeek": false, "targetKm": 26.0, "targetLong": 13.0, "days": [{"date": "2026-09-21", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-22", "day": "Tuesday", "short": "Tue", "type": "Easy run", "km": 4.5, "notes": "Comfortable, conversational effort."}, {"date": "2026-09-23", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-24", "day": "Thursday", "short": "Thu", "type": "Tempo run", "km": 4.5, "notes": "Controlled, comfortably hard effort."}, {"date": "2026-09-25", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-26", "day": "Saturday", "short": "Sat", "type": "Easy run", "km": 4.0, "notes": "Keep the pace comfortable."}, {"date": "2026-09-27", "day": "Sunday", "short": "Sun", "type": "Long run", "km": 13.0, "notes": "Easy effort; focus on time on feet."}]}, {"weekStart": "2026-09-28", "weekEnd": "2026-10-04", "label": "September 28 – October 4", "isCurrent": false, "isRaceWeek": true, "targetKm": 21.1, "targetLong": 21.1, "days": [{"date": "2026-09-28", "day": "Monday", "short": "Mon", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-09-29", "day": "Tuesday", "short": "Tue", "type": "Rest", "km": 0, "notes": "Rest and prepare for race day."}, {"date": "2026-09-30", "day": "Wednesday", "short": "Wed", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-10-01", "day": "Thursday", "short": "Thu", "type": "Rest", "km": 0, "notes": "Rest and prepare for race day."}, {"date": "2026-10-02", "day": "Friday", "short": "Fri", "type": "Rest", "km": 0, "notes": "Recovery, mobility or an easy walk."}, {"date": "2026-10-03", "day": "Saturday", "short": "Sat", "type": "Rest", "km": 0, "notes": "Rest and prepare for race day."}, {"date": "2026-10-04", "day": "Sunday", "short": "Sun", "type": "Race day", "km": 21.1, "notes": "Half marathon — trust the training and enjoy it."}]}]}</script>
 
   <section class="tiles">
       <div class="tile">
@@ -459,6 +477,11 @@ footer b { color:var(--ink2); font-weight:600; }
   var planTotal = document.getElementById('plan-total');
   var planStatus = document.getElementById('plan-status');
   var resetPlan = document.getElementById('reset-plan');
+  var weekSelect = document.getElementById('plan-week-select');
+  var previousWeekButton = document.getElementById('plan-prev-week');
+  var nextWeekButton = document.getElementById('plan-next-week');
+  var weekKicker = document.getElementById('plan-week-kicker');
+  var editSummary = document.getElementById('plan-edit-summary');
   var manualForm = document.getElementById('manual-run-form');
   var manualDate = document.getElementById('manual-date');
   var manualName = document.getElementById('manual-name');
@@ -467,8 +490,11 @@ footer b { color:var(--ink2); font-weight:600; }
   var manualRuns = document.getElementById('manual-runs');
   var manualSummary = document.getElementById('manual-summary');
   var manualStatus = document.getElementById('manual-status');
-  var planKey = 'half-marathon-tracker:plan:' + defaults.weekStart;
   var runsKey = 'half-marathon-tracker:manual-runs';
+  if (!Array.isArray(defaults.weeks) || !defaults.weeks.length) return;
+  var weekDefaults = defaults.weeks.find(function (week) { return week.weekStart === defaults.selectedWeek; }) || defaults.weeks[0];
+  var planKey = '';
+  var plan = null;
 
   function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, function (char) {
@@ -504,7 +530,7 @@ footer b { color:var(--ink2); font-weight:600; }
   function normalisePlan(value) {
     var savedDays = value && Array.isArray(value.days) ? value.days : [];
     return {
-      days: defaults.days.map(function (day, index) {
+      days: weekDefaults.days.map(function (day, index) {
         var saved = savedDays[index] || {};
         return {
           date: day.date,
@@ -517,16 +543,45 @@ footer b { color:var(--ink2); font-weight:600; }
       })
     };
   }
-  var plan = normalisePlan(load(planKey, null));
   var entries = load(runsKey, []);
   if (!Array.isArray(entries)) entries = [];
   entries = entries.filter(function (entry) {
     return entry && /^\d{4}-\d{2}-\d{2}$/.test(String(entry.date || '')) && number(entry.km, 0) > 0 && number(entry.seconds, 0) > 0;
   });
 
+  weekSelect.innerHTML = defaults.weeks.map(function (week) {
+    var suffix = week.isCurrent ? ' · This week' : (week.isRaceWeek ? ' · Race week' : '');
+    return '<option value="' + escapeHtml(week.weekStart) + '">' + escapeHtml(week.label + suffix) + '</option>';
+  }).join('');
+
+  function selectWeek(weekStart, announce) {
+    var selected = defaults.weeks.find(function (week) { return week.weekStart === weekStart; });
+    if (!selected) return;
+    weekDefaults = selected;
+    planKey = 'half-marathon-tracker:plan:' + weekDefaults.weekStart;
+    plan = normalisePlan(load(planKey, null));
+    weekSelect.value = weekDefaults.weekStart;
+    var index = defaults.weeks.indexOf(weekDefaults);
+    previousWeekButton.disabled = index <= 0;
+    nextWeekButton.disabled = index >= defaults.weeks.length - 1;
+    weekKicker.textContent = weekDefaults.isCurrent ? 'This week' : (weekDefaults.isRaceWeek ? 'Race week' : 'Upcoming week');
+    editSummary.textContent = 'Edit plan for ' + weekDefaults.label;
+    if (announce) {
+      planStatus.textContent = 'Editing ' + weekDefaults.label + '. Changes for this week are saved separately on this device.';
+    }
+    renderPlan();
+  }
+
+  function moveWeek(offset) {
+    var index = defaults.weeks.indexOf(weekDefaults) + offset;
+    if (index >= 0 && index < defaults.weeks.length) {
+      selectWeek(defaults.weeks[index].weekStart, true);
+    }
+  }
+
   function renderPlan() {
     var total = plan.days.reduce(function (sum, day) { return sum + km(day.km); }, 0);
-    planTotal.textContent = formatKm(total) + ' km planned';
+    planTotal.textContent = formatKm(total) + ' / ' + formatKm(weekDefaults.targetKm) + ' km target';
     planCards.innerHTML = plan.days.map(function (day) {
       var rest = km(day.km) === 0;
       return '<article class="plan-day">' +
@@ -567,7 +622,9 @@ footer b { color:var(--ink2); font-weight:600; }
   }
   function renderManualRuns() {
     entries.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
-    var inThisWeek = entries.filter(function (entry) { return entry.date >= defaults.weekStart && entry.date <= defaults.weekEnd; });
+    var inThisWeek = entries.filter(function (entry) {
+      return entry.date >= defaults.currentWeekStart && entry.date <= defaults.currentWeekEnd;
+    });
     var weeklyKm = inThisWeek.reduce(function (sum, entry) { return sum + km(entry.km); }, 0);
     manualSummary.textContent = inThisWeek.length
       ? 'Manual additions this week: ' + inThisWeek.length + (inThisWeek.length === 1 ? ' run · ' : ' runs · ') + formatKm(weeklyKm) + ' km.'
@@ -592,19 +649,22 @@ footer b { color:var(--ink2); font-weight:600; }
       return { date:day.date, day:day.day, short:day.short, type:type.slice(0, 60), km:km(planForm.elements['km-' + index].value), notes:note.slice(0, 160) };
     });
     if (save(planKey, plan)) {
-      planStatus.textContent = 'Plan saved on this device.';
+      planStatus.textContent = 'Plan for ' + weekDefaults.label + ' saved on this device.';
     } else {
       planStatus.textContent = 'Your browser could not save the plan. It will remain visible until this page is closed.';
     }
     renderPlan();
   });
   resetPlan.addEventListener('click', function () {
-    if (!window.confirm('Restore the suggested plan for this week? Your current plan changes will be replaced.')) return;
+    if (!window.confirm('Restore the suggested plan for ' + weekDefaults.label + '? Your changes for this week will be replaced.')) return;
     plan = normalisePlan(null);
     save(planKey, plan);
-    planStatus.textContent = 'Suggested plan restored.';
+    planStatus.textContent = 'Suggested plan for ' + weekDefaults.label + ' restored.';
     renderPlan();
   });
+  weekSelect.addEventListener('change', function () { selectWeek(weekSelect.value, true); });
+  previousWeekButton.addEventListener('click', function () { moveWeek(-1); });
+  nextWeekButton.addEventListener('click', function () { moveWeek(1); });
   manualForm.addEventListener('submit', function (event) {
     event.preventDefault();
     var distance = km(manualDistance.value);
@@ -641,7 +701,7 @@ footer b { color:var(--ink2); font-weight:600; }
     renderManualRuns();
   });
 
-  renderPlan();
+  selectWeek(defaults.selectedWeek, false);
   renderManualRuns();
 })();
 </script>

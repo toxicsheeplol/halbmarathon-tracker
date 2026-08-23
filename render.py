@@ -347,50 +347,84 @@ def table_view(weeks):
 
 
 def weekly_plan(d):
-    """Suggested day-by-day plan for the current week.
+    """Suggested day-by-day plans for the current and upcoming weeks.
 
-    The rendered page stores edits locally in the visitor's browser.  Keeping
-    the defaults in the generated HTML means a newly published target curve
-    provides a fresh suggestion without exposing any credentials or needing a
-    server.
+    Each week is stored under its own browser key.  A plan edited in advance
+    therefore remains in place when that week later becomes the current week.
     """
-    cur = next((w for w in d["weeks"] if w["current"]), None)
-    week_start = date.fromisoformat((cur or {}).get("week") or d["today"])
-    target_km = float((cur or {}).get("plan_km") or d["plan_basis"]["baseline_km"] or 0)
-    target_long = float((cur or {}).get("plan_long") or min(target_km, d["kpi"]["longest_recent"] or 0))
-    target_long = min(target_long, target_km)
-    remaining = max(target_km - target_long, 0)
-    easy_one = round(remaining * 0.35, 1)
-    tempo = round(remaining * 0.35, 1)
-    easy_two = round(max(remaining - easy_one - tempo, 0), 1)
-
-    suggested = [
-        ("Rest", 0, "Recovery, mobility or an easy walk."),
-        ("Easy run", easy_one, "Comfortable, conversational effort."),
-        ("Rest", 0, "Recovery, mobility or an easy walk."),
-        ("Tempo run", tempo, "Controlled, comfortably hard effort."),
-        ("Rest", 0, "Recovery, mobility or an easy walk."),
-        ("Easy run", easy_two, "Keep the pace comfortable."),
-        ("Long run", target_long, "Easy effort; focus on time on feet."),
+    current = next((w for w in d["weeks"] if w["current"]), None)
+    available = [
+        w for w in d["weeks"]
+        if (w["current"] or w["future"]) and w.get("plan_km") is not None
     ]
-    plan_days = []
-    for i, (kind, km, note) in enumerate(suggested):
-        day = week_start + timedelta(days=i)
-        plan_days.append({
-            "date": day.isoformat(),
-            "day": DAYS[i],
-            "short": DAYS[i][:3],
-            "type": kind,
-            "km": km,
-            "notes": note,
+    if not available and current:
+        available = [current]
+
+    race_date = date.fromisoformat(d["race_date"])
+    plan_weeks = []
+    for week in available:
+        week_start = date.fromisoformat(week["week"])
+        week_end = week_start + timedelta(days=6)
+        target_km = float(week.get("plan_km") or d["plan_basis"]["baseline_km"] or 0)
+        target_long = float(week.get("plan_long") or min(target_km, d["kpi"]["longest_recent"] or 0))
+        target_long = min(target_long, target_km)
+        remaining = max(target_km - target_long, 0)
+        easy_one = round(remaining * 0.35, 1)
+        tempo = round(remaining * 0.35, 1)
+        easy_two = round(max(remaining - easy_one - tempo, 0), 1)
+        race_week = week_start <= race_date <= week_end
+
+        suggested = [
+            ("Rest", 0, "Recovery, mobility or an easy walk."),
+            ("Easy run", easy_one, "Comfortable, conversational effort."),
+            ("Rest", 0, "Recovery, mobility or an easy walk."),
+            ("Tempo run", tempo, "Controlled, comfortably hard effort."),
+            ("Rest", 0, "Recovery, mobility or an easy walk."),
+            ("Easy run", easy_two, "Keep the pace comfortable."),
+            (("Race day" if race_week else "Long run"), target_long,
+             ("Half marathon — trust the training and enjoy it."
+              if race_week else "Easy effort; focus on time on feet.")),
+        ]
+        suggested = [
+            ("Rest", 0, "Rest and prepare for race day.")
+            if race_week and km <= 0 and kind != "Rest" else (kind, km, note)
+            for kind, km, note in suggested
+        ]
+        plan_days = []
+        for i, (kind, km, note) in enumerate(suggested):
+            day = week_start + timedelta(days=i)
+            plan_days.append({
+                "date": day.isoformat(),
+                "day": DAYS[i],
+                "short": DAYS[i][:3],
+                "type": kind,
+                "km": km,
+                "notes": note,
+            })
+
+        if week_start.month == week_end.month:
+            label = f"{MONTHS[week_start.month - 1]} {week_start.day}–{week_end.day}"
+        else:
+            label = (f"{MONTHS[week_start.month - 1]} {week_start.day} – "
+                     f"{MONTHS[week_end.month - 1]} {week_end.day}")
+        plan_weeks.append({
+            "weekStart": week_start.isoformat(),
+            "weekEnd": week_end.isoformat(),
+            "label": label,
+            "isCurrent": bool(week["current"]),
+            "isRaceWeek": race_week,
+            "targetKm": round(target_km, 1),
+            "targetLong": round(target_long, 1),
+            "days": plan_days,
         })
 
+    selected = next((w for w in plan_weeks if w["isCurrent"]), plan_weeks[0] if plan_weeks else None)
+    current_start = date.fromisoformat((current or {}).get("week") or d["today"])
     defaults = {
-        "weekStart": week_start.isoformat(),
-        "weekEnd": (week_start + timedelta(days=6)).isoformat(),
-        "targetKm": round(target_km, 1),
-        "targetLong": round(target_long, 1),
-        "days": plan_days,
+        "selectedWeek": selected["weekStart"] if selected else None,
+        "currentWeekStart": current_start.isoformat(),
+        "currentWeekEnd": (current_start + timedelta(days=6)).isoformat(),
+        "weeks": plan_weeks,
     }
     # Prevent a (future) user-entered string from closing this script element.
     defaults_json = json.dumps(defaults, ensure_ascii=False).replace("</", "<\\/")
@@ -398,15 +432,20 @@ def weekly_plan(d):
     return f'''  <section class="card planner" aria-labelledby="weekly-plan-title">
     <div class="section-head">
       <div>
-        <p class="section-kicker">This week</p>
+        <p class="section-kicker" id="plan-week-kicker">This week</p>
         <h2 id="weekly-plan-title">Your weekly plan</h2>
-        <p class="section-copy">A suggested schedule based on this week's target. Change it to fit real life.</p>
+        <p class="section-copy">Choose any training week, then adapt its suggested schedule to fit real life.</p>
       </div>
       <div class="plan-total" id="plan-total"></div>
     </div>
+    <div class="week-picker" aria-label="Choose a training week">
+      <button class="week-nav-button" id="plan-prev-week" type="button" aria-label="Previous training week">←</button>
+      <label class="week-select-label"><span>Training week</span><select id="plan-week-select"></select></label>
+      <button class="week-nav-button" id="plan-next-week" type="button" aria-label="Next training week">→</button>
+    </div>
     <div class="plan-grid" id="plan-cards" aria-live="polite"></div>
     <details class="plan-editor">
-      <summary>Edit this week's plan</summary>
+      <summary id="plan-edit-summary">Edit selected week's plan</summary>
       <p>Adjust the session, distance or note for any day. Your changes are saved on this device.</p>
       <form id="plan-form">
         <div id="plan-editor-fields"></div>
@@ -619,6 +658,17 @@ figcaption p {{ margin:5px 0 0; font-size:13px; color:var(--ink2); max-width:62c
 .section-copy {{ margin:5px 0 0; max-width:58ch; color:var(--ink2); font-size:13px; line-height:1.45; }}
 .plan-total {{ flex:0 0 auto; padding:5px 9px; border:1px solid var(--ring); border-radius:999px;
   color:var(--ink2); font-family:var(--mono); font-size:11px; text-align:right; white-space:nowrap; }}
+.week-picker {{ display:flex; align-items:end; gap:8px; margin:0 0 14px; }}
+.week-select-label {{ display:flex; flex-direction:column; gap:5px; min-width:min(330px, 100%);
+  font-size:11px; font-weight:600; color:var(--ink2); }}
+.week-select-label select {{ width:100%; min-height:37px; padding:7px 34px 7px 10px; border:1px solid var(--hair);
+  border-radius:8px; background:var(--surface); color:var(--ink); font:inherit; font-size:13px; cursor:pointer; }}
+.week-select-label select:focus {{ outline:2px solid color-mix(in srgb, var(--ist) 40%, transparent);
+  outline-offset:1px; border-color:var(--ist); }}
+.week-nav-button {{ width:37px; height:37px; flex:0 0 37px; border:1px solid var(--hair); border-radius:8px;
+  background:var(--surface); color:var(--ink2); font:inherit; font-size:18px; cursor:pointer; }}
+.week-nav-button:hover:not(:disabled) {{ background:var(--plane); color:var(--ink); }}
+.week-nav-button:disabled {{ opacity:.35; cursor:not-allowed; }}
 .plan-grid {{ display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:8px; }}
 .plan-day {{ min-height:126px; padding:10px; border:1px solid var(--hair); border-radius:9px; background:var(--plane);
   display:flex; flex-direction:column; gap:6px; }}
@@ -662,6 +712,8 @@ input:focus {{ outline:2px solid color-mix(in srgb, var(--ist) 40%, transparent)
 }}
 @media (max-width:440px) {{
   .section-head {{ flex-direction:column; }}
+  .week-picker {{ align-items:end; }}
+  .week-select-label {{ min-width:0; flex:1 1 auto; }}
   .plan-row {{ grid-template-columns:1fr 1fr; }}
   .plan-row legend {{ grid-column:1 / -1; }}
   .plan-row label:last-child {{ grid-column:1 / -1; }}
@@ -843,6 +895,11 @@ footer b {{ color:var(--ink2); font-weight:600; }}
   var planTotal = document.getElementById('plan-total');
   var planStatus = document.getElementById('plan-status');
   var resetPlan = document.getElementById('reset-plan');
+  var weekSelect = document.getElementById('plan-week-select');
+  var previousWeekButton = document.getElementById('plan-prev-week');
+  var nextWeekButton = document.getElementById('plan-next-week');
+  var weekKicker = document.getElementById('plan-week-kicker');
+  var editSummary = document.getElementById('plan-edit-summary');
   var manualForm = document.getElementById('manual-run-form');
   var manualDate = document.getElementById('manual-date');
   var manualName = document.getElementById('manual-name');
@@ -851,8 +908,11 @@ footer b {{ color:var(--ink2); font-weight:600; }}
   var manualRuns = document.getElementById('manual-runs');
   var manualSummary = document.getElementById('manual-summary');
   var manualStatus = document.getElementById('manual-status');
-  var planKey = 'half-marathon-tracker:plan:' + defaults.weekStart;
   var runsKey = 'half-marathon-tracker:manual-runs';
+  if (!Array.isArray(defaults.weeks) || !defaults.weeks.length) return;
+  var weekDefaults = defaults.weeks.find(function (week) {{ return week.weekStart === defaults.selectedWeek; }}) || defaults.weeks[0];
+  var planKey = '';
+  var plan = null;
 
   function escapeHtml(value) {{
     return String(value).replace(/[&<>"']/g, function (char) {{
@@ -888,7 +948,7 @@ footer b {{ color:var(--ink2); font-weight:600; }}
   function normalisePlan(value) {{
     var savedDays = value && Array.isArray(value.days) ? value.days : [];
     return {{
-      days: defaults.days.map(function (day, index) {{
+      days: weekDefaults.days.map(function (day, index) {{
         var saved = savedDays[index] || {{}};
         return {{
           date: day.date,
@@ -901,16 +961,45 @@ footer b {{ color:var(--ink2); font-weight:600; }}
       }})
     }};
   }}
-  var plan = normalisePlan(load(planKey, null));
   var entries = load(runsKey, []);
   if (!Array.isArray(entries)) entries = [];
   entries = entries.filter(function (entry) {{
     return entry && /^\d{{4}}-\d{{2}}-\d{{2}}$/.test(String(entry.date || '')) && number(entry.km, 0) > 0 && number(entry.seconds, 0) > 0;
   }});
 
+  weekSelect.innerHTML = defaults.weeks.map(function (week) {{
+    var suffix = week.isCurrent ? ' · This week' : (week.isRaceWeek ? ' · Race week' : '');
+    return '<option value="' + escapeHtml(week.weekStart) + '">' + escapeHtml(week.label + suffix) + '</option>';
+  }}).join('');
+
+  function selectWeek(weekStart, announce) {{
+    var selected = defaults.weeks.find(function (week) {{ return week.weekStart === weekStart; }});
+    if (!selected) return;
+    weekDefaults = selected;
+    planKey = 'half-marathon-tracker:plan:' + weekDefaults.weekStart;
+    plan = normalisePlan(load(planKey, null));
+    weekSelect.value = weekDefaults.weekStart;
+    var index = defaults.weeks.indexOf(weekDefaults);
+    previousWeekButton.disabled = index <= 0;
+    nextWeekButton.disabled = index >= defaults.weeks.length - 1;
+    weekKicker.textContent = weekDefaults.isCurrent ? 'This week' : (weekDefaults.isRaceWeek ? 'Race week' : 'Upcoming week');
+    editSummary.textContent = 'Edit plan for ' + weekDefaults.label;
+    if (announce) {{
+      planStatus.textContent = 'Editing ' + weekDefaults.label + '. Changes for this week are saved separately on this device.';
+    }}
+    renderPlan();
+  }}
+
+  function moveWeek(offset) {{
+    var index = defaults.weeks.indexOf(weekDefaults) + offset;
+    if (index >= 0 && index < defaults.weeks.length) {{
+      selectWeek(defaults.weeks[index].weekStart, true);
+    }}
+  }}
+
   function renderPlan() {{
     var total = plan.days.reduce(function (sum, day) {{ return sum + km(day.km); }}, 0);
-    planTotal.textContent = formatKm(total) + ' km planned';
+    planTotal.textContent = formatKm(total) + ' / ' + formatKm(weekDefaults.targetKm) + ' km target';
     planCards.innerHTML = plan.days.map(function (day) {{
       var rest = km(day.km) === 0;
       return '<article class="plan-day">' +
@@ -951,7 +1040,9 @@ footer b {{ color:var(--ink2); font-weight:600; }}
   }}
   function renderManualRuns() {{
     entries.sort(function (a, b) {{ return String(b.date).localeCompare(String(a.date)); }});
-    var inThisWeek = entries.filter(function (entry) {{ return entry.date >= defaults.weekStart && entry.date <= defaults.weekEnd; }});
+    var inThisWeek = entries.filter(function (entry) {{
+      return entry.date >= defaults.currentWeekStart && entry.date <= defaults.currentWeekEnd;
+    }});
     var weeklyKm = inThisWeek.reduce(function (sum, entry) {{ return sum + km(entry.km); }}, 0);
     manualSummary.textContent = inThisWeek.length
       ? 'Manual additions this week: ' + inThisWeek.length + (inThisWeek.length === 1 ? ' run · ' : ' runs · ') + formatKm(weeklyKm) + ' km.'
@@ -976,19 +1067,22 @@ footer b {{ color:var(--ink2); font-weight:600; }}
       return {{ date:day.date, day:day.day, short:day.short, type:type.slice(0, 60), km:km(planForm.elements['km-' + index].value), notes:note.slice(0, 160) }};
     }});
     if (save(planKey, plan)) {{
-      planStatus.textContent = 'Plan saved on this device.';
+      planStatus.textContent = 'Plan for ' + weekDefaults.label + ' saved on this device.';
     }} else {{
       planStatus.textContent = 'Your browser could not save the plan. It will remain visible until this page is closed.';
     }}
     renderPlan();
   }});
   resetPlan.addEventListener('click', function () {{
-    if (!window.confirm('Restore the suggested plan for this week? Your current plan changes will be replaced.')) return;
+    if (!window.confirm('Restore the suggested plan for ' + weekDefaults.label + '? Your changes for this week will be replaced.')) return;
     plan = normalisePlan(null);
     save(planKey, plan);
-    planStatus.textContent = 'Suggested plan restored.';
+    planStatus.textContent = 'Suggested plan for ' + weekDefaults.label + ' restored.';
     renderPlan();
   }});
+  weekSelect.addEventListener('change', function () {{ selectWeek(weekSelect.value, true); }});
+  previousWeekButton.addEventListener('click', function () {{ moveWeek(-1); }});
+  nextWeekButton.addEventListener('click', function () {{ moveWeek(1); }});
   manualForm.addEventListener('submit', function (event) {{
     event.preventDefault();
     var distance = km(manualDistance.value);
@@ -1025,7 +1119,7 @@ footer b {{ color:var(--ink2); font-weight:600; }}
     renderManualRuns();
   }});
 
-  renderPlan();
+  selectWeek(defaults.selectedWeek, false);
   renderManualRuns();
 }})();
 </script>
