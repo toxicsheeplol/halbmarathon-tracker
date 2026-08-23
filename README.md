@@ -59,8 +59,10 @@ git push
 
 `creds.json` contains the Client Secret and refresh token. Never share or commit it. Strava rotates the refresh token when the tracker refreshes access; `tracker.py` writes the replacement safely and keeps the previous version as `creds.json.bak`.
 
-## Optional local scheduling
+## Automatic refresh every 12 hours (macOS)
 
-`update.sh` refreshes the dashboard and appends output to `update.log`. You can schedule it with macOS `launchd` or cron, but it only rebuilds files locally. Review the data and run the Git publish commands above when you want to make new activity data public.
+`refresh-and-publish.sh` fetches the latest Strava runs, builds the page and publishes only `data.json` and `index.html`. It is designed for a macOS `launchd` job every 12 hours. The job will stop safely if the repository has uncommitted changes or the Git histories diverge; see `refresh.log` for the result.
+
+Because this automatically publishes new training data to the public website, keep the repository clean and only connect a Strava account whose activity details may be displayed there.
 
 You can adjust `RACE_DATE`, `ATHLETE_NAME`, and `LOOKBACK_WEEKS` at the top of `tracker.py`.

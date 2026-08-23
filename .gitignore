@@ -2,4 +2,5 @@
 creds.json
 creds.json.bak
 update.log
+refresh.log
 .DS_Store
