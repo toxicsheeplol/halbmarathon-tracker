@@ -116,7 +116,14 @@ figcaption p { margin:5px 0 0; font-size:13px; color:var(--ink2); max-width:62ch
 .plan-grid { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:8px; }
 .plan-day { min-height:126px; padding:10px; border:1px solid var(--hair); border-radius:9px; background:var(--plane);
   display:flex; flex-direction:column; gap:6px; }
+.plan-day-today { padding:9px; border:2px solid var(--ist); background:var(--wash);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--ist) 10%, transparent); }
 .plan-day-name { font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.plan-day-today .plan-day-name { color:var(--ist); font-weight:700; }
+.plan-today-badge { align-self:flex-start; padding:2px 7px; border-radius:999px; background:var(--ist); color:white;
+  font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.plan-today-inline { display:inline-block; margin-left:6px; color:var(--ist); font-size:9px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; }
 .plan-type { font-weight:700; font-size:13px; line-height:1.15; }
 .plan-km { margin-top:auto; font-variant-numeric:tabular-nums; font-size:13px; font-weight:600; color:var(--ist); }
 .plan-note { font-size:11px; color:var(--ink2); line-height:1.25; }
@@ -527,6 +534,13 @@ footer b { color:var(--ink2); font-weight:600; }
     if (parts.length !== 3) return value;
     return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2])).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
   }
+  function browserToday() {
+    var now = new Date();
+    return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+  }
+  function weekContainsDate(week, value) {
+    return value >= week.weekStart && value <= week.weekEnd;
+  }
   function normalisePlan(value) {
     var savedDays = value && Array.isArray(value.days) ? value.days : [];
     return {
@@ -550,7 +564,7 @@ footer b { color:var(--ink2); font-weight:600; }
   });
 
   weekSelect.innerHTML = defaults.weeks.map(function (week) {
-    var suffix = week.isCurrent ? ' · This week' : (week.isRaceWeek ? ' · Race week' : '');
+    var suffix = weekContainsDate(week, browserToday()) ? ' · This week' : (week.isRaceWeek ? ' · Race week' : '');
     return '<option value="' + escapeHtml(week.weekStart) + '">' + escapeHtml(week.label + suffix) + '</option>';
   }).join('');
 
@@ -564,7 +578,7 @@ footer b { color:var(--ink2); font-weight:600; }
     var index = defaults.weeks.indexOf(weekDefaults);
     previousWeekButton.disabled = index <= 0;
     nextWeekButton.disabled = index >= defaults.weeks.length - 1;
-    weekKicker.textContent = weekDefaults.isCurrent ? 'This week' : (weekDefaults.isRaceWeek ? 'Race week' : 'Upcoming week');
+    weekKicker.textContent = weekContainsDate(weekDefaults, browserToday()) ? 'This week' : (weekDefaults.isRaceWeek ? 'Race week' : 'Upcoming week');
     editSummary.textContent = 'Edit plan for ' + weekDefaults.label;
     if (announce) {
       planStatus.textContent = 'Editing ' + weekDefaults.label + '. Changes for this week are saved separately on this device.';
@@ -581,19 +595,23 @@ footer b { color:var(--ink2); font-weight:600; }
 
   function renderPlan() {
     var total = plan.days.reduce(function (sum, day) { return sum + km(day.km); }, 0);
+    var today = browserToday();
     planTotal.textContent = formatKm(total) + ' / ' + formatKm(weekDefaults.targetKm) + ' km target';
     planCards.innerHTML = plan.days.map(function (day) {
       var rest = km(day.km) === 0;
-      return '<article class="plan-day">' +
+      var isToday = day.date === today;
+      return '<article class="plan-day' + (isToday ? ' plan-day-today' : '') + '"' + (isToday ? ' aria-current="date"' : '') + '>' +
         '<span class="plan-day-name">' + escapeHtml(day.short) + ' · ' + escapeHtml(formatDate(day.date)) + '</span>' +
+        (isToday ? '<span class="plan-today-badge">Today</span>' : '') +
         '<span class="plan-type">' + escapeHtml(day.type) + '</span>' +
         '<span class="plan-note">' + escapeHtml(day.notes) + '</span>' +
         '<span class="plan-km">' + (rest ? 'Rest day' : formatKm(day.km) + ' km') + '</span>' +
       '</article>';
     }).join('');
     planFields.innerHTML = plan.days.map(function (day, index) {
+      var isToday = day.date === today;
       return '<fieldset class="plan-row">' +
-        '<legend>' + escapeHtml(day.day) + '</legend>' +
+        '<legend>' + escapeHtml(day.day) + (isToday ? '<span class="plan-today-inline">Today</span>' : '') + '</legend>' +
         '<label>Session<input name="type-' + index + '" maxlength="60" value="' + escapeHtml(day.type) + '"></label>' +
         '<label>km<input name="km-' + index + '" type="number" min="0" max="200" step="0.1" inputmode="decimal" value="' + km(day.km) + '"></label>' +
         '<label>Note<input name="note-' + index + '" maxlength="160" value="' + escapeHtml(day.notes) + '"></label>' +
@@ -701,8 +719,18 @@ footer b { color:var(--ink2); font-weight:600; }
     renderManualRuns();
   });
 
-  selectWeek(defaults.selectedWeek, false);
+  var actualWeek = defaults.weeks.find(function (week) { return weekContainsDate(week, browserToday()); });
+  selectWeek(actualWeek ? actualWeek.weekStart : defaults.selectedWeek, false);
   renderManualRuns();
+  function refreshTodayAtMidnight() {
+    var now = new Date();
+    var nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 1);
+    window.setTimeout(function () {
+      renderPlan();
+      refreshTodayAtMidnight();
+    }, nextMidnight.getTime() - now.getTime());
+  }
+  refreshTodayAtMidnight();
 })();
 </script>
 </body>
