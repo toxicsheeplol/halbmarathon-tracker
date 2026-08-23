@@ -1,10 +1,10 @@
 {
- "generated": "2026-08-22T21:54:55+00:00",
- "today": "2026-08-22",
+ "generated": "2026-08-23T13:37:27+00:00",
+ "today": "2026-08-23",
  "race_date": "2026-10-04",
- "days_left": 43,
- "weeks_left": 6.1,
- "block_progress": 0.731,
+ "days_left": 42,
+ "weeks_left": 6.0,
+ "block_progress": 0.738,
  "weeks": [
   {
    "week": "2026-04-27",
@@ -201,10 +201,10 @@
   {
    "week": "2026-08-17",
    "label": "17.08.",
-   "km": 16.2,
-   "long": 7.5,
-   "runs": 3,
-   "avg_pace": 380,
+   "km": 32.3,
+   "long": 16.1,
+   "runs": 4,
+   "avg_pace": 359,
    "plan_km": 26.4,
    "plan_long": 16.0,
    "future": false,
@@ -352,7 +352,7 @@
   {
    "week": "2026-08-17",
    "label": "17.08.",
-   "seconds": 7307
+   "seconds": 7256
   }
  ],
  "pace_points": [
@@ -679,9 +679,27 @@
    "name": "Warm up",
    "seconds": 905,
    "hr": null
+  },
+  {
+   "date": "2026-08-23",
+   "km": 16.12,
+   "pace": 338,
+   "cat": "long",
+   "name": "43 Tage bis zum Halbmarathon",
+   "seconds": 5455,
+   "hr": 169
   }
  ],
  "recent_runs": [
+  {
+   "id": 19862670713,
+   "name": "43 Tage bis zum Halbmarathon",
+   "date": "2026-08-23",
+   "km": 16.12,
+   "seconds": 5455,
+   "elev": 87,
+   "hr": 169
+  },
   {
    "id": 19838079708,
    "name": "Warm up",
@@ -744,30 +762,21 @@
    "seconds": 1852,
    "elev": 17,
    "hr": 159
-  },
-  {
-   "id": 19701062713,
-   "name": "Evening Run",
-   "date": "2026-08-11",
-   "km": 6.05,
-   "seconds": 2955,
-   "elev": 0,
-   "hr": 164
   }
  ],
  "totals": {
-  "runs": 36,
-  "km": 222.1
+  "runs": 37,
+  "km": 238.3
  },
  "kpi": {
   "weekly_km": 26.3,
   "weekly_km_prev": 5.5,
-  "longest": 16.0,
-  "longest_recent": 16.0,
+  "longest": 16.1,
+  "longest_recent": 16.1,
   "longest_prev": 8.6,
   "easy_pace": 422,
   "easy_pace_prev": 342,
-  "prediction": 7307,
+  "prediction": 7256,
   "prediction_prev": 7637
  },
  "plan_basis": {
