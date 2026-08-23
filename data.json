@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-23T13:40:04+00:00",
+ "generated": "2026-08-23T19:30:17+00:00",
  "today": "2026-08-23",
  "race_date": "2026-10-04",
  "days_left": 42,
@@ -277,7 +277,7 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 18.3,
+   "plan_km": 21.1,
    "plan_long": 21.1,
    "future": true,
    "current": false
