@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-24T06:07:01+00:00",
+ "generated": "2026-08-24T18:14:22+00:00",
  "today": "2026-08-24",
  "race_date": "2026-10-04",
  "days_left": 41,
@@ -201,10 +201,10 @@
   {
    "week": "2026-08-24",
    "label": "24.08.",
-   "km": 0.0,
-   "long": 0.0,
-   "runs": 0,
-   "avg_pace": null,
+   "km": 7.5,
+   "long": 7.5,
+   "runs": 1,
+   "avg_pace": 322,
    "plan_km": 27.6,
    "plan_long": 16.1,
    "future": false,
@@ -658,9 +658,27 @@
    "name": "43 Tage bis zum Halbmarathon",
    "seconds": 5455,
    "hr": 169
+  },
+  {
+   "date": "2026-08-24",
+   "km": 7.45,
+   "pace": 323,
+   "cat": "easy",
+   "name": "Easy run",
+   "seconds": 2404,
+   "hr": 159
   }
  ],
  "recent_runs": [
+  {
+   "id": 19880347193,
+   "name": "Easy run",
+   "date": "2026-08-24",
+   "km": 7.45,
+   "seconds": 2404,
+   "elev": 31,
+   "hr": 159
+  },
   {
    "id": 19862670713,
    "name": "43 Tage bis zum Halbmarathon",
@@ -723,20 +741,11 @@
    "seconds": 2002,
    "elev": 0,
    "hr": 177
-  },
-  {
-   "id": 19728674702,
-   "name": "Evening Run",
-   "date": "2026-08-13",
-   "km": 5.23,
-   "seconds": 1852,
-   "elev": 17,
-   "hr": 159
   }
  ],
  "totals": {
-  "runs": 35,
-  "km": 230.1
+  "runs": 36,
+  "km": 237.6
  },
  "kpi": {
   "weekly_km": 27.6,
@@ -744,7 +753,7 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 11.2,
-  "easy_pace": 428,
+  "easy_pace": 417,
   "easy_pace_prev": 347,
   "prediction": 7256,
   "prediction_prev": 7637
