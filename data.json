@@ -1,23 +1,11 @@
 {
- "generated": "2026-08-23T19:31:20+00:00",
- "today": "2026-08-23",
+ "generated": "2026-08-24T06:07:01+00:00",
+ "today": "2026-08-24",
  "race_date": "2026-10-04",
- "days_left": 42,
- "weeks_left": 6.0,
- "block_progress": 0.738,
+ "days_left": 41,
+ "weeks_left": 5.9,
+ "block_progress": 0.732,
  "weeks": [
-  {
-   "week": "2026-04-27",
-   "label": "27.04.",
-   "km": 8.1,
-   "long": 6.9,
-   "runs": 2,
-   "avg_pace": 344,
-   "plan_km": null,
-   "plan_long": null,
-   "future": false,
-   "current": false
-  },
   {
    "week": "2026-05-04",
    "label": "04.05.",
@@ -205,10 +193,10 @@
    "long": 16.1,
    "runs": 4,
    "avg_pace": 359,
-   "plan_km": 26.4,
-   "plan_long": 16.0,
+   "plan_km": null,
+   "plan_long": null,
    "future": false,
-   "current": true
+   "current": false
   },
   {
    "week": "2026-08-24",
@@ -217,10 +205,10 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 27.9,
-   "plan_long": 17.2,
-   "future": true,
-   "current": false
+   "plan_km": 27.6,
+   "plan_long": 16.1,
+   "future": false,
+   "current": true
   },
   {
    "week": "2026-08-31",
@@ -229,8 +217,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 29.6,
-   "plan_long": 18.4,
+   "plan_km": 29.2,
+   "plan_long": 17.3,
    "future": true,
    "current": false
   },
@@ -241,8 +229,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 31.4,
-   "plan_long": 19.6,
+   "plan_km": 31.0,
+   "plan_long": 18.5,
    "future": true,
    "current": false
   },
@@ -253,8 +241,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 33.3,
-   "plan_long": 20.0,
+   "plan_km": 32.9,
+   "plan_long": 19.7,
    "future": true,
    "current": false
   },
@@ -265,8 +253,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 26.0,
-   "plan_long": 13.0,
+   "plan_km": 25.6,
+   "plan_long": 12.8,
    "future": true,
    "current": false
   },
@@ -284,11 +272,6 @@
   }
  ],
  "forecast": [
-  {
-   "week": "2026-05-18",
-   "label": "18.05.",
-   "seconds": 7033
-  },
   {
    "week": "2026-05-25",
    "label": "25.05.",
@@ -353,27 +336,14 @@
    "week": "2026-08-17",
    "label": "17.08.",
    "seconds": 7256
+  },
+  {
+   "week": "2026-08-24",
+   "label": "24.08.",
+   "seconds": 7256
   }
  ],
  "pace_points": [
-  {
-   "date": "2026-04-29",
-   "km": 1.25,
-   "pace": 252,
-   "cat": "tempo",
-   "name": "Pyramid run",
-   "seconds": 315,
-   "hr": 181
-  },
-  {
-   "date": "2026-05-03",
-   "km": 6.87,
-   "pace": 361,
-   "cat": "easy",
-   "name": "Easy Run",
-   "seconds": 2479,
-   "hr": 177
-  },
   {
    "date": "2026-05-05",
    "km": 2.19,
@@ -765,23 +735,23 @@
   }
  ],
  "totals": {
-  "runs": 37,
-  "km": 238.3
+  "runs": 35,
+  "km": 230.1
  },
  "kpi": {
-  "weekly_km": 26.3,
-  "weekly_km_prev": 5.5,
+  "weekly_km": 27.6,
+  "weekly_km_prev": 11.7,
   "longest": 16.1,
   "longest_recent": 16.1,
-  "longest_prev": 8.6,
-  "easy_pace": 422,
-  "easy_pace_prev": 342,
+  "longest_prev": 11.2,
+  "easy_pace": 428,
+  "easy_pace_prev": 347,
   "prediction": 7256,
   "prediction_prev": 7637
  },
  "plan_basis": {
-  "baseline_km": 26.4,
-  "baseline_long": 16.0
+  "baseline_km": 27.6,
+  "baseline_long": 16.1
  },
  "athlete": {
   "name": "R\u00e9ka",
