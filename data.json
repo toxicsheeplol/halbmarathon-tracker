@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-26T06:10:35+00:00",
+ "generated": "2026-08-26T18:09:44+00:00",
  "today": "2026-08-26",
  "race_date": "2026-10-04",
  "days_left": 39,
@@ -201,10 +201,10 @@
   {
    "week": "2026-08-24",
    "label": "24.08.",
-   "km": 7.5,
+   "km": 11.2,
    "long": 7.5,
-   "runs": 1,
-   "avg_pace": 322,
+   "runs": 2,
+   "avg_pace": 340,
    "plan_km": 27.6,
    "plan_long": 16.1,
    "future": false,
@@ -667,9 +667,27 @@
    "name": "Easy run",
    "seconds": 2404,
    "hr": 159
+  },
+  {
+   "date": "2026-08-26",
+   "km": 3.75,
+   "pace": 374,
+   "cat": "easy",
+   "name": "Evening Run",
+   "seconds": 1404,
+   "hr": 144
   }
  ],
  "recent_runs": [
+  {
+   "id": 19911690077,
+   "name": "Evening Run",
+   "date": "2026-08-26",
+   "km": 3.75,
+   "seconds": 1404,
+   "elev": 5,
+   "hr": 144
+  },
   {
    "id": 19880347193,
    "name": "Easy run",
@@ -732,20 +750,11 @@
    "seconds": 1347,
    "elev": 0,
    "hr": 188
-  },
-  {
-   "id": 19754553772,
-   "name": "Afternoon Run",
-   "date": "2026-08-15",
-   "km": 4.56,
-   "seconds": 2002,
-   "elev": 0,
-   "hr": 177
   }
  ],
  "totals": {
-  "runs": 36,
-  "km": 237.6
+  "runs": 37,
+  "km": 241.3
  },
  "kpi": {
   "weekly_km": 27.6,
@@ -753,7 +762,7 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 11.2,
-  "easy_pace": 417,
+  "easy_pace": 413,
   "easy_pace_prev": 346,
   "prediction": 7256,
   "prediction_prev": 7637
