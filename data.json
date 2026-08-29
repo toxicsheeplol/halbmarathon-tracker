@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-29T06:00:07+00:00",
+ "generated": "2026-08-29T18:06:55+00:00",
  "today": "2026-08-29",
  "race_date": "2026-10-04",
  "days_left": 36,
@@ -201,10 +201,10 @@
   {
    "week": "2026-08-24",
    "label": "24.08.",
-   "km": 11.2,
+   "km": 16.4,
    "long": 7.5,
-   "runs": 2,
-   "avg_pace": 340,
+   "runs": 3,
+   "avg_pace": 355,
    "plan_km": 27.6,
    "plan_long": 16.1,
    "future": false,
@@ -676,9 +676,27 @@
    "name": "Evening Run",
    "seconds": 1404,
    "hr": 144
+  },
+  {
+   "date": "2026-08-29",
+   "km": 5.2,
+   "pace": 390,
+   "cat": "easy",
+   "name": "3x8 min tempo run on treadmill",
+   "seconds": 2027,
+   "hr": null
   }
  ],
  "recent_runs": [
+  {
+   "id": 19951460312,
+   "name": "3x8 min tempo run on treadmill",
+   "date": "2026-08-29",
+   "km": 5.2,
+   "seconds": 2027,
+   "elev": 0,
+   "hr": null
+  },
   {
    "id": 19911690077,
    "name": "Evening Run",
@@ -741,20 +759,11 @@
    "seconds": 5793,
    "elev": 91,
    "hr": 161
-  },
-  {
-   "id": 19751195037,
-   "name": "New 5k PB",
-   "date": "2026-08-15",
-   "km": 4.98,
-   "seconds": 1347,
-   "elev": 0,
-   "hr": 188
   }
  ],
  "totals": {
-  "runs": 37,
-  "km": 241.3
+  "runs": 38,
+  "km": 246.5
  },
  "kpi": {
   "weekly_km": 27.6,
@@ -762,7 +771,7 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 14.2,
-  "easy_pace": 419,
+  "easy_pace": 416,
   "easy_pace_prev": 348,
   "prediction": 7256,
   "prediction_prev": 7307
