@@ -1,10 +1,10 @@
 {
- "generated": "2026-09-01T18:00:06+00:00",
- "today": "2026-09-01",
+ "generated": "2026-09-02T06:13:45+00:00",
+ "today": "2026-09-02",
  "race_date": "2026-10-04",
- "days_left": 33,
- "weeks_left": 4.7,
- "block_progress": 0.774,
+ "days_left": 32,
+ "weeks_left": 4.6,
+ "block_progress": 0.781,
  "weeks": [
   {
    "week": "2026-05-11",
@@ -201,10 +201,10 @@
   {
    "week": "2026-08-31",
    "label": "31.08.",
-   "km": 0.0,
-   "long": 0.0,
-   "runs": 0,
-   "avg_pace": null,
+   "km": 7.0,
+   "long": 7.0,
+   "runs": 1,
+   "avg_pace": 489,
    "plan_km": 24.8,
    "plan_long": 16.1,
    "future": false,
@@ -655,9 +655,27 @@
    "name": "3x8 min tempo run on treadmill",
    "seconds": 2027,
    "hr": null
+  },
+  {
+   "date": "2026-09-01",
+   "km": 6.95,
+   "pace": 490,
+   "cat": "easy",
+   "name": "Interval training",
+   "seconds": 3403,
+   "hr": 167
   }
  ],
  "recent_runs": [
+  {
+   "id": 19995938363,
+   "name": "Interval training",
+   "date": "2026-09-01",
+   "km": 6.95,
+   "seconds": 3403,
+   "elev": 0,
+   "hr": 167
+  },
   {
    "id": 19951460312,
    "name": "3x8 min tempo run on treadmill",
@@ -720,20 +738,11 @@
    "seconds": 2894,
    "elev": 0,
    "hr": 161
-  },
-  {
-   "id": 19764018676,
-   "name": "I was suffering",
-   "date": "2026-08-16",
-   "km": 16.02,
-   "seconds": 5793,
-   "elev": 91,
-   "hr": 161
   }
  ],
  "totals": {
-  "runs": 36,
-  "km": 238.3
+  "runs": 37,
+  "km": 245.3
  },
  "kpi": {
   "weekly_km": 24.8,
@@ -741,7 +750,7 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 14.2,
-  "easy_pace": 416,
+  "easy_pace": 422,
   "easy_pace_prev": 348,
   "prediction": 7256,
   "prediction_prev": 7307
