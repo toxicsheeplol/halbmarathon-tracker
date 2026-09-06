@@ -1,10 +1,10 @@
 {
- "generated": "2026-09-05T18:08:36+00:00",
- "today": "2026-09-05",
+ "generated": "2026-09-06T06:00:05+00:00",
+ "today": "2026-09-06",
  "race_date": "2026-10-04",
- "days_left": 29,
- "weeks_left": 4.1,
- "block_progress": 0.801,
+ "days_left": 28,
+ "weeks_left": 4.0,
+ "block_progress": 0.808,
  "weeks": [
   {
    "week": "2026-05-11",
@@ -750,8 +750,8 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 14.2,
-  "easy_pace": 422,
-  "easy_pace_prev": 348,
+  "easy_pace": 430,
+  "easy_pace_prev": 346,
   "prediction": 7256,
   "prediction_prev": 7307
  },
