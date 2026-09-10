@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-10T06:03:11+00:00",
+ "generated": "2026-09-10T18:16:51+00:00",
  "today": "2026-09-10",
  "race_date": "2026-10-04",
  "days_left": 24,
@@ -201,10 +201,10 @@
   {
    "week": "2026-09-07",
    "label": "07.09.",
-   "km": 7.9,
-   "long": 4.6,
-   "runs": 2,
-   "avg_pace": 336,
+   "km": 14.9,
+   "long": 7.0,
+   "runs": 3,
+   "avg_pace": 344,
    "plan_km": 23.1,
    "plan_long": 16.1,
    "future": false,
@@ -643,9 +643,27 @@
    "name": "Morning Run",
    "seconds": 1163,
    "hr": 150
+  },
+  {
+   "date": "2026-09-10",
+   "km": 7.04,
+   "pace": 352,
+   "cat": "easy",
+   "name": "Afternoon Run",
+   "seconds": 2481,
+   "hr": 158
   }
  ],
  "recent_runs": [
+  {
+   "id": 20116957368,
+   "name": "Afternoon Run",
+   "date": "2026-09-10",
+   "km": 7.04,
+   "seconds": 2481,
+   "elev": 12,
+   "hr": 158
+  },
   {
    "id": 20098677751,
    "name": "Morning Run",
@@ -708,20 +726,11 @@
    "seconds": 5455,
    "elev": 87,
    "hr": 169
-  },
-  {
-   "id": 19838079708,
-   "name": "Warm up",
-   "date": "2026-08-21",
-   "km": 2.74,
-   "seconds": 905,
-   "elev": 9,
-   "hr": null
   }
  ],
  "totals": {
-  "runs": 36,
-  "km": 240.2
+  "runs": 37,
+  "km": 247.2
  },
  "kpi": {
   "weekly_km": 23.1,
@@ -729,7 +738,7 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 14.2,
-  "easy_pace": 386,
+  "easy_pace": 383,
   "easy_pace_prev": 411,
   "prediction": 7256,
   "prediction_prev": 7307
