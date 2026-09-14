@@ -1,23 +1,11 @@
 {
- "generated": "2026-09-13T18:02:23+00:00",
- "today": "2026-09-13",
+ "generated": "2026-09-14T06:04:40+00:00",
+ "today": "2026-09-14",
  "race_date": "2026-10-04",
- "days_left": 21,
- "weeks_left": 3.0,
- "block_progress": 0.849,
+ "days_left": 20,
+ "weeks_left": 2.9,
+ "block_progress": 0.848,
  "weeks": [
-  {
-   "week": "2026-05-18",
-   "label": "18.05.",
-   "km": 12.0,
-   "long": 6.7,
-   "runs": 2,
-   "avg_pace": 375,
-   "plan_km": null,
-   "plan_long": null,
-   "future": false,
-   "current": false
-  },
   {
    "week": "2026-05-25",
    "label": "25.05.",
@@ -205,10 +193,10 @@
    "long": 7.0,
    "runs": 3,
    "avg_pace": 344,
-   "plan_km": 23.1,
-   "plan_long": 16.1,
+   "plan_km": null,
+   "plan_long": null,
    "future": false,
-   "current": true
+   "current": false
   },
   {
    "week": "2026-09-14",
@@ -217,10 +205,10 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 24.5,
-   "plan_long": 17.3,
-   "future": true,
-   "current": false
+   "plan_km": 17.6,
+   "plan_long": 16.1,
+   "future": false,
+   "current": true
   },
   {
    "week": "2026-09-21",
@@ -229,8 +217,8 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 19.1,
-   "plan_long": 11.3,
+   "plan_km": 13.8,
+   "plan_long": 10.5,
    "future": true,
    "current": false
   },
@@ -248,11 +236,6 @@
   }
  ],
  "forecast": [
-  {
-   "week": "2026-06-08",
-   "label": "08.06.",
-   "seconds": 7169
-  },
   {
    "week": "2026-06-15",
    "label": "15.06.",
@@ -317,27 +300,14 @@
    "week": "2026-09-07",
    "label": "07.09.",
    "seconds": 7256
+  },
+  {
+   "week": "2026-09-14",
+   "label": "14.09.",
+   "seconds": 7256
   }
  ],
  "pace_points": [
-  {
-   "date": "2026-05-19",
-   "km": 6.74,
-   "pace": 397,
-   "cat": "easy",
-   "name": "Night Run in Barcelona",
-   "seconds": 2677,
-   "hr": 150
-  },
-  {
-   "date": "2026-05-23",
-   "km": 5.24,
-   "pace": 347,
-   "cat": "easy",
-   "name": "1 min on and off intervals",
-   "seconds": 1818,
-   "hr": 176
-  },
   {
    "date": "2026-05-25",
    "km": 10.04,
@@ -729,22 +699,22 @@
   }
  ],
  "totals": {
-  "runs": 37,
-  "km": 247.2
+  "runs": 35,
+  "km": 235.2
  },
  "kpi": {
-  "weekly_km": 23.1,
-  "weekly_km_prev": 19.0,
+  "weekly_km": 17.6,
+  "weekly_km_prev": 26.3,
   "longest": 16.1,
   "longest_recent": 16.1,
-  "longest_prev": 14.2,
+  "longest_prev": 16.0,
   "easy_pace": 380,
   "easy_pace_prev": 408,
   "prediction": 7256,
   "prediction_prev": 7307
  },
  "plan_basis": {
-  "baseline_km": 23.1,
+  "baseline_km": 17.6,
   "baseline_long": 16.1
  },
  "athlete": {
