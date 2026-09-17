@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-17T06:10:11+00:00",
+ "generated": "2026-09-17T18:08:42+00:00",
  "today": "2026-09-17",
  "race_date": "2026-10-04",
  "days_left": 17,
@@ -201,10 +201,10 @@
   {
    "week": "2026-09-14",
    "label": "14.09.",
-   "km": 8.4,
+   "km": 14.4,
    "long": 8.4,
-   "runs": 1,
-   "avg_pace": 317,
+   "runs": 2,
+   "avg_pace": 373,
    "plan_km": 17.6,
    "plan_long": 16.1,
    "future": false,
@@ -631,9 +631,27 @@
    "name": "Progression run",
    "seconds": 2674,
    "hr": null
+  },
+  {
+   "date": "2026-09-17",
+   "km": 5.97,
+   "pace": 451,
+   "cat": "easy",
+   "name": "Intervals",
+   "seconds": 2692,
+   "hr": 168
   }
  ],
  "recent_runs": [
+  {
+   "id": 20213988210,
+   "name": "Intervals",
+   "date": "2026-09-17",
+   "km": 5.97,
+   "seconds": 2692,
+   "elev": 0,
+   "hr": 168
+  },
   {
    "id": 20170214056,
    "name": "Progression run",
@@ -696,20 +714,11 @@
    "seconds": 1404,
    "elev": 5,
    "hr": 144
-  },
-  {
-   "id": 19880347193,
-   "name": "Easy run",
-   "date": "2026-08-24",
-   "km": 7.45,
-   "seconds": 2404,
-   "elev": 31,
-   "hr": 159
   }
  ],
  "totals": {
-  "runs": 36,
-  "km": 243.6
+  "runs": 37,
+  "km": 249.6
  },
  "kpi": {
   "weekly_km": 17.6,
@@ -717,7 +726,7 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 16.0,
-  "easy_pace": 367,
+  "easy_pace": 376,
   "easy_pace_prev": 423,
   "prediction": 7089,
   "prediction_prev": 7307
