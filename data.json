@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-19T06:05:41+00:00",
+ "generated": "2026-09-19T18:14:54+00:00",
  "today": "2026-09-19",
  "race_date": "2026-10-04",
  "days_left": 15,
@@ -201,10 +201,10 @@
   {
    "week": "2026-09-14",
    "label": "14.09.",
-   "km": 14.4,
+   "km": 20.2,
    "long": 8.4,
-   "runs": 2,
-   "avg_pace": 373,
+   "runs": 3,
+   "avg_pace": 363,
    "plan_km": 17.6,
    "plan_long": 16.1,
    "future": false,
@@ -640,9 +640,27 @@
    "name": "Intervals",
    "seconds": 2692,
    "hr": 168
+  },
+  {
+   "date": "2026-09-19",
+   "km": 5.81,
+   "pace": 340,
+   "cat": "easy",
+   "name": "Easy run before 10k race",
+   "seconds": 1974,
+   "hr": 159
   }
  ],
  "recent_runs": [
+  {
+   "id": 20240816972,
+   "name": "Easy run before 10k race",
+   "date": "2026-09-19",
+   "km": 5.81,
+   "seconds": 1974,
+   "elev": 12,
+   "hr": 159
+  },
   {
    "id": 20213988210,
    "name": "Intervals",
@@ -705,20 +723,11 @@
    "seconds": 2027,
    "elev": 0,
    "hr": null
-  },
-  {
-   "id": 19911690077,
-   "name": "Evening Run",
-   "date": "2026-08-26",
-   "km": 3.75,
-   "seconds": 1404,
-   "elev": 5,
-   "hr": 144
   }
  ],
  "totals": {
-  "runs": 37,
-  "km": 249.6
+  "runs": 38,
+  "km": 255.4
  },
  "kpi": {
   "weekly_km": 17.6,
@@ -726,7 +735,7 @@
   "longest": 16.1,
   "longest_recent": 16.1,
   "longest_prev": 16.0,
-  "easy_pace": 382,
+  "easy_pace": 377,
   "easy_pace_prev": 422,
   "prediction": 7089,
   "prediction_prev": 7307
