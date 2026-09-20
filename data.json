@@ -1,10 +1,10 @@
 {
- "generated": "2026-09-19T18:14:54+00:00",
- "today": "2026-09-19",
+ "generated": "2026-09-20T06:05:24+00:00",
+ "today": "2026-09-20",
  "race_date": "2026-10-04",
- "days_left": 15,
- "weeks_left": 2.1,
- "block_progress": 0.886,
+ "days_left": 14,
+ "weeks_left": 2.0,
+ "block_progress": 0.894,
  "weeks": [
   {
    "week": "2026-05-25",
@@ -738,7 +738,7 @@
   "easy_pace": 377,
   "easy_pace_prev": 422,
   "prediction": 7089,
-  "prediction_prev": 7307
+  "prediction_prev": 7256
  },
  "plan_basis": {
   "baseline_km": 17.6,
