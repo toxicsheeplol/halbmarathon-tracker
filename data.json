@@ -1,23 +1,11 @@
 {
- "generated": "2026-09-20T18:00:06+00:00",
- "today": "2026-09-20",
+ "generated": "2026-09-21T06:28:59+00:00",
+ "today": "2026-09-21",
  "race_date": "2026-10-04",
- "days_left": 14,
- "weeks_left": 2.0,
- "block_progress": 0.894,
+ "days_left": 13,
+ "weeks_left": 1.9,
+ "block_progress": 0.896,
  "weeks": [
-  {
-   "week": "2026-05-25",
-   "label": "25.05.",
-   "km": 18.5,
-   "long": 10.0,
-   "runs": 2,
-   "avg_pace": 326,
-   "plan_km": null,
-   "plan_long": null,
-   "future": false,
-   "current": false
-  },
   {
    "week": "2026-06-01",
    "label": "01.06.",
@@ -205,10 +193,10 @@
    "long": 10.6,
    "runs": 4,
    "avg_pace": 333,
-   "plan_km": 17.6,
-   "plan_long": 16.1,
+   "plan_km": null,
+   "plan_long": null,
    "future": false,
-   "current": true
+   "current": false
   },
   {
    "week": "2026-09-21",
@@ -217,10 +205,10 @@
    "long": 0.0,
    "runs": 0,
    "avg_pace": null,
-   "plan_km": 13.8,
-   "plan_long": 10.5,
-   "future": true,
-   "current": false
+   "plan_km": 13.5,
+   "plan_long": 6.9,
+   "future": false,
+   "current": true
   },
   {
    "week": "2026-09-28",
@@ -236,11 +224,6 @@
   }
  ],
  "forecast": [
-  {
-   "week": "2026-06-15",
-   "label": "15.06.",
-   "seconds": 7169
-  },
   {
    "week": "2026-06-22",
    "label": "22.06.",
@@ -305,27 +288,14 @@
    "week": "2026-09-14",
    "label": "14.09.",
    "seconds": 6086
+  },
+  {
+   "week": "2026-09-21",
+   "label": "21.09.",
+   "seconds": 6086
   }
  ],
  "pace_points": [
-  {
-   "date": "2026-05-25",
-   "km": 10.04,
-   "pace": 325,
-   "cat": "easy",
-   "name": "It was fun until it wasn\u2019t",
-   "seconds": 3263,
-   "hr": 169
-  },
-  {
-   "date": "2026-05-28",
-   "km": 8.44,
-   "pace": 329,
-   "cat": "easy",
-   "name": "Oysho run",
-   "seconds": 2778,
-   "hr": null
-  },
   {
    "date": "2026-06-10",
    "km": 5.15,
@@ -735,23 +705,23 @@
   }
  ],
  "totals": {
-  "runs": 39,
-  "km": 266.0
+  "runs": 37,
+  "km": 247.6
  },
  "kpi": {
-  "weekly_km": 17.6,
-  "weekly_km_prev": 26.3,
+  "weekly_km": 17.3,
+  "weekly_km_prev": 27.6,
   "longest": 16.1,
-  "longest_recent": 16.1,
-  "longest_prev": 16.0,
+  "longest_recent": 10.6,
+  "longest_prev": 16.1,
   "easy_pace": 377,
-  "easy_pace_prev": 422,
+  "easy_pace_prev": 428,
   "prediction": 6086,
   "prediction_prev": 7256
  },
  "plan_basis": {
-  "baseline_km": 17.6,
-  "baseline_long": 16.1
+  "baseline_km": 17.3,
+  "baseline_long": 10.6
  },
  "athlete": {
   "name": "R\u00e9ka",
